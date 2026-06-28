@@ -1,59 +1,88 @@
-# Created by https://www.toptal.com/developers/gitignore/api/nextjs,react
-# Edit at https://www.toptal.com/developers/gitignore?templates=nextjs,react
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-### NextJS ###
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+.pnp.cjs
+
+# package manager (pnpm is canonical for this repo)
+package-lock.json
+yarn.lock
 
 # testing
 /coverage
+test-results/
+playwright-report/
+.vitest/
+
+# database
+/prisma/db.sqlite
+/prisma/db.sqlite-journal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
 
 # next.js
 /.next/
 /out/
+next-env.d.ts
 
-# production
+# production / build
 /build
+/dist
+.open-next/
 
-# misc
+# misc — OS junk
 .DS_Store
-*.pem
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# debug
+# secrets / certs
+*.pem
+*.key
+*.p12
+*.pfx
+
+# debug / logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+*.log
 
-# local env files
-.env*.local
+# local env files — keep .env.example
+.env
+.env.*
+!.env.example
 
-# vercel
+# deploy / hosting
 .vercel
+.netlify
+.wrangler
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
-### react ###
-.DS_*
-*.log
-logs
-**/*.backup.*
-**/*.back.*
+# caches
+.turbo
+.eslintcache
+.cache
+.prettiercache
 
-node_modules
-bower_components
+# editors / IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
-*.sublime*
-
-psd
-thumb
-sketch
-
-# End of https://www.toptal.com/developers/gitignore/api/nextjs,react
-
-# Cursor IDE (ECC install, local settings)
+# PKBL — generated & local-only
+/generated
+/_scaffold
 .cursor/
+
+# corpus data (local datasets — un-ignore specific files if needed later)
+/corpus/
