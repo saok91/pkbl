@@ -1,16 +1,16 @@
-import { assignChar, getDefaultTemplate } from "@/lib/layout";
-import { findKeyIdByLabel } from "@/lib/layout/test-utils";
+import { assignChar, getBlankAnsiTemplate } from "@/lib/layout";
+import { keyIdAt } from "@/lib/layout/test-utils";
 import type { NgramStats } from "@/lib/corpus/types";
 import type { Layout } from "@/lib/layout/types";
 
 /** Minimal Persian layout on home-row keys for golden tests. */
 export function buildGoldenLayout(): Layout {
-  const layout = getDefaultTemplate();
-  const fKey = findKeyIdByLabel(layout, "F");
-  const gKey = findKeyIdByLabel(layout, "G");
-  const hKey = findKeyIdByLabel(layout, "H");
-  const jKey = findKeyIdByLabel(layout, "J");
-  const kKey = findKeyIdByLabel(layout, "K");
+  const layout = getBlankAnsiTemplate();
+  const fKey = keyIdAt("F");
+  const gKey = keyIdAt("G");
+  const hKey = keyIdAt("H");
+  const jKey = keyIdAt("J");
+  const kKey = keyIdAt("K");
 
   return assignChar(
     assignChar(

@@ -1,13 +1,23 @@
 export {
   EDITABLE_CHARSET,
   EDITABLE_CHARSET_SET,
-  MODIFIER_LABELS,
   isCharInEditableScope,
   isKeyEditable,
-  isModifierLabel,
 } from "./editable-scope";
 
+export { buildPaletteSections, flattenPaletteSections } from "./palette-charset";
+export type { PaletteSection } from "./palette-charset";
+
 export {
+  getCharDescription,
+  getCharDisplayLabel,
+  hasCustomCharLabel,
+} from "./charset-labels";
+
+export { MODIFIER_LABELS, isModifierLabel } from "./modifiers";
+
+export {
+  getBlankAnsiTemplate,
   getDefaultTemplate,
   layoutsEquivalent,
   parseKle,
@@ -17,11 +27,18 @@ export {
   serializeKleStructure,
 } from "./kle-parser";
 
+export {
+  PERSIAN_STANDARD_60_ID,
+  PERSIAN_STANDARD_60_KLE,
+  PERSIAN_STANDARD_60_NAME,
+} from "./persian-standard-60";
+
 export { TEMPLATE_60_ANSI_ID, TEMPLATE_60_ANSI_KLE } from "./template-60-ansi";
 
 export {
   assignChar,
   getAssignedChars,
+  getAssignedCharsForLayer,
   resetAllEditable,
   resetKey,
   swapKeys,

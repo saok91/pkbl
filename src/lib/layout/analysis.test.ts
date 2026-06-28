@@ -6,31 +6,38 @@ import {
   getDuplicateAssignments,
   getUnassignedChars,
 } from "./analysis";
-import { getDefaultTemplate } from "./kle-parser";
+import { getBlankAnsiTemplate, getDefaultTemplate } from "./kle-parser";
 import { assignChar } from "./operations";
-import { findKeyIdByLabel } from "./test-utils";
+import { findKeyIdByBaseChar, keyIdAt } from "./test-utils";
 
 describe("getUnassignedChars", () => {
   it("returns chars not assigned in layout", () => {
-    const layout = getDefaultTemplate();
+    const layout = getBlankAnsiTemplate();
     const unassigned = getUnassignedChars(layout, "اب");
     expect(unassigned).toEqual(["ا", "ب"]);
   });
 
   it("excludes assigned chars", () => {
-    const layout = getDefaultTemplate();
-    const qKey = findKeyIdByLabel(layout, "Q");
+    const layout = getBlankAnsiTemplate();
+    const qKey = keyIdAt("Q");
     const withA = assignChar(layout, qKey, "base", "ا");
     const unassigned = getUnassignedChars(withA, "اب");
     expect(unassigned).toEqual(["ب"]);
+  });
+
+  it("assigns Persian Standard letters on default template", () => {
+    const layout = getDefaultTemplate();
+    expect(getUnassignedChars(layout, "اب")).toEqual([]);
+    expect(findKeyIdByBaseChar(layout, "ا")).toBe(keyIdAt("H"));
+    expect(findKeyIdByBaseChar(layout, "ب")).toBe(keyIdAt("F"));
   });
 });
 
 describe("getDuplicateAssignments", () => {
   it("detects duplicate char on multiple keys", () => {
-    const layout = getDefaultTemplate();
-    const qKey = findKeyIdByLabel(layout, "Q");
-    const wKey = findKeyIdByLabel(layout, "W");
+    const layout = getBlankAnsiTemplate();
+    const qKey = keyIdAt("Q");
+    const wKey = keyIdAt("W");
 
     let current = assignChar(layout, qKey, "base", "ا");
     current = assignChar(current, wKey, "base", "ا");
@@ -42,27 +49,42 @@ describe("getDuplicateAssignments", () => {
     expect(duplicates[0]?.keyIds).toContain(wKey);
   });
 
-  it("returns empty when no duplicates", () => {
-    const layout = getDefaultTemplate();
+  it("returns empty when no duplicates on blank template", () => {
+    const layout = getBlankAnsiTemplate();
     expect(getDuplicateAssignments(layout)).toEqual([]);
+  });
+
+  it("may duplicate ZWNJ on shift in Persian Standard (B + Space)", () => {
+    const layout = getDefaultTemplate();
+    const zwnjDupes = getDuplicateAssignments(layout).filter(
+      (d) => d.char === "\u200c" && d.layer === "shift",
+    );
+    expect(zwnjDupes).toHaveLength(1);
+    expect(zwnjDupes[0]?.keyIds).toContain("R3C5");
+    expect(zwnjDupes[0]?.keyIds).toContain("R4C3");
   });
 });
 
 describe("getCompletenessScore", () => {
-  it("returns 0 for default English template vs Persian charset", () => {
-    const layout = getDefaultTemplate();
+  it("returns 0 for blank ANSI template vs Persian charset", () => {
+    const layout = getBlankAnsiTemplate();
     expect(getCompletenessScore(layout, "اب")).toBe(0);
   });
 
   it("returns 100 when all charset chars assigned", () => {
-    const layout = getDefaultTemplate();
-    const qKey = findKeyIdByLabel(layout, "Q");
-    const wKey = findKeyIdByLabel(layout, "W");
+    const layout = getBlankAnsiTemplate();
+    const qKey = keyIdAt("Q");
+    const wKey = keyIdAt("W");
 
     let current = assignChar(layout, qKey, "base", "ا");
     current = assignChar(current, wKey, "base", "ب");
 
     expect(getCompletenessScore(current, "اب")).toBe(100);
+  });
+
+  it("covers full Persian Standard charset on default layout", () => {
+    const layout = getDefaultTemplate();
+    expect(getCompletenessScore(layout)).toBe(100);
   });
 
   it("uses full editable charset by default", () => {

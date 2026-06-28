@@ -1,4 +1,8 @@
 import { isKeyEditable, isModifierLabel } from "./editable-scope";
+import {
+  PERSIAN_STANDARD_60_ID,
+  PERSIAN_STANDARD_60_KLE,
+} from "./persian-standard-60";
 import { TEMPLATE_60_ANSI_ID, TEMPLATE_60_ANSI_KLE } from "./template-60-ansi";
 import type {
   KeyGeometry,
@@ -229,6 +233,11 @@ export function parseKle(
 }
 
 export function getDefaultTemplate(): Layout {
+  return parseKleJson(PERSIAN_STANDARD_60_KLE, PERSIAN_STANDARD_60_ID);
+}
+
+/** Blank 60% ANSI geometry with QWERTY labels — for tests and reset baseline. */
+export function getBlankAnsiTemplate(): Layout {
   return parseKleJson(TEMPLATE_60_ANSI_KLE, TEMPLATE_60_ANSI_ID);
 }
 

@@ -346,11 +346,11 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** صفحه‌کلید را ببینم **تا** چیدمان را درک کنم.
 
 **معیار پذیرش:**
-- [ ] SVG/HTML keyboard از template geometry
-- [ ] نسبت‌ها و spacing مطابق KLE
-- [ ] نمایش label base (و shift در hover/layer mode)
-- [ ] responsive برای desktop (نه mobile-first)
-- [ ] RTL-friendly UI shell
+- [x] SVG/HTML keyboard از template geometry
+- [x] نسبت‌ها و spacing مطابق KLE
+- [x] نمایش label base (و shift در hover/layer mode)
+- [x] responsive برای desktop (نه mobile-first)
+- [x] RTL-friendly UI shell
 
 ---
 
@@ -359,9 +359,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** بین لایه base و shift جابه‌جا شوم **تا** نمادها را هم بچینم.
 
 **معیار پذیرش:**
-- [ ] toggle یا tab: Base | Shift
-- [ ] visual distinction (رنگ/بج)
-- [ ] state در editor store
+- [x] toggle یا tab: Base | Shift
+- [x] visual distinction (رنگ/بج)
+- [x] state در editor store
 
 ---
 
@@ -370,10 +370,10 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** روی کلید کلیک و کاراکتر انتخاب کنم **تا** بدون drag هم ویرایش کنم.
 
 **معیار پذیرش:**
-- [ ] click key → palette/popover کاراکتر
-- [ ] فقط editable keys
-- [ ] فقط charset مجاز
-- [ ] feedback فوری روی keycap
+- [x] click key → palette/popover کاراکتر
+- [x] فقط editable keys
+- [x] فقط charset مجاز
+- [x] feedback فوری روی keycap
 
 ---
 
@@ -382,10 +382,10 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** کاراکتر را بکشم روی کلید **تا** سریع چیدمان کنم.
 
 **معیار پذیرش:**
-- [ ] drag از character palette
-- [ ] drop روی key → assign
-- [ ] drag key→key → swap
-- [ ] `@dnd-kit/core` یا equivalent
+- [x] drag از character palette
+- [x] drop روی key → assign
+- [x] drag key→key → swap
+- [x] `@dnd-kit/core` یا equivalent
 
 ---
 
@@ -394,9 +394,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** حروف فارسی و نمادها را ببینم **تا** انتخاب کنم.
 
 **معیار پذیرش:**
-- [ ] همه charset v1 نمایش داده شود
-- [ ] assigned vs unassigned visual state
-- [ ] کلیک → حالت assign روی key انتخاب‌شده
+- [x] همه charset v1 نمایش داده شود
+- [x] assigned vs unassigned visual state
+- [x] کلیک → حالت assign روی key انتخاب‌شده
 
 ---
 
@@ -405,10 +405,10 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** کلید یا کل صفحه را reset کنم **تا** iterate سریع باشد.
 
 **معیار پذیرش:**
-- [ ] reset single key
-- [ ] reset all editable keys
-- [ ] undo/redo (حداقل ۲۰ step) — optional اما توصیه‌شده
-- [ ] confirm برای reset all
+- [x] reset single key
+- [x] reset all editable keys
+- [x] undo/redo (حداقل ۲۰ step) — optional اما توصیه‌شده
+- [x] confirm برای reset all
 
 ---
 

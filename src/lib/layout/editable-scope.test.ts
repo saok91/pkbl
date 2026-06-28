@@ -72,4 +72,10 @@ describe("EDITABLE_CHARSET", () => {
     expect(EDITABLE_CHARSET).toContain("پ");
     expect(EDITABLE_CHARSET).toContain("ی");
   });
+
+  it("contains Persian Standard shift-layer forms", () => {
+    expect(EDITABLE_CHARSET).toContain("آ");
+    expect(EDITABLE_CHARSET).toContain("ئ");
+    expect(EDITABLE_CHARSET).toContain("ؤ");
+  });
 });

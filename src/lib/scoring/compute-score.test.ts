@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { assignChar, getDefaultTemplate } from "@/lib/layout";
-import { findKeyIdByLabel } from "@/lib/layout/test-utils";
+import { assignChar, getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
+import { keyIdAt } from "@/lib/layout/test-utils";
 import { SCORING_CONFIG_V1, SCORING_WEIGHTS_V1 } from "./config";
 import { computeScore } from "./compute-score";
 import { buildGoldenLayout, buildGoldenNgramStats } from "./fixtures/golden";
@@ -11,7 +11,7 @@ describe("computeScore", () => {
     const layout = buildGoldenLayout();
     const stats = buildGoldenNgramStats();
     const assigned = computeScore(layout, stats);
-    const unassigned = computeScore(getDefaultTemplate(), stats);
+    const unassigned = computeScore(getBlankAnsiTemplate(), stats);
 
     expect(assigned.total).toBeGreaterThan(unassigned.total);
     expect(assigned.scorerVersion).toBe("1.0.0");
@@ -30,10 +30,10 @@ describe("computeScore", () => {
   });
 
   it("tracks bigram same-finger and hand alternation metrics", () => {
-    const layout = getDefaultTemplate();
-    const dKey = findKeyIdByLabel(layout, "D");
-    const fKey = findKeyIdByLabel(layout, "F");
-    const jKey = findKeyIdByLabel(layout, "J");
+    const layout = getBlankAnsiTemplate();
+    const dKey = keyIdAt("D");
+    const fKey = keyIdAt("F");
+    const jKey = keyIdAt("J");
 
     const sameHandLayout = assignChar(
       assignChar(layout, dKey, "base", "ا"),
@@ -73,9 +73,9 @@ describe("computeScore", () => {
   });
 
   it("tracks trigram row switching in breakdown", () => {
-    const layout = getDefaultTemplate();
-    const fKey = findKeyIdByLabel(layout, "F");
-    const qKey = findKeyIdByLabel(layout, "Q");
+    const layout = getBlankAnsiTemplate();
+    const fKey = keyIdAt("F");
+    const qKey = keyIdAt("Q");
 
     const homeToTop = assignChar(
       assignChar(layout, fKey, "base", "ا"),
@@ -133,7 +133,7 @@ describe("computeScore", () => {
       normalizedVersion: "norm-v1",
     };
 
-    const missing = computeScore(getDefaultTemplate(), stats);
+    const missing = computeScore(getBlankAnsiTemplate(), stats);
     expect(missing.breakdown.unigramCost).toBeGreaterThan(100);
     expect(missing.breakdown.weakKeyPenalty).toBe(0);
   });
@@ -155,10 +155,10 @@ describe("computeScore", () => {
   });
 
   it("penalizes same-finger bigrams more than same-hand different-finger", () => {
-    const layout = getDefaultTemplate();
-    const fKey = findKeyIdByLabel(layout, "F");
-    const gKey = findKeyIdByLabel(layout, "G");
-    const dKey = findKeyIdByLabel(layout, "D");
+    const layout = getBlankAnsiTemplate();
+    const fKey = keyIdAt("F");
+    const gKey = keyIdAt("G");
+    const dKey = keyIdAt("D");
 
     const sameFingerLayout = assignChar(
       assignChar(layout, fKey, "base", "ا"),
@@ -196,7 +196,7 @@ describe("computeScore", () => {
 
   it("scores shift-layer assignments", () => {
     const layout = getDefaultTemplate();
-    const jKey = findKeyIdByLabel(layout, "J");
+    const jKey = keyIdAt("J");
     const withShift = assignChar(layout, jKey, "shift", "؟");
 
     const stats = {
@@ -209,7 +209,7 @@ describe("computeScore", () => {
     };
 
     const assigned = computeScore(withShift, stats);
-    const unassigned = computeScore(getDefaultTemplate(), stats);
+    const unassigned = computeScore(getBlankAnsiTemplate(), stats);
 
     expect(assigned.total).toBeGreaterThan(unassigned.total);
     expect(assigned.breakdown.unigramCost).toBeLessThan(
@@ -257,9 +257,9 @@ describe("computeScore", () => {
   });
 
   it("allows total above baseScore when hand alternation dominates", () => {
-    const layout = getDefaultTemplate();
-    const fKey = findKeyIdByLabel(layout, "F");
-    const jKey = findKeyIdByLabel(layout, "J");
+    const layout = getBlankAnsiTemplate();
+    const fKey = keyIdAt("F");
+    const jKey = keyIdAt("J");
     const altLayout = assignChar(
       assignChar(layout, fKey, "base", "ا"),
       jKey,

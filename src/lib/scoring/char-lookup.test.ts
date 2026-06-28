@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { assignChar, getDefaultTemplate } from "@/lib/layout";
+import { assignChar, getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
 import { parseLabelLayers } from "@/lib/layout/kle-parser";
-import { findKeyIdByLabel } from "@/lib/layout/test-utils";
+import { findKeyIdByBaseChar, keyIdAt } from "@/lib/layout/test-utils";
 import { buildCharLookup, resolveChar } from "./char-lookup";
 
 describe("buildCharLookup", () => {
   it("maps assigned chars to keyId and layer", () => {
-    const layout = getDefaultTemplate();
-    const fKey = findKeyIdByLabel(layout, "F");
-    const jKey = findKeyIdByLabel(layout, "J");
+    const layout = getBlankAnsiTemplate();
+    const fKey = keyIdAt("F");
+    const jKey = keyIdAt("J");
     const scored = assignChar(
       assignChar(layout, fKey, "base", "ا"),
       jKey,
@@ -26,8 +26,8 @@ describe("buildCharLookup", () => {
 
   it("uses last layout.keys entry when two editable keys share a char", () => {
     const layout = getDefaultTemplate();
-    const fKey = findKeyIdByLabel(layout, "F");
-    const gKey = findKeyIdByLabel(layout, "G");
+    const fKey = keyIdAt("F");
+    const gKey = keyIdAt("G");
     const both = assignChar(
       assignChar(layout, fKey, "base", "ا"),
       gKey,

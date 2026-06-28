@@ -38,7 +38,7 @@ describe("extractNgrams", () => {
 
   it("filters chars outside target charset", () => {
     const stats = extractNgrams(
-      "سلام hello",
+      "سلامhello",
       "custom",
       DEFAULT_NORMALIZATION_CONFIG,
     );
@@ -46,6 +46,16 @@ describe("extractNgrams", () => {
     expect(stats.unigrams.has("h")).toBe(false);
     expect(stats.unigrams.get("س")).toBe(1);
     expect(stats.bigrams.get("سل")).toBe(1);
+  });
+
+  it("includes space when it is in target charset", () => {
+    const stats = extractNgrams(
+      "سلام hello",
+      "custom",
+      DEFAULT_NORMALIZATION_CONFIG,
+    );
+    expect(stats.totalChars).toBe(5);
+    expect(stats.unigrams.get(" ")).toBe(1);
   });
 
   it("is deterministic for the same input", () => {

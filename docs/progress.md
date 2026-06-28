@@ -1,6 +1,6 @@
 # وضعیت توسعه — PKBL
 
-> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۸ (E4 code review)  
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۸ (E5 Editor UI)  
 > **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
 
 **راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
@@ -42,12 +42,12 @@
 
 | اپیک | استوری | عنوان | وضعیت |
 |------|--------|-------|-------|
-| E5 | S1 | رندر بصری صفحه‌کلید ۶۰٪ | ⬜ |
-| E5 | S2 | انتخاب لایه base/shift | ⬜ |
-| E5 | S3 | Click-to-assign | ⬜ |
-| E5 | S4 | Drag-and-drop assign | ⬜ |
-| E5 | S5 | Character palette | ⬜ |
-| E5 | S6 | Reset و عملیات سریع | ⬜ |
+| E5 | S1 | رندر بصری صفحه‌کلید ۶۰٪ | ✅ |
+| E5 | S2 | انتخاب لایه base/shift | ✅ |
+| E5 | S3 | Click-to-assign | ✅ |
+| E5 | S4 | Drag-and-drop assign | ✅ |
+| E5 | S5 | Character palette | ✅ |
+| E5 | S6 | Reset و عملیات سریع | ✅ |
 | E6 | S1 | Live score با debounce | ⬜ |
 | E6 | S2 | Breakdown panel | ⬜ |
 | E6 | S3 | Hotspots visualization | ⬜ |
@@ -118,7 +118,7 @@
 | E2 | Ergonomics Model | 2/2 ✅ |
 | E3 | Corpus Engine & Presets | 4/4 ✅ |
 | E4 | Scoring Engine | 6/6 ✅ |
-| E5 | Editor UI | 0/6 |
+| E5 | Editor UI | 6/6 ✅ |
 | E6 | Score Analytics Panel | 0/4 |
 | E7 | Custom Corpus | 0/3 ⏸ |
 | E8 | Local Persistence | 0/3 |
@@ -129,4 +129,4 @@
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
 
-**MVP:** 21/28 استوری block
+**MVP:** 27/28 استوری block

@@ -1,4 +1,5 @@
 import path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 process.env.SKIP_ENV_VALIDATION ??= "true";
@@ -6,6 +7,7 @@ process.env.DATABASE_URL ??=
   "postgresql://postgres:password@localhost:5432/pkbl_test";
 
 export default defineConfig({
+  plugins: [react()],
   resolve: {
     alias: {
       "~": path.resolve(import.meta.dirname, "./src"),
@@ -14,7 +16,9 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts"],
+    environmentMatchGlobs: [["src/**/*.test.tsx", "jsdom"]],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    setupFiles: ["src/test/setup.ts"],
     env: {
       SKIP_ENV_VALIDATION: "true",
     },

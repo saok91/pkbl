@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ERGONOMICS_CONFIG_V1 } from "@/lib/ergonomics";
 import { assignChar, getDefaultTemplate } from "@/lib/layout";
-import { findKeyIdByLabel } from "@/lib/layout/test-utils";
+import { keyIdAt } from "@/lib/layout/test-utils";
 import {
   DEFAULT_SCORING_CONFIG,
   SCORING_CONFIG_V1,
@@ -26,11 +26,11 @@ describe("ScoringConfig", () => {
 
   it("changes total predictably when unigram weight changes", () => {
     const layout = getDefaultTemplate();
-    const qKey = findKeyIdByLabel(layout, "Q");
-    const scoredLayout = assignChar(layout, qKey, "base", "ا");
+    const qKey = keyIdAt("Q");
+    const scoredLayout = assignChar(layout, qKey, "base", "ق");
 
     const stats = {
-      unigrams: new Map([["ا", 100]]),
+      unigrams: new Map([["ق", 100]]),
       bigrams: new Map<string, number>(),
       trigrams: new Map<string, number>(),
       totalChars: 100,

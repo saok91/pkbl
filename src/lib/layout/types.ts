@@ -26,6 +26,7 @@ export type KeyGeometry = {
   y: number;
   width: number;
   height: number;
+  /** KLE `a` — legend alignment index (0–9), not key position. */
   alignment?: number;
 };
 

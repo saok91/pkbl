@@ -144,3 +144,24 @@ export function getAssignedChars(layout: Layout): string[] {
 
   return chars;
 }
+
+/** Collect assigned characters for a single layer (palette display). */
+export function getAssignedCharsForLayer(
+  layout: Layout,
+  layer: Layer,
+): string[] {
+  const chars: string[] = [];
+
+  for (const [keyId, key] of layout.keys) {
+    if (!key.isEditable) {
+      continue;
+    }
+    const slot = getSlot(layout, keyId);
+    const char = layer === "base" ? slot.base : slot.shift;
+    if (char) {
+      chars.push(char);
+    }
+  }
+
+  return chars;
+}

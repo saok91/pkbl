@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  getBlankAnsiTemplate,
   getDefaultTemplate,
   layoutsEquivalent,
   parseKle,
@@ -8,6 +9,10 @@ import {
   parseLabelLayers,
   serializeKle,
 } from "./kle-parser";
+import {
+  PERSIAN_STANDARD_60_ID,
+  PERSIAN_STANDARD_60_KLE,
+} from "./persian-standard-60";
 import { TEMPLATE_60_ANSI_ID, TEMPLATE_60_ANSI_KLE } from "./template-60-ansi";
 import { LayoutError } from "./types";
 
@@ -24,22 +29,29 @@ describe("parseLabelLayers", () => {
 describe("parseKle — 60% template", () => {
   it("parses Appendix A template without error", () => {
     const layout = getDefaultTemplate();
-    expect(layout.templateId).toBe(TEMPLATE_60_ANSI_ID);
+    expect(layout.templateId).toBe(PERSIAN_STANDARD_60_ID);
     expect(layout.keys.size).toBeGreaterThan(0);
+  });
+
+  it("loads Persian Standard as default layout", () => {
+    const layout = getDefaultTemplate();
+    expect(layout.assignments.get("R2C6")?.base).toBe("ا");
+    expect(layout.assignments.get("R1C1")?.base).toBe("ض");
+    expect(layout.assignments.get("R2C4")?.base).toBe("ب");
   });
 
   it("assigns stable row-col keyIds", () => {
     const layout = getDefaultTemplate();
     expect(layout.keys.has("R0C0")).toBe(true);
-    expect(layout.keys.get("R1C1")?.defaultLabel).toBe("Q");
+    expect(layout.keys.get("R1C1")?.defaultLabel).toBe("ْ\nض");
   });
 
   it("extracts shift layer from newline labels", () => {
     const layout = getDefaultTemplate();
     const commaKey = [...layout.assignments.entries()].find(
-      ([, slot]) => slot.base === ",",
+      ([, slot]) => slot.base === "و",
     );
-    expect(commaKey?.[1].shift).toBe("<");
+    expect(commaKey?.[1].shift).toBe(">");
   });
 
   it("parses width modifiers on keys", () => {
@@ -68,13 +80,19 @@ describe("serializeKle round-trip", () => {
   it("parse → serialize → parse is equivalent", () => {
     const original = getDefaultTemplate();
     const serialized = serializeKle(original);
-    const reparsed = parseKle(serialized, TEMPLATE_60_ANSI_ID);
+    const reparsed = parseKle(serialized, PERSIAN_STANDARD_60_ID);
     expect(layoutsEquivalent(original, reparsed)).toBe(true);
   });
 
-  it("round-trips template JSON structure", () => {
+  it("round-trips blank ANSI template JSON structure", () => {
     const layout = parseKleJson(TEMPLATE_60_ANSI_KLE);
     const roundTrip = parseKle(serializeKle(layout));
+    expect(layoutsEquivalent(layout, roundTrip)).toBe(true);
+  });
+
+  it("round-trips Persian Standard template JSON structure", () => {
+    const layout = parseKleJson(PERSIAN_STANDARD_60_KLE, PERSIAN_STANDARD_60_ID);
+    const roundTrip = parseKle(serializeKle(layout), PERSIAN_STANDARD_60_ID);
     expect(layoutsEquivalent(layout, roundTrip)).toBe(true);
   });
 });
