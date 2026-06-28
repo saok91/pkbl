@@ -1,0 +1,132 @@
+# وضعیت توسعه — PKBL
+
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۷  
+> **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
+
+**راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
+
+---
+
+## فاز ۰ — Foundation
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E0 | S1 | Scaffold پروژه T3 | ✅ |
+| E0 | S2 | ساختار پوشه‌های دامنه | ✅ |
+| E0 | S3 | CI و quality gates | ✅ |
+| E0 | S4 | Seed دیتابیس و migration اولیه | ✅ |
+
+## فاز ۱ — Domain Core
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E1 | S1 | KLE parser برای subset ۶۰٪ | ✅ |
+| E1 | S2 | مدل Layout و EditableScope | ✅ |
+| E1 | S3 | عملیات assign و swap | ✅ |
+| E1 | S4 | Serialize و import/export KLE | ✅ |
+| E1 | S5 | تشخیص کاراکترهای بدون جایگاه | ✅ |
+| E2 | S1 | Finger map قالب ۶۰٪ | ⬜ |
+| E2 | S2 | Reach penalty و weak key penalty | ⬜ |
+| E3 | S1 | نرمال‌سازی متن فارسی | ⬜ |
+| E3 | S2 | استخراج n-gram | ⬜ |
+| E3 | S3 | Corpus build script | ⬜ |
+| E3 | S4 | Corpus preset registry | ⬜ |
+| E4 | S1 | هستهٔ scorer | ⬜ |
+| E4 | S2 | سیگنال‌های unigram | ⬜ |
+| E4 | S3 | سیگنال‌های bigram | ⬜ |
+| E4 | S4 | سیگنال‌های trigram | ⬜ |
+| E4 | S5 | متریک‌های ارگونومی aggregate | ⬜ |
+| E4 | S6 | ScoringConfig versioned | ⬜ |
+
+## فاز ۲ — Editor MVP
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E5 | S1 | رندر بصری صفحه‌کلید ۶۰٪ | ⬜ |
+| E5 | S2 | انتخاب لایه base/shift | ⬜ |
+| E5 | S3 | Click-to-assign | ⬜ |
+| E5 | S4 | Drag-and-drop assign | ⬜ |
+| E5 | S5 | Character palette | ⬜ |
+| E5 | S6 | Reset و عملیات سریع | ⬜ |
+| E6 | S1 | Live score با debounce | ⬜ |
+| E6 | S2 | Breakdown panel | ⬜ |
+| E6 | S3 | Hotspots visualization | ⬜ |
+| E6 | S4 | Ranking hint (توضیح انسانی) | ⬜ |
+| E12 | S1 | tRPC score router | ⬜ |
+| E12 | S2 | tRPC layout router | ⬜ |
+| E12 | S3 | tRPC corpus router | ⬜ |
+| E12 | S4 | tRPC leaderboard router | ⬜ |
+
+## فاز ۳ — Workflow
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E7 | S1 | UI paste corpus | ⏸ |
+| E7 | S2 | پردازش client-side n-gram (ماژول مشترک) | ⏸ |
+| E7 | S3 | اعتبارسنجی server در submit | ⏸ |
+| E8 | S1 | Auto-save draft | ⬜ |
+| E8 | S2 | مدیریت چند layout محلی | ⏸ |
+| E8 | S3 | Export/import KLE file | ⏸ |
+| E9 | S1 | Compare mode دو layout | ⏸ |
+| E9 | S2 | Comparison summary table | ⏸ |
+
+## فاز ۴ — Community
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E10 | S1 | Submit layout به leaderboard | ⬜ |
+| E10 | S2 | Leaderboard list | ⬜ |
+| E10 | S3 | Notification شکست رکورد | ⏸ |
+| E10 | S4 | Auto-promotion به template | ⏸ |
+| E10 | S5 | Load community template | ⏸ |
+
+## فاز ۵ — Enhancement
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E11 | S1 | Suggest best key for char | ⏸ |
+| E11 | S2 | Auto-fill suggestion (با confirm) | ⏸ |
+
+## فاز ۶ — Export
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E13 | S1 | Export IR (Intermediate Representation) | ⏸ |
+| E13 | S2 | Windows export (.klc / MSKLC) | ⏸ |
+| E13 | S3 | macOS export (.keylayout) | ⏸ |
+| E13 | S4 | Linux XKB export | ⏸ |
+
+## فاز ۷ — Launch
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E14 | S1 | Performance audit | ⏸ |
+| E14 | S2 | Accessibility pass | ⏸ |
+| E14 | S3 | Error handling & empty states | ⏸ |
+| E14 | S4 | Production deploy | ⏸ |
+| E14 | S5 | Landing & onboarding | ⏸ |
+| E14 | S6 | E2E smoke tests | ⏸ |
+
+---
+
+## خلاصهٔ اپیک‌ها
+
+| اپیک | عنوان | پیشرفت |
+|------|-------|--------|
+| E0 | Foundation & Dev Infrastructure | 4/4 ✅ |
+| E1 | Layout Model & KLE | 5/5 ✅ |
+| E2 | Ergonomics Model | 0/2 |
+| E3 | Corpus Engine & Presets | 0/4 |
+| E4 | Scoring Engine | 0/6 |
+| E5 | Editor UI | 0/6 |
+| E6 | Score Analytics Panel | 0/4 |
+| E7 | Custom Corpus | 0/3 ⏸ |
+| E8 | Local Persistence | 0/3 |
+| E9 | Compare Layouts | 0/2 ⏸ |
+| E10 | Leaderboard & Promotion | 0/5 |
+| E11 | Character Placement Suggestions | 0/2 ⏸ |
+| E12 | API Layer | 0/4 |
+| E13 | Export Pipeline | 0/4 ⏸ |
+| E14 | Polish & Launch | 0/6 ⏸ |
+
+**MVP:** 9/28 استوری block

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model KeyboardTemplate {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  name         String
+  geometryRef  Json
+  fingerMapRef Json
+  isDefault    Boolean        @default(false)
+  isCommunity  Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  layouts      LayoutRecord[]
+}
+
+model LayoutRecord {
+  id            String           @id @default(cuid())
+  templateId    String
+  template      KeyboardTemplate @relation(fields: [templateId], references: [id])
+  kleSerialized String           @db.Text
+  fingerprint   String           @unique
+  alias         String?
+  source        String           @default("user")
+  createdAt     DateTime         @default(now())
+  scores        ScoreSnapshot[]
+  promotion     PromotionRecord?
+}
+
+model CorpusPreset {
+  id               String          @id
+  name             String
+  ngramArtifactRef String
+  version          Int             @default(1)
+  scores           ScoreSnapshot[]
+}
+
+model ScoreSnapshot {
+  id             String       @id @default(cuid())
+  layoutId       String
+  layout         LayoutRecord @relation(fields: [layoutId], references: [id])
+  corpusPresetId String
+  corpusPreset   CorpusPreset @relation(fields: [corpusPresetId], references: [id])
+  totalScore     Float
+  breakdown      Json
+  scorerVersion  String
+  computedAt     DateTime     @default(now())
+}
+
+model PromotionRecord {
+  id         String       @id @default(cuid())
+  layoutId   String       @unique
+  layout     LayoutRecord @relation(fields: [layoutId], references: [id])
+  templateId String
+  promotedAt DateTime     @default(now())
+}

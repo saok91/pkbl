@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pkbl-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pkbl
+    ports:
+      - "5432:5432"
+    volumes:
+      - pkbl_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pkbl"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pkbl_pg_data:

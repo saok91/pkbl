@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "target": "cursor",
+  "profile": "developer",
+  "include": [
+    "framework:nextjs",
+    "framework:react",
+    "lang:typescript",
+    "skill:frontend-patterns",
+    "skill:backend-patterns",
+    "skill:postgres-patterns"
+  ],
+  "exclude": [
+    "capability:orchestration"
+  ],
+  "options": {
+    "hooksProfile": "standard",
+    "mcpCatalog": "baseline",
+    "disabledMcpServers": ["exa", "playwright", "memory", "sequential-thinking"]
+  }
+}
