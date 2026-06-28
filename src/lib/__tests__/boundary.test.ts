@@ -52,6 +52,10 @@ describe("domain module registry", () => {
     expect(ergonomics.getKeyMetrics).toBeTypeOf("function");
     expect(ergonomics.getFingerMap60).toBeTypeOf("function");
     expect(corpus.CORPUS_MODULE).toBe("corpus");
+    expect(corpus.normalizePersianText).toBeTypeOf("function");
+    expect(corpus.extractNgrams).toBeTypeOf("function");
+    expect(corpus.listPresets).toBeTypeOf("function");
+    expect(corpus.loadPresetNgramStats).toBeTypeOf("function");
     expect(scoring.SCORING_MODULE).toBe("scoring");
     expect(leaderboard.LEADERBOARD_MODULE).toBe("leaderboard");
     expect(exportMod.EXPORT_MODULE).toBe("export");

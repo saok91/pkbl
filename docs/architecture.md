@@ -167,11 +167,22 @@ KeyMetrics      → { finger, hand, row, reachPenalty, weakKeyPenalty }
 | `custom` | paste کاربر | شخصی‌سازی |
 
 **Pipeline نرمال‌سازی (قابل تست):**
-1. یکسان‌سازی ی/ي، ک/ك، etc.
-2. حذف/تبدیل zero-width characters
-3. نرمال‌سازی اعداد فارسی/لاتین (سیاست قابل پیکربندی)
-4. فیلتر کاراکترهای خارج از charset هدف
+1. یکسان‌سازی ی/ي، ک/ك، etc. (`CHAR_VARIANT_MAP` در `config.ts`)
+2. حذف zero-width غیرضروری؛ **ZWNJ (`\u200c`) حفظ می‌شود**
+3. نرمال‌سازی اعداد فارسی/لاتین (`digitPolicy`: `latin` | `persian` | `preserve`)
+4. فیلتر کاراکترهای خارج از charset هدف (`CORPUS_TARGET_CHARSET_SET` = `EDITABLE_CHARSET_SET`)
 5. استخراج unigram / bigram / trigram frequencies
+
+**API سطح ماژول (E3):**
+
+| تابع | فایل | کاربرد |
+|------|------|--------|
+| `normalizePersianText` | `normalize-fa.ts` | نرمال‌سازی قبل از extract |
+| `extractNgrams` | `ngram-extract.ts` | runtime (custom paste) |
+| `mergeNgramStats` | `ngram-extract.ts` | ادغام batch در corpus-build |
+| `listPresets` / `getPresetById` | `presets.ts` | metadata + charCount از manifest |
+| `loadPresetNgramStats` | `load-artifact.ts` | بارگذاری artifact از دیسک |
+| `ngramStatsToArtifact` / `artifactToNgramStats` | `serialize.ts` | round-trip JSON |
 
 **دو مسیر اجرا:**
 
@@ -355,13 +366,15 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    SQLite["corpus/*.sqlite"] --> Ingest["corpus:build script"]
-    JSONL["corpus/*.jsonl"] --> Ingest
-    Ingest --> Normalize["Normalize + tokenize"]
-    Normalize --> Ngram["Compute n-grams"]
-    Ngram --> Artifact["packages/corpus-data/*.json"]
-    Artifact --> Deploy["Bundled / loaded at startup"]
+    SQLite["corpus/*.sqlite"] --> Ingest["scripts/corpus-build.ts"]
+    Ingest --> Normalize["normalizePersianText"]
+    Normalize --> Ngram["extractNgrams + mergeNgramStats"]
+    Ngram --> Artifact["packages/corpus-data/*.ngrams.json"]
+    Artifact --> Manifest["manifest.json"]
+    Manifest --> Deploy["loadPresetNgramStats at startup"]
 ```
+
+> **v1:** ingest فقط از SQLite (`wiki_fa.sqlite`, `varzesh3.sqlite`). پشتیبانی JSONL در ingest بعدی (E7) برنامه‌ریزی شده است.
 
 ---
 
@@ -701,7 +714,7 @@ model PromotionRecord {
 - [x] Template 60% + KLE parse/serialize
 - [x] Ergonomics finger map + key penalties (`ergonomics/`)
 - [ ] Editor UI (click + drag assign, base/shift)
-- [ ] Corpus presets (wiki-fa, varzesh3) + normalize
+- [x] Corpus presets (wiki-fa, varzesh3) + normalize
 - [ ] Scoring engine با breakdown کامل
 - [ ] Live score panel
 - [ ] Local draft save

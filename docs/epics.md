@@ -210,11 +210,11 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** متن corpus قبل از تحلیل normalize شود **تا** نتایج با تایپ واقعی منطبق باشد.
 
 **معیار پذیرش:**
-- [ ] یکسان‌سازی ی/ي، ک/ك، ة/ه (سیاست documented)
-- [ ] حذف zero-width غیرضروری
-- [ ] نرمال‌سازی فاصله و نیم‌فاصله
-- [ ] `normalizedVersion` string برای reproducibility
-- [ ] تست با fixtureهای فارسی (رسمی، محاوره، mixed numerals)
+- [x] یکسان‌سازی ی/ي، ک/ك، ة/ه (سیاست documented)
+- [x] حذف zero-width غیرضروری
+- [x] نرمال‌سازی فاصله و نیم‌فاصله
+- [x] `normalizedVersion` string برای reproducibility
+- [x] تست با fixtureهای فارسی (رسمی، محاوره، mixed numerals)
 
 ---
 
@@ -223,10 +223,10 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** unigram/bigram/trigram استخراج شود **تا** scorer فراتر از تک‌حرف عمل کند.
 
 **معیار پذیرش:**
-- [ ] `extractNgrams(text)` → `NgramStats`
-- [ ] فقط کاراکترهای داخل charset هدف شمارش شوند
-- [ ] deterministic برای همان ورودی
-- [ ] تست edge cases: متن خالی، تک‌حرف، ZWNJ
+- [x] `extractNgrams(text)` → `NgramStats`
+- [x] فقط کاراکترهای داخل charset هدف شمارش شوند
+- [x] deterministic برای همان ورودی
+- [x] تست edge cases: متن خالی، تک‌حرف، ZWNJ
 
 ---
 
@@ -235,10 +235,10 @@ flowchart LR
 **به‌عنوان** توسعه‌دهنده، **می‌خواهم** از SQLite/JSONL موجود n-gram بسازم **تا** runtime سریع باشد.
 
 **معیار پذیرش:**
-- [ ] `scripts/corpus-build.ts` از `corpus/wiki_fa.sqlite` و `corpus/varzesh3.sqlite`
-- [ ] خروجی: `packages/corpus-data/wiki-fa.ngrams.json`, `varzesh3.ngrams.json`
-- [ ] manifest با `corpusId`, `version`, `charCount`, `builtAt`
-- [ ] npm script: `corpus:build`
+- [x] `scripts/corpus-build.ts` از `corpus/wiki_fa.sqlite` و `corpus/varzesh3.sqlite`
+- [x] خروجی: `packages/corpus-data/wiki-fa.ngrams.json`, `varzesh3.ngrams.json`
+- [x] manifest با `corpusId`, `version`, `charCount`, `builtAt`
+- [x] npm script: `corpus:build`
 
 ---
 
@@ -247,9 +247,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** presetها قابل انتخاب باشند **تا** برای use case مختلف بهینه کنم.
 
 **معیار پذیرش:**
-- [ ] `CorpusPreset` type + `listPresets()`
-- [ ] presetهای `wiki-fa`, `varzesh3` با metadata (نام فارسی، توضیح، char count)
-- [ ] load precomputed artifact در server startup / import
+- [x] `CorpusPreset` type + `listPresets()`
+- [x] presetهای `wiki-fa`, `varzesh3` با metadata (نام فارسی، توضیح، char count)
+- [x] load precomputed artifact در server startup / import
 
 ---
 

@@ -27,10 +27,10 @@
 | E1 | S5 | تشخیص کاراکترهای بدون جایگاه | ✅ |
 | E2 | S1 | Finger map قالب ۶۰٪ | ✅ |
 | E2 | S2 | Reach penalty و weak key penalty | ✅ |
-| E3 | S1 | نرمال‌سازی متن فارسی | ⬜ |
-| E3 | S2 | استخراج n-gram | ⬜ |
-| E3 | S3 | Corpus build script | ⬜ |
-| E3 | S4 | Corpus preset registry | ⬜ |
+| E3 | S1 | نرمال‌سازی متن فارسی | ✅ |
+| E3 | S2 | استخراج n-gram | ✅ |
+| E3 | S3 | Corpus build script | ✅ |
+| E3 | S4 | Corpus preset registry | ✅ |
 | E4 | S1 | هستهٔ scorer | ⬜ |
 | E4 | S2 | سیگنال‌های unigram | ⬜ |
 | E4 | S3 | سیگنال‌های bigram | ⬜ |
@@ -116,7 +116,7 @@
 | E0 | Foundation & Dev Infrastructure | 4/4 ✅ |
 | E1 | Layout Model & KLE | 5/5 ✅ |
 | E2 | Ergonomics Model | 2/2 ✅ |
-| E3 | Corpus Engine & Presets | 0/4 |
+| E3 | Corpus Engine & Presets | 4/4 ✅ |
 | E4 | Scoring Engine | 0/6 |
 | E5 | Editor UI | 0/6 |
 | E6 | Score Analytics Panel | 0/4 |
@@ -129,4 +129,4 @@
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
 
-**MVP:** 11/28 استوری block
+**MVP:** 15/28 استوری block
