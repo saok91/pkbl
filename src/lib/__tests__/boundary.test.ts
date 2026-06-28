@@ -57,6 +57,7 @@ describe("domain module registry", () => {
     expect(corpus.listPresets).toBeTypeOf("function");
     expect(corpus.loadPresetNgramStats).toBeTypeOf("function");
     expect(scoring.SCORING_MODULE).toBe("scoring");
+    expect(scoring.computeScore).toBeTypeOf("function");
     expect(leaderboard.LEADERBOARD_MODULE).toBe("leaderboard");
     expect(exportMod.EXPORT_MODULE).toBe("export");
   });

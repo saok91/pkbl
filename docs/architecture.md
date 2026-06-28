@@ -206,57 +206,67 @@ type NgramStats = {
 
 ---
 
-### ۵.۴ Scoring Engine (`scoring`)
+### ۵.۴ Scoring Engine (`scoring`) — ✅ پیاده‌سازی‌شده (E4)
 
 **مسئولیت:** تابع deterministic که `Layout + NgramStats + ScoringConfig` را به `ScoreResult` تبدیل می‌کند.
 
+**ماژول:** `src/lib/scoring/` — `compute-score.ts`, `char-lookup.ts`, `config.ts`, `types.ts`
+
 **ورودی‌ها:**
-- Layout (شامل base + shift)
-- NgramStats
-- Ergonomics map (از template)
-- ScoringConfig (weights, penalties)
+- `Layout` (شامل base + shift)
+- `NgramStats` (از corpus engine)
+- `ScoringConfig` (weights + embedded `ErgonomicsConfig`)
 
 **خروجی‌ها:**
 
 ```typescript
 type ScoreResult = {
-  total: number
-  breakdown: {
-    unigramCost: number
-    bigramCost: number
-    trigramCost: number
-    homeRowUsage: number        // درصد یا امتیاز
-    fingerLoad: Record<Finger, number>
-    handBalance: number
-    sameFingerBigrams: number
-    sameHandBigrams: number
-    handAlternation: number
-    rowSwitching: number
-    weakKeyPenalty: number
-  }
+  total: number                 // higher = better
+  breakdown: ScoreBreakdown
   hotspots: Array<{ char: string; cost: number; keyId: string }>
-  rankingHint?: string          // توضیح انسانی کوتاه
+  scorerVersion: string         // e.g. "1.0.0" — برای ScoreSnapshot
+}
+
+type ScoreBreakdown = {
+  // raw costs (lower = better) — برای debug/UI
+  unigramCost: number
+  bigramCost: number
+  trigramCost: number
+  // normalized score contributions (higher = better)
+  unigramScore: number
+  bigramScore: number
+  trigramScore: number
+  // ergonomics aggregates
+  homeRowUsage: number          // 0–100 weighted %
+  fingerLoad: Record<Finger, number>  // normalized by unigram weight sum (always ≈ 1)
+  handBalance: number           // 0–1 (1 = perfectly balanced)
+  sameFingerBigrams: number     // weighted counts (bigram loop only)
+  sameHandBigrams: number
+  handAlternation: number
+  bigramRowSwitching: number    // bigram loop only
+  trigramRowSwitching: number   // trigram loop only
+  rowSwitching: number          // sum of both (convenience)
+  weakKeyPenalty: number        // assigned keys only
 }
 ```
 
+> `rankingHint` در E6 (Score Analytics Panel) اضافه می‌شود، نه در scorer core.
+
 **اصول طراحی:**
 - Pure functions — بدون I/O، بدون side effect.
-- تمام weights در `ScoringConfig` versioned.
-- هزینهٔ تایپ یک n-gram = جمع هزینهٔ کلیدهای involved (با لایه shift در صورت نیاز).
-- Bigram/trigram از unigram مستقل محاسبه می‌شوند (PRD #5, #6).
+- تمام weights در `ScoringConfig` versioned (`SCORING_CONFIG_V1`, `scorerVersion: "1.0.0"`).
+- `buildCharLookup(layout)` → char → `{ keyId, layer }` برای base و shift.
+- کاراکتر بدون جایگاه: `missingCharPenalty` در unigram؛ fallback metrics برای bigram/trigram.
+- Bigram/trigram از unigram مستقل محاسبه می‌شوند — هر سه به `total` اضافه می‌شوند (PRD #5, #6).
 
-**الگوریتم سطح بالا (pseudo):**
+**فرمول امتیاز:**
 
 ```
-for each (ngram, freq) in corpus:
-  keys = resolveKeys(layout, ngram)  // شامل shift layer
-  cost = sum(keyReachCost) + bigramTransitionCost + ...
-  accumulate(freq * cost)
-
-normalize → total score (lower is better OR higher is better — یک قرارداد ثابت)
+total = baseScore + unigramScore + bigramScore + trigramScore
+scoreComponent = -(rawCost × weight / norm) × costScale   // norm = max(1, totalChars)
 ```
 
-> **تصمیم:** امتیاز بالاتر = بهتر (user-friendly). داخل محاسبه می‌توان cost را inverted کرد. این در `ScoringConfig` مستند شود.
+> **تصمیم:** امتیاز بالاتر = بهتر. `baseScore` (پیش‌فرض ۱۰۰۰) محدودهٔ خروجی را مثبت نگه می‌دارد؛ alternation زیاد می‌تواند `total > baseScore` کند.
 
 ---
 

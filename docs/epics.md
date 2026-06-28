@@ -257,18 +257,23 @@ flowchart LR
 
 **هدف:** موتور deterministic امتیازدهی با breakdown کامل — higher is better.  
 **فاز:** ۱  
-**وابستگی:** E1, E2, E3
+**وابستگی:** E1, E2, E3  
+**وضعیت:** ✅ انجام‌شده (۱۴۰۵/۰۴/۰۷)
+
+**پیاده‌سازی:** `src/lib/scoring/` — `compute-score.ts`, `char-lookup.ts`, `config.ts`, `types.ts`, `fixtures/golden.ts`
+
+**یادداشت review:** `rowSwitching` = `bigramRowSwitching` + `trigramRowSwitching` (تفکیک‌شده برای UI).
 
 ### E4-S1 — هستهٔ scorer
 
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** layout روی corpus امتیاز بگیرد **تا** چیدمان را عینی مقایسه کنم.
 
 **معیار پذیرش:**
-- [ ] `computeScore(layout, ngramStats, config)` pure function
-- [ ] resolve char → key (+ shift layer)
-- [ ] **امتیاز بالاتر = بهتر**
-- [ ] `scorerVersion` در خروجی
-- [ ] deterministic: golden test با fixture
+- [x] `computeScore(layout, ngramStats, config)` pure function
+- [x] resolve char → key (+ shift layer) via `buildCharLookup` / `resolveChar`
+- [x] **امتیاز بالاتر = بهتر** (`baseScore` − normalized costs)
+- [x] `scorerVersion` در خروجی
+- [x] deterministic: golden test با fixture (`965.51…` pinned)
 
 ---
 
@@ -277,9 +282,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** هزینهٔ تک‌حرف‌ها در امتیاز لحاظ شود **تا** حروف پرتکرار در جای خوب پاداش بگیرند.
 
 **معیار پذیرش:**
-- [ ] unigram cost بر اساس finger reach + row
-- [ ] سهم unigram در `breakdown.unigramScore`
-- [ ] `hotspots`: پرهزینه‌ترین حروف (top N)
+- [x] unigram cost بر اساس `reachPenalty` + `weakKeyPenalty` (از E2)
+- [x] سهم unigram در `breakdown.unigramScore`
+- [x] `hotspots`: پرهزینه‌ترین حروف (top N، پیش‌فرض ۱۰)
 
 ---
 
@@ -288,10 +293,10 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** bigramها ارزیابی شوند **تا** توالی‌های بد catch شوند.
 
 **معیار پذیرش:**
-- [ ] same-finger bigram penalty
-- [ ] same-hand bigram penalty
-- [ ] hand alternation bonus
-- [ ] `breakdown.sameFingerBigrams`, `sameHandBigrams`, `handAlternation`
+- [x] same-finger bigram penalty
+- [x] same-hand bigram penalty
+- [x] hand alternation bonus
+- [x] `breakdown.sameFingerBigrams`, `sameHandBigrams`, `handAlternation`
 
 ---
 
@@ -300,9 +305,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** trigram هم لحاظ شود **تا** الگوهای سه‌حرفی فارسی پوشش داده شود.
 
 **معیار پذیرش:**
-- [ ] trigram transition cost
-- [ ] row switching penalty در توالی‌ها
-- [ ] `breakdown.trigramScore`, `rowSwitching`
+- [x] trigram transition cost (جمع دو bigram transition)
+- [x] row switching penalty در توالی‌ها
+- [x] `breakdown.trigramScore`, `rowSwitching`
 
 ---
 
@@ -311,11 +316,11 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** home row usage، finger load و hand balance را ببینم **تا** تعادل چیدمان را بفهمم.
 
 **معیار پذیرش:**
-- [ ] `homeRowUsage` — درصد weighted
-- [ ] `fingerLoad` — per finger
-- [ ] `handBalance` — left/right ratio
-- [ ] `weakKeyPenalty` aggregate
-- [ ] همه در `ScoreResult.breakdown`
+- [x] `homeRowUsage` — درصد weighted (۰–۱۰۰)
+- [x] `fingerLoad` — per finger (نرمال‌شده، مجموع ≈ ۱)
+- [x] `handBalance` — ۰–۱ (۱ = متعادل)
+- [x] `weakKeyPenalty` aggregate (فقط کلیدهای assigned)
+- [x] همه در `ScoreResult.breakdown`
 
 ---
 
@@ -324,9 +329,9 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** weights قابل version باشند **تا** ranking قدیمی قابل reproduce باشد.
 
 **معیار پذیرش:**
-- [ ] `ScoringConfig` با weights documented
-- [ ] version string (مثلاً `1.0.0`)
-- [ ] تست: تغییر weight → تغییر predictable در score
+- [x] `ScoringConfig` با weights documented (`SCORING_WEIGHTS_V1`)
+- [x] version string (`scorerVersion: "1.0.0"`, `version: 1`)
+- [x] تست: تغییر weight → تغییر predictable در score
 
 ---
 

@@ -1,6 +1,6 @@
 # وضعیت توسعه — PKBL
 
-> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۷  
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۸ (E4 code review)  
 > **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
 
 **راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
@@ -31,12 +31,12 @@
 | E3 | S2 | استخراج n-gram | ✅ |
 | E3 | S3 | Corpus build script | ✅ |
 | E3 | S4 | Corpus preset registry | ✅ |
-| E4 | S1 | هستهٔ scorer | ⬜ |
-| E4 | S2 | سیگنال‌های unigram | ⬜ |
-| E4 | S3 | سیگنال‌های bigram | ⬜ |
-| E4 | S4 | سیگنال‌های trigram | ⬜ |
-| E4 | S5 | متریک‌های ارگونومی aggregate | ⬜ |
-| E4 | S6 | ScoringConfig versioned | ⬜ |
+| E4 | S1 | هستهٔ scorer | ✅ |
+| E4 | S2 | سیگنال‌های unigram | ✅ |
+| E4 | S3 | سیگنال‌های bigram | ✅ |
+| E4 | S4 | سیگنال‌های trigram | ✅ |
+| E4 | S5 | متریک‌های ارگونومی aggregate | ✅ |
+| E4 | S6 | ScoringConfig versioned | ✅ |
 
 ## فاز ۲ — Editor MVP
 
@@ -117,7 +117,7 @@
 | E1 | Layout Model & KLE | 5/5 ✅ |
 | E2 | Ergonomics Model | 2/2 ✅ |
 | E3 | Corpus Engine & Presets | 4/4 ✅ |
-| E4 | Scoring Engine | 0/6 |
+| E4 | Scoring Engine | 6/6 ✅ |
 | E5 | Editor UI | 0/6 |
 | E6 | Score Analytics Panel | 0/4 |
 | E7 | Custom Corpus | 0/3 ⏸ |
@@ -129,4 +129,4 @@
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
 
-**MVP:** 15/28 استوری block
+**MVP:** 21/28 استوری block
