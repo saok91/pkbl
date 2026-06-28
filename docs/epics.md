@@ -1,6 +1,6 @@
 # اپیک‌ها و استوری‌ها — PKBL
 
-> **نسخه:** 0.1  
+> **نسخه:** 0.2  
 > **مرجع:** [PRD](./prd.md) · [Architecture](./architecture.md) · [Progress](./progress.md)  
 > **وضعیت:** برنامهٔ توسعه از صفر تا انتشار
 
@@ -46,20 +46,21 @@ flowchart LR
 
 **هدف:** پروژه T3 آمادهٔ توسعه، تست و deploy باشد.  
 **فاز:** ۰  
-**وابستگی:** —
+**وابستگی:** —  
+**وضعیت:** ✅ انجام‌شده (۱۴۰۵/۰۴/۰۷)
 
 ### E0-S1 — Scaffold پروژه T3
 
 **به‌عنوان** توسعه‌دهنده، **می‌خواهم** پروژه با T3 Stack راه‌اندازی شود **تا** توسعه type-safe شروع شود.
 
 **معیار پذیرش:**
-- [ ] Next.js App Router + TypeScript strict
-- [ ] tRPC + Zod wired
-- [ ] Prisma + PostgreSQL (local dev)
-- [ ] Tailwind CSS
-- [ ] Vitest + Testing Library
-- [ ] ESLint/Prettier مطابق conventions پروژه
-- [ ] NextAuth **فعال نشده** (v1 بدون auth)
+- [x] Next.js App Router + TypeScript strict
+- [x] tRPC + Zod wired
+- [x] Prisma + PostgreSQL (local dev)
+- [x] Tailwind CSS
+- [x] Vitest + Testing Library
+- [x] ESLint/Prettier مطابق conventions پروژه
+- [x] NextAuth **فعال نشده** (v1 بدون auth)
 
 ---
 
@@ -68,9 +69,9 @@ flowchart LR
 **به‌عنوان** توسعه‌دهنده، **می‌خواهم** ماژول‌های pure TS در `src/lib/` جدا از UI باشند **تا** تست و نگهداری ساده شود.
 
 **معیار پذیرش:**
-- [ ] پوشه‌های `layout/`, `ergonomics/`, `corpus/`, `scoring/`, `leaderboard/`, `export/`
-- [ ] هیچ import از React در `src/lib/**`
-- [ ] alias path (`@/lib/...`) در tsconfig
+- [x] پوشه‌های `layout/`, `ergonomics/`, `corpus/`, `scoring/`, `leaderboard/`, `export/`
+- [x] هیچ import از React در `src/lib/**`
+- [x] alias path (`@/lib/...`) در tsconfig
 
 ---
 
@@ -79,9 +80,9 @@ flowchart LR
 **به‌عنوان** توسعه‌دهنده، **می‌خواهم** pipeline CI تست و lint اجرا کند **تا** regression زود catch شود.
 
 **معیار پذیرش:**
-- [ ] GitHub Actions (یا equivalent): `lint`, `typecheck`, `test`
-- [ ] Coverage report برای `src/lib/**`
-- [ ] `.env.example` بدون secret
+- [x] GitHub Actions (یا equivalent): `lint`, `typecheck`, `test`
+- [x] Coverage report برای `src/lib/**`
+- [x] `.env.example` بدون secret
 
 ---
 
@@ -90,9 +91,9 @@ flowchart LR
 **به‌عنوان** توسعه‌دهنده، **می‌خواهم** schema اولیه Prisma migrate شود **تا** leaderboard بعداً آماده باشد.
 
 **معیار پذیرش:**
-- [ ] Models: `KeyboardTemplate`, `LayoutRecord`, `CorpusPreset`, `ScoreSnapshot`, `PromotionRecord`
-- [ ] `prisma db seed` قالب ۶۰٪ پیش‌فرض را insert کند
-- [ ] README با دستورات dev setup
+- [x] Models: `KeyboardTemplate`, `LayoutRecord`, `CorpusPreset`, `ScoreSnapshot`, `PromotionRecord`
+- [x] `prisma db seed` قالب ۶۰٪ پیش‌فرض را insert کند
+- [x] README با دستورات dev setup
 
 ---
 
@@ -100,18 +101,19 @@ flowchart LR
 
 **هدف:** parse/serialize KLE، مدل layout با لایه base/shift، عملیات ویرایش immutable.  
 **فاز:** ۱  
-**وابستگی:** E0
+**وابستگی:** E0  
+**وضعیت:** ✅ انجام‌شده (۱۴۰۵/۰۴/۰۷)
 
 ### E1-S1 — KLE parser برای subset ۶۰٪
 
 **به‌عنوان** طراح صفحه‌کلید، **می‌خواهم** قالب KLE پیش‌فرض parse شود **تا** geometry و key slotها استخراج شوند.
 
 **معیار پذیرش:**
-- [ ] Parse قالب Appendix A بدون خطا
-- [ ] پشتیبانی از `{w:N}`, `{a:N}`, `{w:N,h:M}` در scope موردنیاز
-- [ ] هر key دارای `keyId` پایدار (مثلاً ردیف-ستون)
-- [ ] لایهٔ shift از `\n` در label (مثلاً `"<\n,"`) استخراج شود
-- [ ] تست round-trip: parse → serialize → parse ≡
+- [x] Parse قالب Appendix A بدون خطا
+- [x] پشتیبانی از `{w:N}`, `{a:N}`, `{w:N,h:M}` در scope موردنیاز
+- [x] هر key دارای `keyId` پایدار (مثلاً ردیف-ستون)
+- [x] لایهٔ shift از `\n` در label (مثلاً `"<\n,"`) استخراج شود
+- [x] تست round-trip: parse → serialize → parse ≡
 
 ---
 
@@ -120,11 +122,11 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** فقط حروف فارسی و نمادهای رایج editable باشند **تا** scope v1 رعایت شود.
 
 **معیار پذیرش:**
-- [ ] `Layout` شامل: `templateId`, `assignments`, `layers: base|shift`
-- [ ] `EditableScope` charset فارسی + نمادهای رایج تعریف شده
-- [ ] modifier keys (Ctrl, Shift, Tab, …) غیرeditable
-- [ ] spacebar editable (کاراکتر primary)
-- [ ] تفکیک `layout content` vs `scoring metadata`
+- [x] `Layout` شامل: `templateId`, `assignments`, `layers: base|shift`
+- [x] `EditableScope` charset فارسی + نمادهای رایج تعریف شده
+- [x] modifier keys (Ctrl, Shift, Tab, …) غیرeditable
+- [x] spacebar editable (کاراکتر primary)
+- [x] تفکیک `layout content` vs `scoring metadata`
 
 ---
 
@@ -133,11 +135,11 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** کاراکتر را reassign یا swap کنم **تا** چیدمان را iterate کنم.
 
 **معیار پذیرش:**
-- [ ] `assignChar(layout, keyId, layer, char)` — immutable
-- [ ] `swapKeys(layout, keyA, keyB, layer?)` — immutable
-- [ ] `resetKey`, `resetAllEditable`
-- [ ] assign کاراکتر خارج از charset → خطای validation
-- [ ] تست‌های unit برای همه عملیات
+- [x] `assignChar(layout, keyId, layer, char)` — immutable
+- [x] `swapKeys(layout, keyA, keyB, layer?)` — immutable
+- [x] `resetKey`, `resetAllEditable`
+- [x] assign کاراکتر خارج از charset → خطای validation
+- [x] تست‌های unit برای همه عملیات
 
 ---
 
@@ -146,9 +148,9 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** layout را به KLE export و از KLE import کنم **تا** چیدمان portable باشد.
 
 **معیار پذیرش:**
-- [ ] `serializeKle(layout)` خروجی valid برای KLE editor
-- [ ] import layout کاربر (paste KLE) با validation
-- [ ] حفظ geometry اصلی template
+- [x] `serializeKle(layout)` خروجی valid برای KLE editor
+- [x] import layout کاربر (paste KLE) با validation
+- [x] حفظ geometry اصلی template
 
 ---
 
@@ -157,9 +159,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** لیست کاراکترهای unassigned را ببینم **تا** چیدمان را کامل کنم.
 
 **معیار پذیرش:**
-- [ ] `getUnassignedChars(layout, charset)` 
-- [ ] `getDuplicateAssignments(layout)` برای هشدار
-- [ ] `getCompletenessScore(layout)` — درصد پوشش charset
+- [x] `getUnassignedChars(layout, charset)` 
+- [x] `getDuplicateAssignments(layout)` برای هشدار
+- [x] `getCompletenessScore(layout)` — درصد پوشش charset
 
 ---
 
@@ -167,18 +169,21 @@ flowchart LR
 
 **هدف:** نگاشت فیزیکی کلید → finger/hand/row/penalty — مستقل از corpus.  
 **فاز:** ۱  
-**وابستگی:** E1
+**وابستگی:** E1  
+**وضعیت:** ✅ انجام‌شده (۱۴۰۵/۰۴/۰۷)
+
+**پیاده‌سازی:** `src/lib/ergonomics/` — `finger-map-60.json`, `metrics.ts`, `config.ts`; ادغام با `src/lib/scoring/config.ts`
 
 ### E2-S1 — Finger map قالب ۶۰٪
 
 **به‌عنوان** طراح، **می‌خواهم** هر PhysicalKey به انگشت و دست نگاشت شود **تا** scorer ارگونومی دقیق باشد.
 
 **معیار پذیرش:**
-- [ ] `finger-map-60.json` برای همه keyIdهای editable و غیرeditable
-- [ ] `Finger`: thumb|index|middle|ring|pinky
-- [ ] `Hand`: left|right
-- [ ] `Row`: home|top|bottom|number
-- [ ] تست: همه keyهای template پوشش داده شده
+- [x] `finger-map-60.json` برای همه keyIdهای editable و غیرeditable
+- [x] `Finger`: thumb|index|middle|ring|pinky
+- [x] `Hand`: left|right
+- [x] `Row`: home|top|bottom|number
+- [x] تست: همه keyهای template پوشش داده شده
 
 ---
 
@@ -187,10 +192,10 @@ flowchart LR
 **به‌عنوان** طراح، **می‌خواهم** کلیدهای دشوار (مثل pinky/outer column) penalty داشته باشند **تا** scorer واقع‌گرایانه باشد.
 
 **معیار پذیرش:**
-- [ ] `KeyMetrics` شامل `reachPenalty`, `weakKeyPenalty`
-- [ ] pinky keys penalty بالاتر
-- [ ] thumb keys (space) penalty جدا
-- [ ] config versioned در `ScoringConfig`
+- [x] `KeyMetrics` شامل `reachPenalty`, `weakKeyPenalty`
+- [x] pinky keys penalty بالاتر
+- [x] thumb keys (space) penalty جدا
+- [x] config versioned در `ScoringConfig`
 
 ---
 
@@ -888,4 +893,5 @@ flowchart TD
 
 | نسخه | تاریخ | تغییر |
 |------|-------|-------|
+| 0.2 | ۱۴۰۵/۰۴/۰۷ | علامت‌گذاری E0–E2 به‌عنوان انجام‌شده؛ جزئیات پیاده‌سازی E2 |
 | 0.1 | ۱۴۰۵/۰۴/۰۷ | نسخهٔ اول — epics E0–E14 |

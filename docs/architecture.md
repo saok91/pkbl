@@ -147,6 +147,11 @@ KeyMetrics      → { finger, hand, row, reachPenalty, weakKeyPenalty }
 
 **چرا جدا؟** PRD صریحاً می‌خواهد هندسه از منطق امتیازدهی جدا بماند (#13). تغییر قالب ۶۰٪ یا finger map نباید corpus یا UI را بشکند.
 
+**پیاده‌سازی (E2 ✅):**
+- `finger-map-60.json` — ۶۱ کلید، `templateId: template-60-ansi`
+- `getKeyMetrics(keyId)` → `KeyMetrics` با `reachPenalty` و `weakKeyPenalty`
+- `ErgonomicsConfig` نسخه‌دار؛ embed شده در `ScoringConfig.ergonomics`
+
 ---
 
 ### ۵.۳ Corpus Engine (`corpus`)
@@ -693,7 +698,8 @@ model PromotionRecord {
 
 ### فاز ۱ — MVP Core (اسپrint اول)
 
-- [ ] Template 60% + KLE parse/serialize
+- [x] Template 60% + KLE parse/serialize
+- [x] Ergonomics finger map + key penalties (`ergonomics/`)
 - [ ] Editor UI (click + drag assign, base/shift)
 - [ ] Corpus presets (wiki-fa, varzesh3) + normalize
 - [ ] Scoring engine با breakdown کامل

@@ -49,6 +49,8 @@ describe("domain module registry", () => {
     expect(layout.parseKle).toBeTypeOf("function");
     expect(layout.assignChar).toBeTypeOf("function");
     expect(ergonomics.ERGONOMICS_MODULE).toBe("ergonomics");
+    expect(ergonomics.getKeyMetrics).toBeTypeOf("function");
+    expect(ergonomics.getFingerMap60).toBeTypeOf("function");
     expect(corpus.CORPUS_MODULE).toBe("corpus");
     expect(scoring.SCORING_MODULE).toBe("scoring");
     expect(leaderboard.LEADERBOARD_MODULE).toBe("leaderboard");
