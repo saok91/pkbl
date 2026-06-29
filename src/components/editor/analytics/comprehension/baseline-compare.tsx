@@ -17,62 +17,61 @@ export function BaselineCompare({
 }: BaselineCompareProps) {
   const delta = computeBaselineDelta(total, baselineTotal);
   const isBetter = delta.percent >= 0;
+  const deltaPct = Math.round(delta.percent);
   const deltaText =
     delta.percent === 0
       ? "برابر با چیدمان پیش‌فرض"
       : isBetter
         ? `${formatDeltaPercent(delta.percent)} بهتر از چیدمان پیش‌فرض`
         : `${formatDeltaPercent(Math.abs(delta.percent))} بدتر از چیدمان پیش‌فرض`;
-
-  const userBarWidth =
-    baselineTotal > 0
-      ? Math.min(100, Math.round((total / baselineTotal) * 50))
-      : 50;
-  const baselineBarWidth = 50;
+  const max = Math.max(total, baselineTotal) * 1.05;
 
   return (
     <div
       className={
         isStale
-          ? "mt-2 space-y-2 opacity-60 transition-opacity"
-          : "mt-2 space-y-2 opacity-100 transition-opacity"
+          ? "mt-3 space-y-2 opacity-60 transition-opacity"
+          : "mt-3 space-y-2 opacity-100 transition-opacity"
       }
     >
-      <p
-        className={`text-sm font-medium tabular-nums ${
-          isBetter ? "text-emerald-400" : "text-amber-400"
-        }`}
-      >
-        {deltaText}
-      </p>
+      <div className="mb-2 flex items-center justify-between text-[11px] text-text-dim">
+        <span>مقایسه با پیش‌فرض</span>
+        <span
+          className={`font-mono font-semibold tabular-nums ${
+            isBetter ? "text-primary" : "text-destructive"
+          }`}
+        >
+          {isBetter ? "+" : ""}
+          {formatDeltaPercent(deltaPct)}٪
+        </span>
+      </div>
+
+      <p className="sr-only">{deltaText}</p>
 
       <div
         role="img"
         aria-label={`امتیاز شما ${formatScore(total)} در مقابل پیش‌فرض ${formatScore(baselineTotal)}`}
-        className="space-y-1.5"
       >
-        <div className="flex items-center gap-2">
-          <span className="w-14 shrink-0 text-[11px] text-slate-500">شما</span>
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-800">
-            <div
-              className={`h-full rounded-full transition-all ${
-                isBetter ? "bg-emerald-500/80" : "bg-amber-500/80"
-              }`}
-              style={{ width: `${userBarWidth}%` }}
-            />
+        {[
+          { label: "شما", val: total, color: "bg-primary" },
+          { label: "پیش‌فرض", val: baselineTotal, color: "bg-text-faint" },
+        ].map((bar) => (
+          <div key={bar.label} className="mb-1.5 flex items-center gap-2">
+            <span className="w-14 shrink-0 text-left text-[10px] text-text-faint">
+              {bar.label}
+            </span>
+            <div className="h-5 flex-1 overflow-hidden rounded bg-[#0A1525]">
+              <div
+                className={`flex h-full items-center rounded transition-all duration-700 ${bar.color}`}
+                style={{ width: `${(bar.val / max) * 100}%` }}
+              >
+                <span className="px-1.5 font-mono text-[10px] font-bold text-black/80 tabular-nums">
+                  {formatScore(bar.val)}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-14 shrink-0 text-[11px] text-slate-500">
-            پیش‌فرض
-          </span>
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-800">
-            <div
-              className="h-full rounded-full bg-slate-600 transition-all"
-              style={{ width: `${baselineBarWidth}%` }}
-            />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -40,10 +40,10 @@ export function ScoreDeltaBadge({ delta, visible }: ScoreDeltaBadgeProps) {
     <span
       aria-live="polite"
       aria-atomic="true"
-      className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-semibold tabular-nums transition-opacity duration-300 ${
+      className={`rounded-lg border px-2.5 py-1 font-mono text-sm font-bold tabular-nums transition-opacity duration-300 ${
         isPositive
-          ? "bg-emerald-500/20 text-emerald-300"
-          : "bg-red-500/20 text-red-300"
+          ? "border-primary/25 bg-primary/10 text-primary"
+          : "border-destructive/25 bg-destructive/10 text-destructive"
       } ${fading ? "opacity-0" : "opacity-100"}`}
     >
       {formatSignedScore(delta)}

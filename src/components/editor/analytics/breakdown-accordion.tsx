@@ -55,7 +55,7 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-medium tracking-wide text-slate-400 uppercase">
+      <h3 className="text-[10px] tracking-wider text-text-faint uppercase">
         {ANALYTICS_PANEL_SECTION_FA.breakdown}
       </h3>
       {SECTIONS.map((sectionId) => {
@@ -65,7 +65,7 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
         return (
           <div
             key={sectionId}
-            className="overflow-hidden rounded-lg border border-slate-800"
+            className="overflow-hidden rounded-lg bg-surface-keyboard"
           >
             <button
               id={triggerId}
@@ -73,10 +73,10 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => toggleSection(sectionId)}
-              className="flex w-full items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-800/60 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none"
+              className="flex w-full items-center justify-between px-3 py-2 text-[11px] text-text-dim transition-colors hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             >
               <span>{BREAKDOWN_SECTION_FA[sectionId]}</span>
-              <span className="text-slate-500" aria-hidden="true">
+              <span className="text-text-faint" aria-hidden="true">
                 {isOpen ? "▾" : "▸"}
               </span>
             </button>
@@ -85,7 +85,7 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                 id={panelId}
                 role="region"
                 aria-labelledby={triggerId}
-                className="border-t border-slate-800 px-3 py-2"
+                className="border-t border-border-strong/40 px-3 pb-2"
               >
                 {sectionId === "ngram" ? (
                   <>
@@ -119,7 +119,7 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                       info={metricInfoForField("handBalance")}
                     />
                     <div className="py-2">
-                      <p className="mb-2 text-xs text-slate-400">
+                      <p className="mb-2 text-xs text-text-dim">
                         {BREAKDOWN_FIELD_FA.fingerLoad}
                       </p>
                       <FingerLoadBars fingerLoad={breakdown.fingerLoad} />

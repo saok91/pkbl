@@ -13,7 +13,7 @@ export function AppNav() {
 
   return (
     <nav aria-label="ناوبری اصلی">
-      <ul className="flex flex-wrap gap-2">
+      <ul className="flex items-center gap-1">
         {NAV_ITEMS.map((item) => {
           const isActive =
             item.href === "/"
@@ -27,8 +27,8 @@ export function AppNav() {
                 aria-current={isActive ? "page" : undefined}
                 className={
                   isActive
-                    ? "rounded-lg border border-sky-500/60 bg-sky-950/50 px-3 py-1.5 text-sm font-medium text-sky-100"
-                    : "rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 hover:bg-slate-700/80"
+                    ? "rounded-lg bg-primary/12 px-3 py-1.5 text-[11px] text-primary transition-colors"
+                    : "rounded-lg px-3 py-1.5 text-[11px] text-text-faint transition-colors hover:text-text-secondary"
                 }
               >
                 {item.label}

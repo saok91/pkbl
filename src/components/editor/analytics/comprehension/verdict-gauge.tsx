@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import type { VerdictResult } from "@/lib/scoring/insights";
 
@@ -8,16 +8,16 @@ import { formatScore } from "../format-analytics";
 import { BaselineCompare } from "./baseline-compare";
 import { ScoreDeltaBadge } from "./score-delta-badge";
 
-const BAND_SEGMENT_CLASS: Record<VerdictResult["band"], string> = {
-  poor: "bg-amber-500",
-  ok: "bg-yellow-400",
-  good: "bg-emerald-500",
+const BAND_TEXT_CLASS: Record<VerdictResult["band"], string> = {
+  poor: "text-destructive",
+  ok: "text-accent",
+  good: "text-primary",
 };
 
-const BAND_TEXT_CLASS: Record<VerdictResult["band"], string> = {
-  poor: "text-amber-300",
-  ok: "text-yellow-300",
-  good: "text-emerald-300",
+const BAND_BAR_CLASS: Record<VerdictResult["band"], string> = {
+  poor: "bg-destructive",
+  ok: "bg-accent",
+  good: "bg-primary",
 };
 
 type VerdictGaugeProps = {
@@ -55,41 +55,70 @@ export function VerdictGauge({
     }
   }, [verdict.band, verdict.labelFa]);
 
-  const activeIndex =
-    verdict.band === "poor" ? 0 : verdict.band === "ok" ? 1 : 2;
+  const scoreMin = 380;
+  const scoreMax = 740;
+  const scoreRange = scoreMax - scoreMin;
+  const pct = Math.min(
+    100,
+    Math.max(0, ((verdict.total - scoreMin) / scoreRange) * 100),
+  );
+  const basePct = Math.min(
+    100,
+    Math.max(0, ((verdict.baselineTotal - scoreMin) / scoreRange) * 100),
+  );
 
   return (
     <div
-      className={
-        isStale
-          ? "opacity-60 transition-opacity"
-          : "opacity-100 transition-opacity"
-      }
+      className={`rounded-xl border border-border-strong bg-surface-panel p-4 ${
+        isStale ? "opacity-60 transition-opacity" : "opacity-100 transition-opacity"
+      }`}
     >
+      <div className="mb-3 flex items-start justify-between">
+        <div>
+          <div
+            className={`text-base font-semibold ${BAND_TEXT_CLASS[verdict.band]}`}
+          >
+            {verdict.labelFa}
+          </div>
+          <div
+            className="mt-0.5 font-mono text-3xl font-bold tracking-tight tabular-nums"
+          >
+            {formatScore(verdict.total)}
+            {isStale ? (
+              <span className="mr-2 text-[10px] font-normal text-text-faint">
+                در حال به‌روزرسانی…
+              </span>
+            ) : null}
+          </div>
+          <p className="mt-1 text-sm text-text-faint tabular-nums">
+            امتیاز: {formatScore(verdict.total)}
+          </p>
+        </div>
+        <ScoreDeltaBadge delta={scoreDelta} visible={showScoreDelta && !isStale} />
+      </div>
+
       <div
-        className="mb-3 flex gap-1"
+        className="relative h-1.5 overflow-hidden rounded-full bg-[#0A1525]"
         role="img"
         aria-label={`وضعیت چیدمان: ${verdict.labelFa}`}
       >
-        {[0, 1, 2].map((index) => (
-          <div
-            key={index}
-            className={`h-2 flex-1 rounded-full ${
-              index <= activeIndex
-                ? BAND_SEGMENT_CLASS[
-                    index === 0 ? "poor" : index === 1 ? "ok" : "good"
-                  ]
-                : "bg-slate-800"
-            }`}
-          />
-        ))}
+        <div
+          className={`h-full rounded-full transition-all duration-700 ${BAND_BAR_CLASS[verdict.band]}`}
+          style={{ width: `${pct}%` }}
+        />
+        <div
+          className="absolute top-0 h-full w-px bg-[#4A6080]/60"
+          style={{ left: `${basePct}%` }}
+          aria-hidden="true"
+        />
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <p className={`text-xl font-bold ${BAND_TEXT_CLASS[verdict.band]}`}>
-          {verdict.labelFa}
-        </p>
-        <ScoreDeltaBadge delta={scoreDelta} visible={showScoreDelta} />
+      <div className="mt-1 flex justify-between font-mono text-[9px] text-text-faint">
+        <span>{formatScore(scoreMin)}</span>
+        <span className="text-text-dim">
+          مبنا: {formatScore(verdict.baselineTotal)}
+        </span>
+        <span>{formatScore(scoreMax)}</span>
       </div>
 
       <p
@@ -98,10 +127,6 @@ export function VerdictGauge({
         aria-live="polite"
         aria-atomic="true"
       />
-
-      <p className="mt-1 text-sm text-slate-500 tabular-nums">
-        امتیاز: {formatScore(verdict.total)}
-      </p>
 
       <BaselineCompare
         total={verdict.total}

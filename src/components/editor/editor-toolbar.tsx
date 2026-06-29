@@ -14,6 +14,38 @@ type EditorToolbarProps = {
   onResetAll: () => void;
 };
 
+function UndoIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="h-3.5 w-3.5"
+      aria-hidden="true"
+    >
+      <path d="M3 7v6h6" />
+      <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6.36 2.64L3 13" />
+    </svg>
+  );
+}
+
+function RedoIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="h-3.5 w-3.5"
+      aria-hidden="true"
+    >
+      <path d="M21 7v6h-6" />
+      <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6.36 2.64L21 13" />
+    </svg>
+  );
+}
+
 export function EditorToolbar({
   canUndo,
   canRedo,
@@ -25,39 +57,49 @@ export function EditorToolbar({
 }: EditorToolbarProps) {
   const [isResetAllOpen, setIsResetAllOpen] = useState(false);
 
+  const iconButtonClass =
+    "rounded-lg border border-border-strong p-2 text-text-dim transition-all hover:border-[#2A4068] hover:text-text-secondary disabled:cursor-not-allowed disabled:opacity-25";
+
+  const textButtonClass =
+    "rounded-lg border border-border-strong px-3 py-1.5 text-[11px] text-text-dim transition-all hover:border-[#2A4068] hover:text-text-secondary disabled:cursor-not-allowed disabled:opacity-25";
+
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex items-center gap-1">
         <button
           type="button"
           onClick={onUndo}
           disabled={!canUndo}
+          title="بازگشت (Ctrl+Z)"
+          aria-label="بازگشت"
           aria-keyshortcuts="Control+Z Meta+Z"
-          className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-200 enabled:hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          className={iconButtonClass}
         >
-          بازگشت
+          <UndoIcon />
         </button>
         <button
           type="button"
           onClick={onRedo}
           disabled={!canRedo}
+          title="ازنو (Ctrl+Y)"
+          aria-label="ازنو"
           aria-keyshortcuts="Control+Y Meta+Shift+Z"
-          className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-200 enabled:hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          className={iconButtonClass}
         >
-          ازنو
+          <RedoIcon />
         </button>
         <button
           type="button"
           onClick={onResetKey}
           disabled={!selectedKeyId}
-          className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-200 enabled:hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          className={textButtonClass}
         >
           بازنشانی کلید
         </button>
         <button
           type="button"
           onClick={() => setIsResetAllOpen(true)}
-          className="rounded-lg border border-rose-700/60 bg-rose-950/40 px-3 py-2 text-sm text-rose-200 hover:bg-rose-900/50"
+          className="rounded-lg border border-destructive/20 px-3 py-1.5 text-[11px] text-destructive/50 transition-all hover:border-destructive/35 hover:text-destructive"
         >
           بازنشانی همه
         </button>

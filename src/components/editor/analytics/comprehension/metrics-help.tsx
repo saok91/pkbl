@@ -11,37 +11,34 @@ export function MetricsHelp() {
   const panelId = "metrics-help-panel";
 
   return (
-    <div className="rounded-lg border border-slate-800">
+    <div>
       <button
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center justify-between px-3 py-2 text-sm text-slate-300 hover:bg-slate-800/60 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none"
+        className="flex w-full items-center justify-between text-[11px] text-text-dim transition-colors hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
       >
         <span>{COMPREHENSION_SECTION_FA.metricsHelp}</span>
-        <span className="text-slate-500" aria-hidden="true">
+        <span className="text-text-faint" aria-hidden="true">
           {open ? "▾" : "▸"}
         </span>
       </button>
       {open ? (
-        <div
-          id={panelId}
-          className="space-y-3 border-t border-slate-800 px-3 py-3"
-        >
+        <div id={panelId} className="mt-2 space-y-3 border-t border-border-strong/40 pt-3">
           {METRIC_GLOSSARY.map((entry) => (
             <div key={entry.termFa} className="text-xs">
               <div className="flex items-center gap-1.5">
-                <span className="font-medium text-slate-200">
+                <span className="font-medium text-text-secondary">
                   {entry.termFa}
                 </span>
                 <MetricInfo entry={entry} />
               </div>
-              <p className="mt-0.5 leading-relaxed text-slate-400">
+              <p className="mt-0.5 leading-relaxed text-text-dim">
                 {entry.definitionFa}
               </p>
               {entry.exampleFa ? (
-                <p className="text-slate-500">{entry.exampleFa}</p>
+                <p className="text-text-faint">{entry.exampleFa}</p>
               ) : null}
             </div>
           ))}

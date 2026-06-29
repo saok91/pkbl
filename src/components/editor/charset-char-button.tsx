@@ -61,7 +61,7 @@ export function CharsetCharButton({
 
   const paletteBaseClass =
     unitPx === undefined
-      ? "border border-slate-600 bg-slate-900 text-slate-100 hover:border-sky-500 hover:bg-sky-950"
+      ? "border border-border-strong bg-surface-keyboard text-text-secondary hover:border-primary/50 hover:bg-primary/15"
       : "";
 
   const unitStyle =

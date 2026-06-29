@@ -42,6 +42,22 @@ export function KeyboardCanvas({
   const rects = useMemo(() => computeKeyRects(layout), [layout]);
   const dimensions = useMemo(() => computeKeyboardDimensions(rects), [rects]);
 
+  const hotspotRankByKeyId = useMemo(() => {
+    const rankMap = new Map<string, number>();
+    if (!hotspotKeyIds) {
+      return rankMap;
+    }
+    let rank = 0;
+    for (const keyId of hotspotKeyIds) {
+      if (rank >= 3) {
+        break;
+      }
+      rankMap.set(keyId, rank);
+      rank += 1;
+    }
+    return rankMap;
+  }, [hotspotKeyIds]);
+
   const keyDisplayData = useMemo(
     () =>
       rects.map((rect) => ({
@@ -77,49 +93,70 @@ export function KeyboardCanvas({
   const scaledHeight = dimensions.height * scale;
 
   return (
-    <div
-      ref={containerRef}
-      className="rounded-xl border border-slate-700 bg-slate-900/50 p-3"
-      dir="ltr"
-    >
+    <div dir="ltr">
       <div
-        className="relative mx-auto"
-        style={{ width: scaledWidth, height: scaledHeight }}
+        ref={containerRef}
+        className="rounded-xl border border-border-subtle bg-surface-keyboard p-3 shadow-2xl"
       >
         <div
-          role="img"
-          aria-label="صفحه‌کلید ۶۰٪"
-          className="absolute top-0 left-0 origin-top-left"
-          style={{
-            width: dimensions.width,
-            height: dimensions.height,
-            transform: `scale(${scale})`,
-          }}
+          className="relative mx-auto"
+          style={{ width: scaledWidth, height: scaledHeight }}
         >
-          {keyDisplayData.map(({ rect, primaryLabel, alternateLabel }) => {
-            const isPopoverOpen = openPopoverKeyId === rect.keyId;
-            return (
-              <Keycap
-                key={rect.keyId}
-                rect={rect}
-                primaryLabel={primaryLabel}
-                alternateLabel={alternateLabel}
-                activeLayer={activeLayer}
-                isSelected={selectedKeyId === rect.keyId}
-                isPopoverOpen={isPopoverOpen}
-                isDropHighlight={dropHighlightKeyId === rect.keyId}
-                isHotspot={hotspotKeyIds?.has(rect.keyId) ?? false}
-                onClick={() => onKeyClick(rect.keyId)}
-                onPopoverSelect={
-                  isPopoverOpen
-                    ? (char) => onPopoverSelect(rect.keyId, char)
-                    : undefined
-                }
-                onPopoverClose={isPopoverOpen ? onPopoverClose : undefined}
-              />
-            );
-          })}
+          <div
+            role="img"
+            aria-label="صفحه‌کلید ۶۰٪"
+            className="absolute top-0 left-0 origin-top-left"
+            style={{
+              width: dimensions.width,
+              height: dimensions.height,
+              transform: `scale(${scale})`,
+            }}
+          >
+            {keyDisplayData.map(({ rect, primaryLabel, alternateLabel }) => {
+              const isPopoverOpen = openPopoverKeyId === rect.keyId;
+              const hotspotRank = hotspotRankByKeyId.get(rect.keyId);
+              return (
+                <Keycap
+                  key={rect.keyId}
+                  rect={rect}
+                  primaryLabel={primaryLabel}
+                  alternateLabel={alternateLabel}
+                  activeLayer={activeLayer}
+                  isSelected={selectedKeyId === rect.keyId}
+                  isPopoverOpen={isPopoverOpen}
+                  isDropHighlight={dropHighlightKeyId === rect.keyId}
+                  isHotspot={hotspotRank !== undefined}
+                  hotspotRank={hotspotRank}
+                  onClick={() => onKeyClick(rect.keyId)}
+                  onPopoverSelect={
+                    isPopoverOpen
+                      ? (char) => onPopoverSelect(rect.keyId, char)
+                      : undefined
+                  }
+                  onPopoverClose={isPopoverOpen ? onPopoverClose : undefined}
+                />
+              );
+            })}
+          </div>
         </div>
+      </div>
+
+      <div
+        className="mt-1.5 flex items-center gap-4 px-1 text-[10px] text-text-faint"
+        dir="rtl"
+      >
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-full bg-accent" />
+          نقاط پرهزینه (top 3)
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-sm border border-primary" />
+          کلید انتخاب‌شده
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-sm border border-primary bg-primary/20" />
+          هدف drag
+        </span>
       </div>
     </div>
   );

@@ -9,5 +9,5 @@ export function RankingHint({ hint }: RankingHintProps) {
     return null;
   }
 
-  return <p className="text-sm leading-relaxed text-slate-400">{hint}</p>;
+  return <span>{hint}</span>;
 }

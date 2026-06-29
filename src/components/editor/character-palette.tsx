@@ -37,17 +37,18 @@ const PALETTE_SECTION_GAP_PX = 12;
 
 /** Visual states for palette character buttons (and legend swatches). */
 export const PALETTE_CHAR_STYLES = {
-  free: "border-rose-400/90 bg-rose-950/80 font-medium text-rose-50 shadow-sm ring-1 ring-rose-500/20 hover:border-rose-300 hover:bg-rose-900/90 hover:text-white",
-  base: "border-slate-500 bg-slate-900 text-slate-200 hover:border-slate-400 hover:bg-slate-800/90",
+  free: "border-border-strong bg-surface-keyboard font-medium text-text-secondary hover:border-primary/50 hover:bg-primary/15 hover:text-primary hover:scale-105",
+  base: "border-border-strong bg-[#0F1E30] text-text-dim opacity-60 hover:opacity-80",
   shift:
-    "border-violet-600/55 bg-violet-950/35 text-violet-200/90 hover:border-violet-500/65 hover:bg-violet-950/50 hover:text-violet-100",
-  pending: "border-sky-400 bg-sky-900 text-white ring-2 ring-sky-500/50",
+    "border-border-strong bg-[#0C1830] text-text-secondary opacity-70 hover:opacity-90",
+  pending:
+    "border-primary bg-primary/25 text-primary ring-1 ring-primary/50 scale-105",
 } as const;
 
 export const PALETTE_LEGEND_SWATCHES = {
-  free: "border border-rose-400/90 bg-rose-950/80 ring-1 ring-rose-500/20",
-  base: "border border-slate-500 bg-slate-900",
-  shift: "border border-violet-600/55 bg-violet-950/35",
+  free: "border border-border-strong bg-surface-keyboard",
+  base: "border border-[#1E3050] bg-[#0F1E30]",
+  shift: "border border-border-strong bg-[#0C1830]",
 } as const;
 
 export const PALETTE_LEGEND_LABELS = {
@@ -135,7 +136,7 @@ function PaletteSectionColumn({
   return (
     <div className="flex shrink-0 flex-col gap-1">
       <h3
-        className="text-center font-medium text-slate-400"
+        className="text-center font-medium text-text-dim"
         style={{ fontSize: paletteCustomLabelFontSize(unitPx + 8) }}
       >
         {section.label}
@@ -234,14 +235,14 @@ export function CharacterPalette({
   return (
     <section
       dir="rtl"
-      className="rounded-xl border border-slate-700 bg-slate-900/50 p-3 text-right"
+      className="rounded-xl border border-border-subtle bg-surface-keyboard p-3 text-right"
       aria-label="پالت کاراکترها"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <h2 className="text-sm font-semibold text-slate-200">
-          کاراکترهای Persian Standard
+        <h2 className="text-[10px] font-medium tracking-wider text-text-faint uppercase">
+          پالت کاراکتر
         </h2>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-slate-500">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-text-faint">
           <span className="flex items-center gap-1">
             <span
               className={`inline-block h-3.5 w-3.5 rounded-md shadow-sm ${PALETTE_LEGEND_SWATCHES.free}`}
@@ -261,7 +262,7 @@ export function CharacterPalette({
             {PALETTE_LEGEND_LABELS.shift}
           </span>
           {selectedKeyId ? (
-            <span className="text-slate-400">· کلیک یا drag</span>
+            <span className="text-text-dim">· کلیک یا drag</span>
           ) : null}
         </div>
       </div>

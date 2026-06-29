@@ -14,37 +14,26 @@ export function LeaderboardPresetFilter({
   value,
   onChange,
 }: LeaderboardPresetFilterProps) {
-  const activePreset = CLIENT_CORPUS_PRESETS.find(
-    (preset) => preset.id === value,
-  );
-
   return (
-    <div className="max-w-md">
-      <label
-        htmlFor="leaderboard-corpus-preset"
-        className="mb-1.5 block text-sm font-medium text-slate-300"
-      >
-        فیلتر corpus
-      </label>
-      <select
-        id="leaderboard-corpus-preset"
-        value={value}
-        onChange={(event) => {
-          onChange(event.target.value as CorpusPresetId);
-        }}
-        className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:outline-none"
-      >
-        {CLIENT_CORPUS_PRESETS.map((preset) => (
-          <option key={preset.id} value={preset.id}>
+    <div className="flex flex-wrap gap-2">
+      {CLIENT_CORPUS_PRESETS.map((preset) => {
+        const isActive = preset.id === value;
+        return (
+          <button
+            key={preset.id}
+            type="button"
+            aria-pressed={isActive}
+            onClick={() => onChange(preset.id)}
+            className={`rounded-lg border px-3 py-1.5 text-[11px] transition-all ${
+              isActive
+                ? "border-primary/30 bg-primary/12 text-primary"
+                : "border-border-strong text-text-dim hover:text-text-secondary"
+            }`}
+          >
             {preset.nameFa}
-          </option>
-        ))}
-      </select>
-      {activePreset ? (
-        <p className="mt-1.5 text-xs text-slate-500">
-          {activePreset.descriptionFa}
-        </p>
-      ) : null}
+          </button>
+        );
+      })}
     </div>
   );
 }

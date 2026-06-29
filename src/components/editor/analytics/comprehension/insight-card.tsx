@@ -4,34 +4,36 @@ type InsightCardProps = {
   insight: Insight;
 };
 
-const ACCENT_CLASS = {
-  strength: "border-s-emerald-500/60",
-  weakness: "border-s-amber-500/60",
-} as const;
-
-const DOT_CLASS = {
-  strength: "bg-emerald-400",
-  weakness: "bg-amber-400",
-} as const;
-
 export function InsightCard({ insight }: InsightCardProps) {
+  const isStrength = insight.kind === "strength";
+
   return (
     <li
-      className={`rounded-lg border border-slate-800 border-s-2 bg-slate-950/40 px-3 py-2.5 ${ACCENT_CLASS[insight.kind]}`}
+      className={`flex gap-2 rounded-lg border p-2 ${
+        isStrength
+          ? "border-primary/15 bg-primary/6"
+          : "border-destructive/15 bg-destructive/6"
+      }`}
     >
-      <div className="flex items-start gap-2">
-        <span
-          aria-hidden="true"
-          className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${DOT_CLASS[insight.kind]}`}
-        />
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-slate-200">
-            {insight.titleFa}
-          </p>
-          <p className="text-xs leading-relaxed text-slate-400">
-            {insight.adviceFa}
-          </p>
-        </div>
+      <span
+        aria-hidden="true"
+        className={`mt-0.5 shrink-0 text-[12px] ${
+          isStrength ? "text-primary" : "text-destructive"
+        }`}
+      >
+        {isStrength ? "✓" : "!"}
+      </span>
+      <div className="min-w-0">
+        <p
+          className={`text-[11px] font-medium ${
+            isStrength ? "text-primary" : "text-destructive"
+          }`}
+        >
+          {insight.titleFa}
+        </p>
+        <p className="mt-0.5 text-[10px] leading-relaxed text-text-dim">
+          {insight.adviceFa}
+        </p>
       </div>
     </li>
   );

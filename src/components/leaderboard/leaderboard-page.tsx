@@ -52,7 +52,7 @@ export function LeaderboardPageContent() {
       <LeaderboardPresetFilter value={presetId} onChange={setPresetId} />
 
       {total !== null ? (
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-text-dim">
           {total > 0
             ? `${total} چیدمان ثبت‌شده — مرتب‌سازی: امتیاز نزولی`
             : "هنوز چیدمانی برای این corpus ثبت نشده."}
@@ -71,7 +71,7 @@ export function LeaderboardPageContent() {
             type="button"
             onClick={() => void query.fetchNextPage()}
             disabled={query.isFetchingNextPage}
-            className="rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-sm text-slate-200 enabled:hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-border-strong bg-surface-panel px-4 py-2 text-sm text-text-secondary enabled:hover:bg-[#0C1E38] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {query.isFetchingNextPage ? "در حال بارگذاری…" : "صفحهٔ بعد"}
           </button>

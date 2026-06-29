@@ -23,24 +23,24 @@ export function FingerLoadBars({ fingerLoad }: FingerLoadBarsProps) {
 
   return (
     <div className="space-y-2">
-      <p className="text-[11px] text-slate-500">{FINGER_LOAD_CAPTION_FA}</p>
+      <p className="text-[11px] text-text-faint">{FINGER_LOAD_CAPTION_FA}</p>
       {FINGER_ORDER.map((finger) => {
         const load = fingerLoad[finger];
         const widthPercent = Math.round((load / maxLoad) * 100);
         return (
           <div key={finger} className="space-y-1">
             <div className="flex items-baseline justify-between text-xs">
-              <span className="text-slate-400">{FINGER_LABEL_FA[finger]}</span>
-              <span className="text-slate-300 tabular-nums">
+              <span className="text-text-dim">{FINGER_LABEL_FA[finger]}</span>
+              <span className="text-text-secondary tabular-nums">
                 {formatPercent(load * 100)}
               </span>
             </div>
             <div
-              className="h-1.5 overflow-hidden rounded-full bg-slate-800"
+              className="h-1.5 overflow-hidden rounded-full bg-[#0A1525]"
               role="presentation"
             >
               <div
-                className="h-full rounded-full bg-sky-500/80 transition-all"
+                className="h-full rounded-full bg-primary/80 transition-all"
                 style={{ width: `${widthPercent}%` }}
               />
             </div>

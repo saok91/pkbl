@@ -47,6 +47,9 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.6
+      vazir-code-font:
+        specifier: 1.1.2
+        version: 1.1.2
       vazirmatn:
         specifier: ^33.0.3
         version: 33.0.3
@@ -3045,6 +3048,9 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  vazir-code-font@1.1.2:
+    resolution: {integrity: sha512-gORPR7u8Zlboa8yiwaoiOEjZJdi9qsFLk4/XkTyML+mBMUeGRXDTXNcwo19SmjYeRJasYDKWt0EhF4fbBV6gdw==}
 
   vazirmatn@33.0.3:
     resolution: {integrity: sha512-fbjNc0CMjazZpIegWzz9OHGzI1APFboT+x7ZecXlUCtDe/nkyx7gtCTZnWS/+eeXG7fbfXymCPKJI8EsnM3iqw==}
@@ -6247,6 +6253,8 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  vazir-code-font@1.1.2: {}
 
   vazirmatn@33.0.3: {}
 

@@ -20,9 +20,9 @@ const FINGER_ORDER: readonly Finger[] = [
 ];
 
 const BAR_COLOR: Record<MetricQuality, string> = {
-  good: "bg-emerald-500/80",
-  ok: "bg-yellow-400/80",
-  poor: "bg-red-500/80",
+  good: "bg-primary/80",
+  ok: "bg-accent/80",
+  poor: "bg-destructive/80",
 };
 
 type FingerLoadChartProps = {
@@ -39,7 +39,7 @@ export function FingerLoadChart({ fingerLoad }: FingerLoadChartProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1.5">
-        <h3 className="text-xs font-medium tracking-wide text-slate-400 uppercase">
+        <h3 className="text-[11px] text-text-dim">
           {COMPREHENSION_SECTION_FA.fingerLoad}
         </h3>
         {glossaryEntry ? <MetricInfo entry={glossaryEntry} /> : null}
@@ -61,17 +61,17 @@ export function FingerLoadChart({ fingerLoad }: FingerLoadChartProps) {
           return (
             <div key={finger} className="space-y-1">
               <div className="flex items-baseline justify-between text-xs">
-                <span className="text-slate-400">
+                <span className="text-text-dim">
                   {FINGER_LABEL_FA[finger]}
-                  <span className="ms-1.5 text-slate-500">
+                  <span className="ms-1.5 text-text-faint">
                     ({METRIC_QUALITY_LABEL_FA[quality]})
                   </span>
                 </span>
-                <span className="text-slate-300 tabular-nums">
+                <span className="text-text-secondary tabular-nums">
                   {formatPercent(load * 100)}
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+              <div className="h-2 overflow-hidden rounded-full bg-[#0A1525]">
                 <div
                   className={`h-full rounded-full transition-all ${BAR_COLOR[quality]}`}
                   style={{ width: `${widthPercent}%` }}

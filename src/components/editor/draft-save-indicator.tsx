@@ -26,7 +26,7 @@ export function DraftSaveIndicator({
 }: DraftSaveIndicatorProps) {
   if (!isHydrated) {
     return (
-      <span className="text-xs text-slate-500" aria-live="polite">
+      <span className="font-mono text-[10px] text-text-faint" aria-live="polite">
         در حال بارگذاری پیش‌نویس…
       </span>
     );
@@ -34,7 +34,11 @@ export function DraftSaveIndicator({
 
   if (saveError) {
     return (
-      <span className="text-xs text-amber-400/90" aria-live="polite" role="alert">
+      <span
+        className="font-mono text-[10px] text-destructive/70"
+        aria-live="polite"
+        role="alert"
+      >
         {saveError}
       </span>
     );
@@ -42,7 +46,7 @@ export function DraftSaveIndicator({
 
   if (isSaving) {
     return (
-      <span className="text-xs text-slate-400" aria-live="polite">
+      <span className="font-mono text-[10px] text-text-faint" aria-live="polite">
         در حال ذخیره…
       </span>
     );
@@ -55,7 +59,7 @@ export function DraftSaveIndicator({
   const savedTime = formatSavedTime(lastSavedAt);
 
   return (
-    <span className="text-xs text-emerald-400/90" aria-live="polite">
+    <span className="font-mono text-[10px] text-text-faint" aria-live="polite">
       {savedTime
         ? `پیش‌نویس ذخیره شد · ${savedTime}`
         : "پیش‌نویس ذخیره شد"}

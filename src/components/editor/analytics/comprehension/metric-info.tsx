@@ -103,7 +103,7 @@ export function MetricInfo({ entry, className = "" }: MetricInfoProps) {
         }}
         onMouseEnter={scheduleHoverOpen}
         onMouseLeave={cancelHoverOpen}
-        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-600 text-[10px] text-slate-400 hover:border-sky-500 hover:text-sky-400 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none"
+        className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#1A2E50] text-[9px] text-text-dim hover:bg-[#1E3A60] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
       >
         i
       </button>
@@ -114,15 +114,15 @@ export function MetricInfo({ entry, className = "" }: MetricInfoProps) {
           role="tooltip"
           onMouseEnter={scheduleHoverOpen}
           onMouseLeave={cancelHoverOpen}
-          className="absolute top-full z-20 mt-1 w-56 rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-slate-200 shadow-lg"
+          className="absolute top-full z-20 mt-1.5 w-52 rounded-lg border border-border-strong bg-popover p-2.5 text-[11px] leading-relaxed text-text-dim shadow-2xl"
           style={{ insetInlineStart: 0 }}
         >
-          <p className="font-medium text-sky-300">{entry.termFa}</p>
-          <p className="mt-1 leading-relaxed text-slate-300">
+          <p className="font-medium text-primary">{entry.termFa}</p>
+          <p className="mt-1">
             {entry.definitionFa}
           </p>
           {entry.exampleFa ? (
-            <p className="mt-1 text-slate-500">{entry.exampleFa}</p>
+            <p className="mt-1 text-text-faint">{entry.exampleFa}</p>
           ) : null}
         </div>
       ) : null}

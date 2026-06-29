@@ -11,6 +11,13 @@ type LeaderboardTableProps = {
   readonly errorMessage: string | null;
 };
 
+function rankDisplay(rank: number): string {
+  if (rank === 1) return "🥇";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
+  return formatScore(rank);
+}
+
 export function LeaderboardTable({
   entries,
   isLoading,
@@ -18,7 +25,7 @@ export function LeaderboardTable({
 }: LeaderboardTableProps) {
   if (isLoading && entries.length === 0) {
     return (
-      <p className="py-12 text-center text-sm text-slate-400">
+      <p className="py-12 text-center text-sm text-text-dim">
         در حال بارگذاری جدول امتیازات…
       </p>
     );
@@ -26,7 +33,10 @@ export function LeaderboardTable({
 
   if (errorMessage) {
     return (
-      <p className="rounded-lg border border-amber-600/50 bg-amber-950/40 px-4 py-3 text-sm text-amber-100" role="alert">
+      <p
+        className="rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent"
+        role="alert"
+      >
         {errorMessage}
       </p>
     );
@@ -34,11 +44,11 @@ export function LeaderboardTable({
 
   if (entries.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-700 bg-slate-900/40 px-6 py-12 text-center">
-        <p className="text-base font-medium text-slate-200">
+      <div className="rounded-xl border border-border-strong bg-surface-panel px-6 py-12 text-center">
+        <p className="text-base font-medium text-text-secondary">
           هنوز چیدمانی ثبت نشده
         </p>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-text-dim">
           اولین نفر باشید — از ویرایشگر چیدمان خود را ثبت کنید.
         </p>
       </div>
@@ -46,21 +56,21 @@ export function LeaderboardTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-800">
+    <div className="overflow-hidden rounded-xl border border-border-strong bg-surface-panel">
       <table className="min-w-full text-sm">
-        <thead className="bg-slate-900/80 text-slate-400">
-          <tr>
-            <th scope="col" className="px-4 py-3 text-right font-medium">
+        <thead>
+          <tr className="border-b border-border-strong text-[10px] tracking-wide text-text-faint uppercase">
+            <th scope="col" className="w-10 px-4 py-3 text-right font-medium">
               رتبه
             </th>
             <th scope="col" className="px-4 py-3 text-right font-medium">
               نام
             </th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">
+            <th scope="col" className="px-4 py-3 text-left font-medium">
               امتیاز
             </th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">
-              تاریخ ثبت
+            <th scope="col" className="hidden px-4 py-3 text-right font-medium sm:table-cell">
+              تاریخ
             </th>
           </tr>
         </thead>
@@ -68,18 +78,16 @@ export function LeaderboardTable({
           {entries.map((entry) => (
             <tr
               key={entry.id}
-              className="border-t border-slate-800/80 bg-slate-900/40 even:bg-slate-900/20"
+              className="border-b border-border-strong/40 transition-colors hover:bg-[#0C1E38]"
             >
-              <td className="px-4 py-3 font-medium text-slate-100 tabular-nums">
-                {formatScore(entry.rank)}
-              </td>
-              <td className="px-4 py-3 text-slate-200">
+              <td className="px-4 py-3 text-sm">{rankDisplay(entry.rank)}</td>
+              <td className="px-4 py-3 text-text-secondary">
                 {entry.alias?.trim() ? entry.alias : "بدون نام"}
               </td>
-              <td className="px-4 py-3 font-semibold text-sky-200 tabular-nums">
+              <td className="px-4 py-3 text-left font-mono font-semibold text-primary tabular-nums">
                 {formatScore(entry.totalScore)}
               </td>
-              <td className="px-4 py-3 text-slate-400">
+              <td className="hidden px-4 py-3 text-[10px] text-text-faint sm:table-cell">
                 {formatLeaderboardDate(entry.submittedAt)}
               </td>
             </tr>

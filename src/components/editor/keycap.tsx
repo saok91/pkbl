@@ -33,6 +33,7 @@ type KeycapProps = {
   isPopoverOpen: boolean;
   isDropHighlight: boolean;
   isHotspot: boolean;
+  hotspotRank?: number;
   onClick: () => void;
   onPopoverSelect?: (char: string) => void;
   onPopoverClose?: () => void;
@@ -47,6 +48,7 @@ export const Keycap = memo(function Keycap({
   isPopoverOpen,
   isDropHighlight,
   isHotspot,
+  hotspotRank,
   onClick,
   onPopoverSelect,
   onPopoverClose,
@@ -86,35 +88,36 @@ export const Keycap = memo(function Keycap({
     draggable.setNodeRef(node);
   };
 
-  const showHotspotRing = isHotspot && !isDropHighlight;
   const isModifierKey = Boolean(key.modifierLabel) && !isEditable;
 
   const modifierIdleClassName =
-    "cursor-default border-slate-600 bg-slate-950 text-slate-500 text-xs font-semibold uppercase tracking-wide shadow-inner";
+    "cursor-default border-border-strong bg-[#0A1420] text-[#3A5070] text-[9px] font-semibold uppercase tracking-wide shadow-inner";
 
   const shiftToggleIdleClassName =
-    "cursor-pointer border-slate-500 bg-slate-950 text-slate-400 text-xs font-bold uppercase tracking-wide shadow-inner ring-1 ring-inset ring-slate-700 hover:border-sky-500/50 hover:text-sky-300 hover:ring-sky-500/30";
+    "cursor-pointer border-border-strong bg-[#0A1420] text-text-dim text-[9px] font-bold uppercase tracking-wide shadow-inner hover:border-primary/50 hover:text-primary";
 
   const shiftToggleActiveClassName =
-    "cursor-pointer border-sky-500 bg-sky-600 text-white text-xs font-bold uppercase tracking-wide shadow-sm ring-1 ring-sky-400/40";
+    "cursor-pointer border-primary bg-primary/20 text-primary text-[9px] font-bold uppercase tracking-wide shadow-sm ring-1 ring-primary/40";
 
   const stateClassName = isDropHighlight
-    ? "border-emerald-400 bg-emerald-900/80 text-white ring-2 ring-emerald-400/60"
+    ? "border-primary bg-primary/20 text-primary ring-1 ring-primary/50 scale-[1.03]"
     : isShiftLayerToggle
       ? isShiftLayerActive
         ? shiftToggleActiveClassName
         : shiftToggleIdleClassName
       : isPopoverOpen
-        ? "border-sky-300 bg-sky-600 text-white"
+        ? "border-primary bg-[#082820] text-primary shadow-[0_0_10px_rgba(0,212,170,0.25)] ring-1 ring-primary/40"
         : isSelected
-          ? "border-sky-400 bg-sky-700 text-white"
-          : isEditable
-            ? droppable.isOver
-              ? "border-cyan-400 bg-slate-700 text-slate-100"
-              : "border-slate-600 bg-slate-800 text-slate-100 hover:border-slate-500"
-            : isModifierKey
-              ? modifierIdleClassName
-              : "cursor-default border-slate-700 bg-slate-950 text-slate-400";
+          ? "border-primary bg-[#082820] text-primary shadow-[0_0_10px_rgba(0,212,170,0.25)] ring-1 ring-primary/40"
+          : isHotspot
+            ? "border-accent/50 bg-[#1A1200] text-[#F5DEAD] hover:bg-[#221700]"
+            : isEditable
+              ? droppable.isOver
+                ? "border-primary bg-primary/20 text-text-secondary ring-1 ring-primary/50"
+                : "border-border-strong bg-[#0C1830] text-text-secondary hover:border-[#2A4068] hover:bg-[#112040]"
+              : isModifierKey
+                ? modifierIdleClassName
+                : "cursor-default border-border-strong bg-[#0A1420] text-text-dim";
 
   return (
     <div
@@ -136,9 +139,7 @@ export const Keycap = memo(function Keycap({
         onClick={isClickable ? onClick : undefined}
         {...(isClientMounted ? draggable.listeners : {})}
         {...(isClientMounted ? draggable.attributes : {})}
-        className={`relative flex items-center justify-center rounded-md border text-sm transition-colors ${stateClassName}${
-          showHotspotRing ? "ring-2 ring-amber-400/70" : ""
-        } ${draggable.isDragging ? "pointer-events-none invisible" : ""}`}
+        className={`relative flex items-center justify-center overflow-hidden rounded-sm border text-center text-sm transition-all duration-100 select-none ${stateClassName} ${draggable.isDragging ? "pointer-events-none invisible" : ""}`}
         aria-label={
           isShiftLayerToggle
             ? "Shift — تغییر لایهٔ شیفت"
@@ -147,9 +148,18 @@ export const Keycap = memo(function Keycap({
         aria-pressed={isShiftLayerToggle ? isShiftLayerActive : undefined}
         aria-expanded={isPopoverOpen}
       >
-        <span className="truncate px-1">{displayLabel}</span>
+        {hotspotRank !== undefined ? (
+          <span className="absolute top-0.5 right-0.5 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-accent text-[7px] leading-none font-bold text-black">
+            {hotspotRank + 1}
+          </span>
+        ) : null}
+        <span
+          className={`truncate px-1 leading-none ${key.modifierLabel ? "text-[9px] font-mono" : "text-[15px]"}`}
+        >
+          {displayLabel}
+        </span>
         {showAlternate && alternateLabel && !key.modifierLabel ? (
-          <span className="absolute top-0.5 right-1 text-[10px] text-slate-400">
+          <span className="absolute top-0.5 right-1 text-[10px] text-text-faint">
             {alternateLabel}
           </span>
         ) : null}

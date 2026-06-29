@@ -9,9 +9,9 @@ type LayerToggleProps = {
   onChange: (layer: Layer) => void;
 };
 
-const LAYERS: { id: Layer; label: string; description: string }[] = [
-  { id: "base", label: "پایه", description: "Base" },
-  { id: "shift", label: "شیفت", description: "Shift" },
+const LAYERS: { id: Layer; label: string }[] = [
+  { id: "base", label: "پایه" },
+  { id: "shift", label: "شیفت" },
 ];
 
 export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
@@ -28,7 +28,7 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
     if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
       event.preventDefault();
       const direction = event.key === "ArrowRight" ? 1 : -1;
-      const nextIndex = (index + direction + LAYERS.length) % LAYERS.length;
+      const nextIndex = (direction + index + LAYERS.length) % LAYERS.length;
       const nextLayer = LAYERS[nextIndex];
       if (nextLayer) {
         onChange(nextLayer.id);
@@ -59,7 +59,7 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
 
   return (
     <div
-      className="inline-flex rounded-lg border border-slate-700 bg-slate-800/80 p-1"
+      className="mr-auto flex gap-0.5 rounded-lg border border-border-strong bg-surface-panel p-1"
       role="tablist"
       aria-label="لایهٔ صفحه‌کلید"
     >
@@ -75,16 +75,18 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
             role="tab"
             tabIndex={isActive ? 0 : -1}
             aria-selected={isActive}
+            aria-pressed={isActive}
             onClick={() => onChange(layer.id)}
             onKeyDown={(event) => handleKeyDown(event, index)}
-            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded px-3 py-1 text-[11px] font-medium transition-all ${
               isActive
-                ? "bg-sky-600 text-white shadow-sm"
-                : "text-slate-300 hover:bg-slate-700/60 hover:text-white"
+                ? layer.id === "base"
+                  ? "border border-primary/30 bg-primary/18 text-primary"
+                  : "border border-accent/30 bg-accent/18 text-accent"
+                : "text-text-faint hover:text-text-dim"
             }`}
           >
-            <span>{layer.label}</span>
-            <span className="mr-2 text-xs opacity-70">{layer.description}</span>
+            {layer.label}
           </button>
         );
       })}

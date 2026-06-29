@@ -16,43 +16,37 @@ export function StrengthsWeaknesses({
 }: StrengthsWeaknessesProps) {
   if (incomplete) {
     return (
-      <p className="text-sm text-amber-300">
+      <p className="text-[11px] text-text-dim">
         {COMPREHENSION_SECTION_FA.incompleteLayout}
       </p>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <section aria-label={COMPREHENSION_SECTION_FA.strengths}>
-        <h3 className="mb-2 text-xs font-medium tracking-wide text-emerald-400/90 uppercase">
-          {COMPREHENSION_SECTION_FA.strengths}
-        </h3>
         {strengths.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {strengths.map((insight) => (
               <InsightCard key={insight.metric} insight={insight} />
             ))}
           </ul>
         ) : (
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] text-text-faint">
             {COMPREHENSION_SECTION_FA.noStrengths}
           </p>
         )}
       </section>
 
       <section aria-label={COMPREHENSION_SECTION_FA.weaknesses}>
-        <h3 className="mb-2 text-xs font-medium tracking-wide text-amber-400/90 uppercase">
-          {COMPREHENSION_SECTION_FA.weaknesses}
-        </h3>
         {weaknesses.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {weaknesses.map((insight) => (
               <InsightCard key={insight.metric} insight={insight} />
             ))}
           </ul>
         ) : (
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] text-text-faint">
             {COMPREHENSION_SECTION_FA.noWeaknesses}
           </p>
         )}

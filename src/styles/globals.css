@@ -1,7 +1,87 @@
 @import "tailwindcss";
 @import "vazirmatn/Vazirmatn-font-face.css";
+@import "vazir-code-font/dist/font-face.css";
 
-@theme {
+:root {
+  --background: #070c18;
+  --foreground: #d8e4f5;
+  --card: #091520;
+  --card-foreground: #d8e4f5;
+  --popover: #111e35;
+  --popover-foreground: #d8e4f5;
+  --primary: #00d4aa;
+  --primary-foreground: #070c18;
+  --secondary: #162038;
+  --secondary-foreground: #a8bcdc;
+  --muted: #162038;
+  --muted-foreground: #7a90b0;
+  --accent: #f59e0b;
+  --accent-foreground: #070c18;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #00d4aa;
+  --radius: 0.5rem;
+  --surface-keyboard: #060b18;
+  --surface-panel: #091520;
+  --border-subtle: #142030;
+  --border-strong: #1a2e48;
+  --text-secondary: #a8c0dc;
+  --text-dim: #5a7aa0;
+  --text-faint: #3a5070;
+}
+
+@theme inline {
   --font-sans: Vazirmatn, ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* Monospace: Vazir Code (Persian + tabular digits); Vazirmatn fallback. */
+  --font-mono: "Vazir Code", Vazirmatn, ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface-keyboard: var(--surface-keyboard);
+  --color-surface-panel: var(--surface-panel);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-dim: var(--text-dim);
+  --color-text-faint: var(--text-faint);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
 }

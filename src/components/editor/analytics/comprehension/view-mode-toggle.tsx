@@ -47,7 +47,7 @@ type ViewModeToggleProps = {
 export function ViewModeToggle({ mode, onChange }: ViewModeToggleProps) {
   return (
     <div
-      className="flex rounded-lg border border-slate-800 p-0.5"
+      className="flex w-full gap-0.5"
       role="group"
       aria-label="حالت نمایش پنل امتیاز"
     >
@@ -57,10 +57,10 @@ export function ViewModeToggle({ mode, onChange }: ViewModeToggleProps) {
           type="button"
           aria-pressed={mode === option}
           onClick={() => onChange(option)}
-          className={`flex-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none ${
+          className={`flex-1 rounded py-1.5 text-[11px] transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
             mode === option
-              ? "bg-sky-600/30 text-sky-200"
-              : "text-slate-400 hover:text-slate-200"
+              ? "bg-[#0C1E38] text-primary shadow-sm"
+              : "text-text-faint hover:text-text-dim"
           }`}
         >
           {VIEW_MODE_FA[option]}

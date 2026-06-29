@@ -5,10 +5,8 @@ import { useCallback, useState } from "react";
 
 import { isShiftModifierKey } from "@/lib/layout";
 
-import { PERSIAN_STANDARD_60_NAME } from "@/lib/layout/persian-standard-60";
-
 import { SubmitLayoutDialog } from "~/components/leaderboard/submit-layout-dialog";
-import { AppNav } from "~/components/shared/app-nav";
+import { AppHeader } from "~/components/shared/app-header";
 
 import { ScorePanel } from "./analytics/score-panel";
 import { useLiveScore } from "./analytics/use-live-score";
@@ -161,74 +159,86 @@ export function EditorShell() {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div className="min-h-dvh bg-gradient-to-b from-slate-900 to-slate-950 text-white">
-        <header className="border-b border-slate-800 bg-slate-900/80 px-4 py-3">
-          <div
-            className={`mx-auto flex ${EDITOR_MAX_WIDTH_CLASS} flex-col gap-3 sm:flex-row sm:items-center sm:justify-between`}
-          >
-            <div>
-              <p className="text-xs tracking-widest text-slate-400 uppercase">
-                Persian Keyboard Layout Lab
-              </p>
-              <h1 className="text-xl font-bold">ویرایشگر چیدمان</h1>
-              <p className="text-sm text-slate-400">
-                {PERSIAN_STANDARD_60_NAME} · ISIRI 9147
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-2 sm:items-end">
-              <AppNav />
-              <LayerToggle activeLayer={activeLayer} onChange={setLayer} />
-              <DraftSaveIndicator
-                isHydrated={draftPersistence.isHydrated}
-                isSaving={draftPersistence.isSaving}
-                lastSavedAt={draftPersistence.lastSavedAt}
-                saveError={draftPersistence.saveError}
-              />
-            </div>
-          </div>
-        </header>
+      <div className="min-h-dvh bg-background text-foreground">
+        <AppHeader
+          center={
+            <DraftSaveIndicator
+              isHydrated={draftPersistence.isHydrated}
+              isSaving={draftPersistence.isSaving}
+              lastSavedAt={draftPersistence.lastSavedAt}
+              saveError={draftPersistence.saveError}
+            />
+          }
+        />
 
-        <main className={`mx-auto ${EDITOR_MAX_WIDTH_CLASS} px-4 py-3`}>
+        <main className={`mx-auto ${EDITOR_MAX_WIDTH_CLASS} px-4 py-5`}>
           {!draftPersistence.isHydrated ? (
-            <p className="py-12 text-center text-sm text-slate-400">
+            <p className="py-12 text-center text-sm text-text-dim">
               در حال بارگذاری پیش‌نویس…
             </p>
           ) : (
-          <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_280px]">
-            <div className="order-2 min-w-0 lg:order-1">
-              {lastError ? (
-                <div
-                  className="mb-4 flex items-center justify-between rounded-lg border border-amber-600/50 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
-                  role="alert"
-                >
-                  <span>{lastError}</span>
-                  <button
-                    type="button"
-                    onClick={clearError}
-                    className="rounded px-2 py-1 text-xs hover:bg-amber-900/50"
-                  >
-                    بستن
-                  </button>
-                </div>
-              ) : null}
-
-              <div className="mb-3">
-                <EditorToolbar
-                  canUndo={canUndo}
-                  canRedo={canRedo}
-                  selectedKeyId={selectedKeyId}
-                  onUndo={undo}
-                  onRedo={redo}
-                  onResetKey={() => {
-                    if (selectedKeyId) {
-                      resetKey(selectedKeyId);
-                    }
-                  }}
-                  onResetAll={resetAll}
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
+              <aside className="order-1 lg:sticky lg:top-14 lg:order-2 lg:max-h-[calc(100dvh-4rem)] lg:w-[320px] lg:shrink-0 lg:overflow-y-auto lg:pb-6">
+                <ScorePanel
+                  layout={layout}
+                  liveScore={liveScore}
+                  onHotspotSelect={handleHotspotSelect}
+                  onOpenSubmit={() => setIsSubmitOpen(true)}
                 />
-              </div>
+              </aside>
 
-              <div className="flex flex-col gap-3">
+              <div className="order-2 min-w-0 flex-1 space-y-3 lg:order-1">
+                {lastError ? (
+                  <div
+                    className="flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent"
+                    role="alert"
+                  >
+                    <span>{lastError}</span>
+                    <button
+                      type="button"
+                      onClick={clearError}
+                      className="rounded px-2 py-1 text-xs hover:bg-accent/15"
+                    >
+                      بستن
+                    </button>
+                  </div>
+                ) : null}
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <LayerToggle activeLayer={activeLayer} onChange={setLayer} />
+                  <EditorToolbar
+                    canUndo={canUndo}
+                    canRedo={canRedo}
+                    selectedKeyId={selectedKeyId}
+                    onUndo={undo}
+                    onRedo={redo}
+                    onResetKey={() => {
+                      if (selectedKeyId) {
+                        resetKey(selectedKeyId);
+                      }
+                    }}
+                    onResetAll={resetAll}
+                  />
+                </div>
+
+                {pendingChar ? (
+                  <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-2 text-[11px] text-primary">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md border border-primary/40 bg-primary/20 text-[15px]">
+                      {pendingChar}
+                    </span>
+                    روی کلید مورد نظر کلیک کنید تا «{pendingChar}» تخصیص داده
+                    شود
+                    <button
+                      type="button"
+                      onClick={() => setPendingChar(null)}
+                      className="mr-auto text-primary/60 transition-colors hover:text-primary"
+                      aria-label="لغو انتخاب کاراکتر"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ) : null}
+
                 <KeyboardCanvas
                   layout={layout}
                   activeLayer={activeLayer}
@@ -247,31 +257,27 @@ export function EditorShell() {
                   selectedKeyId={selectedKeyId}
                   onCharClick={handleCharClick}
                 />
+
+                <div className="flex items-center gap-2 rounded-lg border border-border-subtle bg-surface-keyboard px-3 py-2 text-[10px] text-text-faint">
+                  <span aria-hidden="true">ℹ</span>
+                  کلیک روی کلید = پنجره انتخاب · کلیک روی حرف در پالت + کلیک
+                  روی کلید = تخصیص سریع · کشیدن حرف یا کلید = جابجایی
+                </div>
               </div>
             </div>
-
-            <div className="order-1 lg:sticky lg:top-4 lg:order-2 lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto">
-              <ScorePanel
-                layout={layout}
-                liveScore={liveScore}
-                onHotspotSelect={handleHotspotSelect}
-                onOpenSubmit={() => setIsSubmitOpen(true)}
-              />
-            </div>
-          </div>
           )}
         </main>
       </div>
 
       <DragOverlay dropAnimation={null}>
         {activeDrag?.kind === "char" ? (
-          <div className="flex h-14 w-14 cursor-grabbing items-center justify-center rounded-md border border-sky-300 bg-sky-800 text-sm text-white shadow-xl">
+          <div className="flex h-14 w-14 cursor-grabbing items-center justify-center rounded-md border border-primary/50 bg-primary/20 text-sm text-primary shadow-xl">
             {activeDrag.char}
           </div>
         ) : null}
         {activeDrag?.kind === "key" ? (
           <div
-            className="flex cursor-grabbing items-center justify-center rounded-md border border-sky-300 bg-sky-800 text-sm text-white shadow-xl"
+            className="flex cursor-grabbing items-center justify-center rounded-md border border-primary/50 bg-primary/20 text-sm text-primary shadow-xl"
             style={{ width: activeDrag.width, height: activeDrag.height }}
           >
             <span className="truncate px-1">{activeDrag.label}</span>
