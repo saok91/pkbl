@@ -86,3 +86,7 @@ pnpm-debug.log*
 
 # corpus data (local datasets — un-ignore specific files if needed later)
 /corpus/
+
+# figma
+figma/
+
