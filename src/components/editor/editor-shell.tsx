@@ -1,11 +1,14 @@
 "use client";
 
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { isShiftModifierKey } from "@/lib/layout";
 
 import { PERSIAN_STANDARD_60_NAME } from "@/lib/layout/persian-standard-60";
+
+import { SubmitLayoutDialog } from "~/components/leaderboard/submit-layout-dialog";
+import { AppNav } from "~/components/shared/app-nav";
 
 import { ScorePanel } from "./analytics/score-panel";
 import { useLiveScore } from "./analytics/use-live-score";
@@ -22,6 +25,8 @@ import { useEditorShellState } from "./use-editor-shell-state";
 import { useEditorShortcuts } from "./use-editor-shortcuts";
 
 export function EditorShell() {
+  const [isSubmitOpen, setIsSubmitOpen] = useState(false);
+
   const {
     layout,
     activeLayer,
@@ -170,7 +175,8 @@ export function EditorShell() {
                 {PERSIAN_STANDARD_60_NAME} · ISIRI 9147
               </p>
             </div>
-            <div className="flex flex-col items-start gap-1 sm:items-end">
+            <div className="flex flex-col items-start gap-2 sm:items-end">
+              <AppNav />
               <LayerToggle activeLayer={activeLayer} onChange={setLayer} />
               <DraftSaveIndicator
                 isHydrated={draftPersistence.isHydrated}
@@ -249,6 +255,7 @@ export function EditorShell() {
                 layout={layout}
                 liveScore={liveScore}
                 onHotspotSelect={handleHotspotSelect}
+                onOpenSubmit={() => setIsSubmitOpen(true)}
               />
             </div>
           </div>
@@ -271,6 +278,15 @@ export function EditorShell() {
           </div>
         ) : null}
       </DragOverlay>
+
+      <SubmitLayoutDialog
+        isOpen={isSubmitOpen}
+        layout={layout}
+        corpusPresetId={liveScore.presetId}
+        totalScore={liveScore.result?.total ?? null}
+        isScoreStale={liveScore.isStale}
+        onClose={() => setIsSubmitOpen(false)}
+      />
     </DndContext>
   );
 }

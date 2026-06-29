@@ -1,14 +1,19 @@
+import type {
+  SubmitAcceptReason,
+  SubmitRejectReason,
+} from "./submit-rules";
+
 export type SubmitDecision =
   | {
       readonly accepted: true;
-      readonly reason: "new_best" | "first_entry";
+      readonly reason: SubmitAcceptReason;
       readonly rank: number;
       readonly totalScore: number;
     }
   | {
       readonly accepted: false;
-      readonly reason: "duplicate" | "score_too_low";
-      readonly rank: number | null;
+      readonly reason: SubmitRejectReason;
+      readonly rank: null;
       readonly totalScore: number;
       readonly currentBestScore: number | null;
     };
@@ -20,7 +25,12 @@ export type LeaderboardEntry = {
   readonly totalScore: number;
   readonly corpusPresetId: string;
   readonly submittedAt: Date;
-  readonly fingerprint: string;
+};
+
+export type LeaderboardStatus = {
+  readonly currentBestScore: number | null;
+  readonly currentBestAlias: string | null;
+  readonly totalEntries: number;
 };
 
 export type CommunityTemplate = {

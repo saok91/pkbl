@@ -42,15 +42,26 @@ model CorpusPreset {
 }
 
 model ScoreSnapshot {
-  id             String       @id @default(cuid())
-  layoutId       String
-  layout         LayoutRecord @relation(fields: [layoutId], references: [id])
-  corpusPresetId String
-  corpusPreset   CorpusPreset @relation(fields: [corpusPresetId], references: [id])
-  totalScore     Float
-  breakdown      Json
-  scorerVersion  String
-  computedAt     DateTime     @default(now())
+  id                  String       @id @default(cuid())
+  layoutId            String
+  layout              LayoutRecord @relation(fields: [layoutId], references: [id])
+  corpusPresetId      String
+  corpusPreset        CorpusPreset @relation(fields: [corpusPresetId], references: [id])
+  totalScore          Float
+  breakdown           Json
+  scorerVersion       String
+  corpusPresetVersion Int          @default(1)
+  computedAt          DateTime     @default(now())
+
+  @@index([corpusPresetId, totalScore(sort: Desc)])
+}
+
+model RateLimitBucket {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
 }
 
 model PromotionRecord {

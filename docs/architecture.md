@@ -167,11 +167,17 @@ KeyMetrics      → { finger, hand, row, reachPenalty, weakKeyPenalty }
 | `custom` | paste کاربر | شخصی‌سازی |
 
 **Pipeline نرمال‌سازی (قابل تست):**
-1. یکسان‌سازی ی/ي، ک/ك، etc. (`CHAR_VARIANT_MAP` در `config.ts`)
+
+> **v1 (فعلی):** `fa-normalize-v1` — [برنامهٔ v2](./plans/layout-fidelity-v2.md) موارد زیر را اصلاح می‌کند.
+
+1. یکسان‌سازی محدود: ي→ی، ك→ک (`CHAR_VARIANT_MAP`) — **v2:** حذف ى→ی و ة→ه
 2. حذف zero-width غیرضروری؛ **ZWNJ (`\u200c`) حفظ می‌شود**
-3. نرمال‌سازی اعداد فارسی/لاتین (`digitPolicy`: `latin` | `persian` | `preserve`)
-4. فیلتر کاراکترهای خارج از charset هدف (`CORPUS_TARGET_CHARSET_SET` = `EDITABLE_CHARSET_SET`)
-5. استخراج unigram / bigram / trigram frequencies
+3. نرمال‌سازی اعداد (`digitPolicy`) — **v1:** فارسی→لاتین؛ **v2:** لاتین→فارسی (پیش‌فرض)
+4. **v2:** `PUNCT_VARIANT_MAP` — ویرگول/نقطه‌ویرگول لاتین → معادل keyboard
+5. فیلتر کاراکترهای خارج از charset هدف (`CORPUS_TARGET_CHARSET_SET` = `EDITABLE_CHARSET_SET`)
+6. استخراج unigram / bigram / trigram frequencies
+
+**Scoring v2 (برنامه):** متریک shift (`shiftLayerShare`) — [E17](./epics.md#e17--shift-aware-scoring)
 
 **API سطح ماژول (E3):**
 

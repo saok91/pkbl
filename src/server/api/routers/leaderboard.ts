@@ -1,13 +1,17 @@
 import { Prisma } from "../../../../generated/prisma";
 import { z } from "zod";
 
+import { getCompletenessScore } from "@/lib/layout/analysis";
 import { serializeKle } from "@/lib/layout";
 import { computeLayoutFingerprint } from "@/lib/leaderboard/fingerprint";
+import { withCorpusPresetLock } from "@/lib/leaderboard/preset-lock";
+import { computeCompetitionRanks } from "@/lib/leaderboard/rank";
 import { resolveKeyboardTemplateSlug } from "@/lib/leaderboard/template-slug";
-import { evaluateSubmitScore } from "@/lib/leaderboard/submit-rules";
+import { evaluateSubmitEligibility } from "@/lib/leaderboard/submit-rules";
 import type {
   CommunityTemplate,
   LeaderboardEntry,
+  LeaderboardStatus,
 } from "@/lib/leaderboard/types";
 import { DEFAULT_SCORING_CONFIG } from "@/lib/scoring";
 
@@ -35,6 +39,10 @@ const listInputSchema = z.object({
     .string()
     .regex(/^\d+$/, "Cursor must be a non-negative integer offset")
     .optional(),
+});
+
+const statusInputSchema = z.object({
+  corpusPresetId: corpusPresetIdSchema,
 });
 
 const submitInputSchema = z.object({
@@ -67,7 +75,6 @@ export const leaderboardRouter = createTRPCRouter({
       include: {
         layout: {
           select: {
-            fingerprint: true,
             alias: true,
             createdAt: true,
           },
@@ -78,14 +85,19 @@ export const leaderboardRouter = createTRPCRouter({
     const hasMore = rows.length > input.limit;
     const pageRows = hasMore ? rows.slice(0, input.limit) : rows;
 
-    const entries: LeaderboardEntry[] = pageRows.map((row, index) => ({
+    const rankByScore = await computeCompetitionRanks(
+      ctx.db,
+      input.corpusPresetId,
+      pageRows.map((row) => row.totalScore),
+    );
+
+    const entries: LeaderboardEntry[] = pageRows.map((row) => ({
       id: row.id,
-      rank: offset + index + 1,
+      rank: rankByScore.get(row.totalScore) ?? 1,
       alias: row.layout.alias,
       totalScore: row.totalScore,
       corpusPresetId: row.corpusPresetId,
       submittedAt: row.layout.createdAt,
-      fingerprint: row.layout.fingerprint,
     }));
 
     const nextCursor = hasMore ? String(offset + input.limit) : null;
@@ -97,100 +109,163 @@ export const leaderboardRouter = createTRPCRouter({
     });
   }),
 
+  status: publicProcedure
+    .input(statusInputSchema)
+    .query(async ({ ctx, input }) => {
+      const [currentBest, totalEntries] = await Promise.all([
+        ctx.db.scoreSnapshot.findFirst({
+          where: { corpusPresetId: input.corpusPresetId },
+          orderBy: { totalScore: "desc" },
+          include: {
+            layout: {
+              select: { alias: true },
+            },
+          },
+        }),
+        ctx.db.scoreSnapshot.count({
+          where: { corpusPresetId: input.corpusPresetId },
+        }),
+      ]);
+
+      const status: LeaderboardStatus = {
+        currentBestScore: currentBest?.totalScore ?? null,
+        currentBestAlias: currentBest?.layout.alias ?? null,
+        totalEntries,
+      };
+
+      return apiOk(status);
+    }),
+
   submit: leaderboardSubmitProcedure
     .input(submitInputSchema)
     .mutation(async ({ ctx, input }) => {
+      const fingerprint = computeLayoutFingerprint(input.layout);
+      const templateSlug = resolveKeyboardTemplateSlug(input.layout.templateId);
+
+      let score: ReturnType<typeof evaluateLayoutScore>;
       try {
-        const fingerprint = computeLayoutFingerprint(input.layout);
-        const templateSlug = resolveKeyboardTemplateSlug(
-          input.layout.templateId,
-        );
         const ngramStats = await resolveNgramStats(input.corpusPresetId);
-        const score = evaluateLayoutScore(input.layout, ngramStats);
+        score = evaluateLayoutScore(input.layout, ngramStats);
+      } catch (cause) {
+        const message =
+          cause instanceof Error ? cause.message : "Leaderboard submit failed";
+        return apiFail(message);
+      }
 
-        const transactionResult = await ctx.db.$transaction(async (tx) => {
-          const existing = await tx.layoutRecord.findUnique({
-            where: { fingerprint },
-          });
+      const completenessScore = getCompletenessScore(input.layout);
 
-          if (existing) {
-            return { kind: "duplicate" as const };
-          }
+      try {
+        const transactionResult = await ctx.db.$transaction(async (tx) =>
+          withCorpusPresetLock(tx, input.corpusPresetId, async () => {
+            const existingLayout = await tx.layoutRecord.findUnique({
+              where: { fingerprint },
+            });
 
-          const template = await tx.keyboardTemplate.findFirst({
-            where: { slug: templateSlug },
-          });
+            if (existingLayout) {
+              const existingSnapshot = await tx.scoreSnapshot.findFirst({
+                where: {
+                  layoutId: existingLayout.id,
+                  corpusPresetId: input.corpusPresetId,
+                },
+              });
 
-          if (!template) {
+              if (existingSnapshot) {
+                return { kind: "duplicate" as const };
+              }
+            }
+
+            const template = await tx.keyboardTemplate.findFirst({
+              where: { slug: templateSlug },
+            });
+
+            if (!template) {
+              return {
+                kind: "unknown_template" as const,
+                slug: templateSlug,
+              };
+            }
+
+            const corpusPreset = await tx.corpusPreset.findUnique({
+              where: { id: input.corpusPresetId },
+            });
+
+            if (!corpusPreset) {
+              return { kind: "unknown_preset" as const };
+            }
+
+            const currentBest = await tx.scoreSnapshot.findFirst({
+              where: { corpusPresetId: input.corpusPresetId },
+              orderBy: { totalScore: "desc" },
+            });
+
+            const decision = evaluateSubmitEligibility(
+              score.total,
+              currentBest?.totalScore ?? null,
+              completenessScore,
+            );
+
+            if (!decision.accepted) {
+              return {
+                kind: "rejected" as const,
+                decision,
+                totalScore: score.total,
+                currentBestScore: currentBest?.totalScore ?? null,
+              };
+            }
+
+            const layoutRecord =
+              existingLayout ??
+              (await tx.layoutRecord.create({
+                data: {
+                  templateId: template.id,
+                  kleSerialized: serializeKle(input.layout),
+                  fingerprint,
+                  alias: input.alias ?? null,
+                  source: "user",
+                },
+              }));
+
+            const snapshot = await tx.scoreSnapshot.create({
+              data: {
+                layoutId: layoutRecord.id,
+                corpusPresetId: input.corpusPresetId,
+                totalScore: score.total,
+                breakdown: score.breakdown,
+                scorerVersion: DEFAULT_SCORING_CONFIG.scorerVersion,
+                corpusPresetVersion: corpusPreset.version,
+              },
+            });
+
+            const rank =
+              (await tx.scoreSnapshot.count({
+                where: {
+                  corpusPresetId: input.corpusPresetId,
+                  totalScore: { gt: snapshot.totalScore },
+                },
+              })) + 1;
+
             return {
-              kind: "unknown_template" as const,
-              slug: templateSlug,
+              kind: "accepted" as const,
+              decision,
+              layoutRecord,
+              snapshot,
+              rank,
             };
-          }
+          }),
+        );
 
-          const currentBest = await tx.scoreSnapshot.findFirst({
+        if (transactionResult.kind === "duplicate") {
+          const currentBest = await ctx.db.scoreSnapshot.findFirst({
             where: { corpusPresetId: input.corpusPresetId },
             orderBy: { totalScore: "desc" },
           });
 
-          const decision = evaluateSubmitScore(
-            score.total,
-            currentBest?.totalScore ?? null,
-          );
-
-          if (!decision.accepted) {
-            return {
-              kind: "rejected" as const,
-              decision,
-              totalScore: score.total,
-              currentBestScore: currentBest?.totalScore ?? null,
-            };
-          }
-
-          const layoutRecord = await tx.layoutRecord.create({
-            data: {
-              templateId: template.id,
-              kleSerialized: serializeKle(input.layout),
-              fingerprint,
-              alias: input.alias ?? null,
-              source: "user",
-            },
-          });
-
-          const snapshot = await tx.scoreSnapshot.create({
-            data: {
-              layoutId: layoutRecord.id,
-              corpusPresetId: input.corpusPresetId,
-              totalScore: score.total,
-              breakdown: score.breakdown,
-              scorerVersion: DEFAULT_SCORING_CONFIG.scorerVersion,
-            },
-          });
-
-          const rank =
-            (await tx.scoreSnapshot.count({
-              where: {
-                corpusPresetId: input.corpusPresetId,
-                totalScore: { gt: snapshot.totalScore },
-              },
-            })) + 1;
-
-          return {
-            kind: "accepted" as const,
-            decision,
-            layoutRecord,
-            snapshot,
-            rank,
-          };
-        });
-
-        if (transactionResult.kind === "duplicate") {
           return apiOk({
             accepted: false as const,
             reason: "duplicate" as const,
             rank: null,
             totalScore: score.total,
-            currentBestScore: null,
+            currentBestScore: currentBest?.totalScore ?? null,
           });
         }
 
@@ -198,6 +273,10 @@ export const leaderboardRouter = createTRPCRouter({
           return apiFail(
             `Unknown keyboard template: ${transactionResult.slug}`,
           );
+        }
+
+        if (transactionResult.kind === "unknown_preset") {
+          return apiFail(`Unknown corpus preset: ${input.corpusPresetId}`);
         }
 
         if (transactionResult.kind === "rejected") {
@@ -223,12 +302,17 @@ export const leaderboardRouter = createTRPCRouter({
           cause instanceof Prisma.PrismaClientKnownRequestError &&
           cause.code === "P2002"
         ) {
+          const currentBest = await ctx.db.scoreSnapshot.findFirst({
+            where: { corpusPresetId: input.corpusPresetId },
+            orderBy: { totalScore: "desc" },
+          });
+
           return apiOk({
             accepted: false as const,
             reason: "duplicate" as const,
             rank: null,
-            totalScore: 0,
-            currentBestScore: null,
+            totalScore: score.total,
+            currentBestScore: currentBest?.totalScore ?? null,
           });
         }
 

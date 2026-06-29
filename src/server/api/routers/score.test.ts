@@ -35,17 +35,18 @@ describe("score router", () => {
     expect(result.data?.scorerVersion).toBe("1.0.0");
   });
 
-  it("returns error envelope for unknown preset", async () => {
+  it("rejects unknown preset at validation boundary", async () => {
     apiRateLimiter.clear();
     const caller = createCaller();
 
-    const result = await caller.evaluate({
-      layout: layoutAsWireInput(getDefaultTemplate()),
-      corpusPresetId: "unknown-preset",
+    await expect(
+      caller.evaluate({
+        layout: layoutAsWireInput(getDefaultTemplate()),
+        corpusPresetId: "unknown-preset" as "wiki-fa",
+      }),
+    ).rejects.toMatchObject({
+      code: "BAD_REQUEST",
     });
-
-    expect(result.success).toBe(false);
-    expect(result.error).toMatch(/Unknown corpus preset/);
   });
 
   it("compares multiple layouts and returns ranking", async () => {

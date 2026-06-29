@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-export const corpusPresetIdSchema = z
-  .string()
-  .min(1)
-  .max(64)
-  .regex(/^[a-z0-9-]+$/);
+export { corpusPresetIdSchema } from "@/lib/layout/wire-schema";
+
+export type { CorpusPresetId } from "@/lib/corpus/client-presets";
 
 export const MAX_CUSTOM_CORPUS_TEXT_CHARS = 50_000;
 

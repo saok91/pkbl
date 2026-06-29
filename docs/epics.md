@@ -585,11 +585,11 @@ flowchart LR
 **به‌عنوان** علاقه‌مند، **می‌خواهم** layout را submit کنم **تا** در ranking ثبت شود.
 
 **معیار پذیرش:**
-- [ ] بدون login
-- [ ] alias اختیاری
-- [ ] fingerprint dedup
-- [ ] score + corpus preset + layout ذخیره
-- [ ] rate limit (مثلاً ۵ submit / ساعت / IP)
+- [x] بدون login
+- [x] alias اختیاری
+- [x] fingerprint dedup
+- [x] score + corpus preset + layout ذخیره
+- [x] rate limit (مثلاً ۵ submit / ساعت / IP)
 
 ---
 
@@ -598,10 +598,10 @@ flowchart LR
 **به‌عنوان** علاقه‌مند، **می‌خواهم** برترین layoutها را ببینم **تا** ایده بگیرم.
 
 **معیار پذیرش:**
-- [ ] sort by score desc (بالاتر بهتر)
-- [ ] filter by corpus preset
-- [ ] pagination
-- [ ] نمایش: rank, alias, score, date
+- [x] sort by score desc (بالاتر بهتر)
+- [x] filter by corpus preset
+- [x] pagination
+- [x] نمایش: rank, alias, score, date
 
 ---
 
@@ -947,6 +947,227 @@ flowchart LR
 
 ---
 
+## E16 — Normalization Policy v2 & Corpus Rebuild
+
+**هدف:** اصلاح سیاست نرمال‌سازی corpus تا حروف شیفت و variantهای معنادار ادغام نشوند؛ اعداد لاتین به فارسی canonical شوند؛ علائم نگارشی لاتین به معادل keyboard-map شوند.
+
+**فاز:** ۲ (refinement — blocker برای scorer/shift دقیق)
+
+**وابستگی:** E3
+
+**طراحی:** [layout-fidelity-v2.md §1](./plans/layout-fidelity-v2.md)
+
+**وضعیت:** ⬜ planned (۰/۴)
+
+**اصل:** «فقط آنچه واقعاً equivalent است یکی شود» — آ/أ/إ/ئ/ة جدا بمانند؛ فقط ي→ی، ك→ک، 0–9→۰–۹، و punct map.
+
+---
+
+### E16-S1 — تعریف `NORMALIZATION_CONFIG_V2`
+
+**به‌عنوان** طراح، **می‌خواهم** سیاست نرمال‌سازی نسخه‌دار و محدود داشته باشم **تا** frequency corpus با keystroke واقعی منطبق باشد.
+
+**معیار پذیرش:**
+- [ ] `NORMALIZATION_CONFIG_V2` با `normalizedVersion: "fa-normalize-v2"`
+- [ ] حذف `ى→ی` و `ة→ه` از `CHAR_VARIANT_MAP`
+- [ ] `digitPolicy: "persian"` به‌عنوان default جدید
+- [ ] `PUNCT_VARIANT_MAP` برای `,`→`،`، `;`→`؛` (و موارد مصوب دیگر)
+- [ ] تست‌های `normalize-fa.test.ts` برای موارد ممنوع (آ≠ا، ئ≠ی)
+
+---
+
+### E16-S2 — Rebuild artifactهای preset corpus
+
+**به‌عنوان** توسعه‌دهنده، **می‌خواهم** n-gramهای wiki-fa/varzesh3 با v2 دوباره ساخته شوند **تا** live score و leaderboard یک منبع حقیقت داشته باشند.
+
+**معیار پذیرش:**
+- [ ] `corpus:build` با v2 اجرا و artifact commit/regenerate
+- [ ] manifest شامل `normalizedVersion: fa-normalize-v2`
+- [ ] `validate-artifact` و preset loader سازگار
+- [ ] تست integration: char counts برای «،» و «؟» غیرصفر
+
+---
+
+### E16-S3 — ممیزی charset و علائم
+
+**به‌عنوان** طراح، **می‌خواهم** مطمئن شوم `.` `!` `؟` `،` در n-gram شمرده می‌شوند **تا** layout روی punctuation هم optimize شود.
+
+**معیار پذیرش:**
+- [ ] fixture corpus با علائم لاتین و فارسی → همان freq canonical
+- [ ] document در `layout-fidelity-v2.md` لیست charهای charset
+- [ ] هیچ علامت keyboard-map‌شده در filter حذف نشود
+
+---
+
+### E16-S4 — سیاست leaderboard برای نسخهٔ corpus
+
+**به‌عنوان** اپراتور، **می‌خواهم** submitهای v1 و v2 قابل مقایسه نباشند **تا** ranking fair بماند.
+
+**معیار پذیرش:**
+- [ ] `ScoreSnapshot`/`NgramStats` با `normalizedVersion` v2
+- [ ] leaderboard filter یا badge برای snapshot قدیمی (document)
+- [ ] submit جدید فقط با artifact v2
+
+---
+
+## E17 — Shift-Aware Scoring
+
+**هدف:** لحاظ کردن هزینه/سهم keystrokeهای Shift در scorer و insights — trade-off pinky offload vs shift fatigue.
+
+**فاز:** ۲
+
+**وابستگی:** E4، E16 (توصیه‌شده)
+
+**طراحی:** [layout-fidelity-v2.md §2](./plans/layout-fidelity-v2.md)
+
+**وضعیت:** ⬜ planned (۰/۳)
+
+---
+
+### E17-S1 — متریک‌های shift در `ScoreBreakdown`
+
+**به‌عنوان** طراح، **می‌خواهم** بدانم چند درصد تایپ corpus روی لایهٔ shift است **تا** تصمیم base↔shift آگاهانه باشد.
+
+**معیار پذیرش:**
+- [ ] `shiftLayerShare`, `shiftWeightedCost` در `ScoreBreakdown`
+- [ ] محاسبه در unigram loop با `resolution.layer`
+- [ ] `SCORING_CONFIG_V2` + `scorerVersion: "2.0.0"`
+- [ ] golden fixture برای فارسی استاندارد
+
+---
+
+### E17-S2 — وزن shift در total score
+
+**به‌عنوان** طراح، **می‌خواهم** layout با shift بیش از حد (نسبت به baseline) penalty بگیرد **تا** scorer trade-off را منعکس کند.
+
+**معیار پذیرش:**
+- [ ] `ScoringWeights.shiftKeyPenalty` versioned
+- [ ] `compute-score.test.ts`: انتقال «آ» base→shift → total پایین‌تر
+- [ ] backward-compat test یا migration note برای v1 snapshots
+
+---
+
+### E17-S3 — Insights و glossary برای Shift
+
+**به‌عنوان** کاربر، **می‌خواهم** در کارت ضعف/قوت ببینم Shift زیاد/کم است **تا** بدانم چرا pinky سبک شده.
+
+**معیار پذیرش:**
+- [ ] `InsightMetric` شامل `shiftLayerShare`
+- [ ] `derive-insights.ts` + `metric-glossary.ts` فارسی
+- [ ] ranking-hint rule جدید (اولویت بعد از missing chars)
+
+---
+
+## E18 — Layout Radar Chart (Spider)
+
+**هدف:** نمایش ۶ محور ارگونومی روی نمودار رادار با overlay چیدمان فعلی و فارسی استاندارد.
+
+**فاز:** ۲ (refinement)
+
+**وابستگی:** E15، E17
+
+**طراحی:** [layout-fidelity-v2.md §3](./plans/layout-fidelity-v2.md)
+
+**وضعیت:** ⬜ planned (۰/۳)
+
+---
+
+### E18-S1 — `buildRadarProfile` pure function
+
+**به‌عنوان** توسعه‌دهنده، **می‌خواهم** breakdown را به ۶ محور ۰–۱۰۰ تبدیل کنم **تا** UI و E9 reuse کنند.
+
+**معیار پذیرش:**
+- [ ] `src/lib/scoring/insights/radar-profile.ts`
+- [ ] محورها: homeRow, handBalance, sameFinger, rowSwitch, weakKeys, shiftLoad
+- [ ] normalize نسبت به baseline breakdown
+- [ ] unit tests با fixture
+
+---
+
+### E18-S2 — کامپوننت `LayoutRadarChart` (SVG)
+
+**به‌عنوان** کاربر، **می‌خواهم** spider chart ببینم **تا** در یک نگاه وضعیت کلی را با استاندارد مقایسه کنم.
+
+**معیار پذیرش:**
+- [ ] SVG بدون dependency chart جدید
+- [ ] دو series: current + baseline (dashed)
+- [ ] legend فارسی + a11y
+- [ ] در نمای ساده score panel
+
+---
+
+### E18-S3 — wire به `useLiveScore` / baseline cache
+
+**به‌عنوان** کاربر، **می‌خواهم** با تغییر preset corpus یا layout، radar به‌روز شود **تا** real-time باشد.
+
+**معیار پذیرش:**
+- [ ] baseline breakdown cache (نه فقط total)
+- [ ] component test رندر polygon
+- [ ] stale-while-revalidate هماهنگ با score hero
+
+---
+
+## E19 — Preset Layout Selector
+
+**هدف:** انتخاب layout از پیش‌تعریف‌شده (فارسی استاندارد + فارسی قدیمی Windows) و اعمال روی keyboard editor.
+
+**فاز:** ۲
+
+**وابستگی:** E1، E5، E8
+
+**طراحی:** [layout-fidelity-v2.md §4](./plans/layout-fidelity-v2.md)
+
+**وضعیت:** ⬜ planned (۰/۴)
+
+---
+
+### E19-S1 — KLE «فارسی قدیمی Windows»
+
+**به‌عنوان** طراح، **می‌خواهم** mapping kbdfa legacy روی geometry ۶۰٪ داشته باشم **تا** کاربران قدیمی layout خود را ببینند.
+
+**معیار پذیرش:**
+- [ ] `persian-legacy-windows-60.ts` + تست charset/completeness
+- [ ] منبع mapping documented (Windows pre-9147)
+- [ ] review دستی حداقل ردیف home و shift
+
+---
+
+### E19-S2 — `LayoutPreset` registry
+
+**به‌عنوان** توسعه‌دهنده، **می‌خواهم** API یکسان برای presetها **تا** UI و baseline از آن بخوانند.
+
+**معیار پذیرش:**
+- [ ] `src/lib/layout/presets/index.ts`
+- [ ] `LayoutPresetId`, `getLayoutPreset`, `parseLayoutPreset`
+- [ ] `isBaseline` flag برای persian-standard-60
+- [ ] export از `src/lib/layout/index.ts`
+
+---
+
+### E19-S3 — UI dropdown + load با confirm
+
+**به‌عنوان** کاربر، **می‌خواهم** از dropdown layout انتخاب کنم **تا** روی keyboard اعمال شود.
+
+**معیار پذیرش:**
+- [ ] `layout-preset-select.tsx` در toolbar
+- [ ] `LOAD_PRESET` action + undo stack reset
+- [ ] confirm اگر draft dirty
+- [ ] `localStorage` key `pkbl-layout-preset`
+- [ ] header نام preset فعلی (نه hardcode)
+
+---
+
+### E19-S4 — Baseline و charset preset-aware
+
+**به‌عنوان** کاربر، **می‌خواهم** مقایسه و radar نسبت به **فارسی استاندارد** بماند حتی اگر preset قدیمی load شده **تا** مرجع ثابت باشد.
+
+**معیار پذیرش:**
+- [ ] `getBaselineScore`/`getBaselineBreakdown` همیشه persian-standard-60
+- [ ] palette charset = union یا preset-scoped (document تصمیم)
+- [ ] تست: load legacy → baseline unchanged
+
+---
+
 ## وابستگی‌های بین اپیک‌ها
 
 ```mermaid
@@ -955,12 +1176,18 @@ flowchart TD
     E1 --> E2 & E5
     E2 --> E4
     E3 --> E4
+    E3 --> E16
+    E16 --> E17
     E4 --> E6 & E7 & E10 & E11 & E15
+    E17 --> E18
+    E16 --> E19
+    E19 --> E18
     E12 --> E5 & E6
     E5 --> E6 & E8 & E9 & E11
     E6 --> E7 & E9 & E15
     E8 --> E9 & E10
     E1 --> E13
+    E1 --> E19
     E10 --> E14
     E5 --> E14
 ```
@@ -1041,6 +1268,7 @@ flowchart TD
 
 | نسخه | تاریخ | تغییر |
 |------|-------|-------|
+| 0.4 | ۱۴۰۵/۰۴/۱۰ | افزودن E16–E19 (normalization v2، shift scoring، radar، preset layouts) |
 | 0.3 | ۱۴۰۵/۰۴/۰۹ | افزودن E15 Score Comprehension UX (۷ استوری) |
 | 0.2 | ۱۴۰۵/۰۴/۰۷ | علامت‌گذاری E0–E2 به‌عنوان انجام‌شده؛ جزئیات پیاده‌سازی E2 |
 | 0.1 | ۱۴۰۵/۰۴/۰۷ | نسخهٔ اول — epics E0–E14 |

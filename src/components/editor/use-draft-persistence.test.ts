@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { assignChar, getDefaultTemplate } from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
-import { CORPUS_PRESET_STORAGE_KEY } from "@/lib/corpus/client-presets";
+import { CORPUS_PRESET_STORAGE_KEY, type CorpusPresetId } from "@/lib/corpus/client-presets";
 import {
   createEditorDraft,
   EDITOR_DRAFT_STORAGE_KEY,
@@ -69,11 +69,17 @@ describe("useDraftPersistence", () => {
 
   it("auto-saves layout changes after debounce", async () => {
     const { rerender } = renderHook(
-      ({ layout, presetId }) => useDraftPersistence(layout, presetId),
+      ({
+        layout,
+        presetId,
+      }: {
+        layout: ReturnType<typeof getDefaultTemplate>;
+        presetId: CorpusPresetId;
+      }) => useDraftPersistence(layout, presetId),
       {
         initialProps: {
           layout: getDefaultTemplate(),
-          presetId: "wiki-fa" as const,
+          presetId: "wiki-fa" satisfies CorpusPresetId,
         },
       },
     );
@@ -104,11 +110,17 @@ describe("useDraftPersistence", () => {
 
   it("syncs standalone corpus preset key on save", async () => {
     const { rerender } = renderHook(
-      ({ layout, presetId }) => useDraftPersistence(layout, presetId),
+      ({
+        layout,
+        presetId,
+      }: {
+        layout: ReturnType<typeof getDefaultTemplate>;
+        presetId: CorpusPresetId;
+      }) => useDraftPersistence(layout, presetId),
       {
         initialProps: {
           layout: getDefaultTemplate(),
-          presetId: "wiki-fa" as const,
+          presetId: "wiki-fa" satisfies CorpusPresetId,
         },
       },
     );
@@ -133,7 +145,7 @@ describe("useDraftPersistence", () => {
     const originalSetItem = Storage.prototype.setItem;
     const setItemSpy = vi
       .spyOn(Storage.prototype, "setItem")
-      .mockImplementation(function setItem(key: string, value: string) {
+      .mockImplementation(function (this: Storage, key: string, value: string) {
         if (key === EDITOR_DRAFT_STORAGE_KEY) {
           throw new DOMException("Quota exceeded", "QuotaExceededError");
         }

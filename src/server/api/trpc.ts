@@ -10,8 +10,9 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getClientIp, assertRateLimit } from "~/server/api/rate-limit";
+import { getClientIp, assertRateLimit, assertRateLimitDb } from "~/server/api/rate-limit";
 import { db } from "~/server/db";
+import { env } from "~/env";
 
 /**
  * 1. CONTEXT
@@ -28,7 +29,7 @@ import { db } from "~/server/db";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
-    clientIp: getClientIp(opts.headers),
+    clientIp: getClientIp(opts.headers, { trustProxy: env.TRUST_PROXY }),
     ...opts,
   };
 };
@@ -113,10 +114,21 @@ const createRateLimitMiddleware = (config: {
   keyPrefix: string;
 }) =>
   t.middleware(async ({ ctx, next, path }) => {
-    assertRateLimit(
-      `${config.keyPrefix}:${ctx.clientIp}:${path}`,
-      { limit: config.limit, windowMs: config.windowMs },
-    );
+    const key = `${config.keyPrefix}:${ctx.clientIp}:${path}`;
+
+    if (process.env.VITEST === "true") {
+      assertRateLimit(key, {
+        limit: config.limit,
+        windowMs: config.windowMs,
+      });
+    } else {
+      await assertRateLimitDb(
+        key,
+        { limit: config.limit, windowMs: config.windowMs },
+        ctx.db,
+      );
+    }
+
     return next();
   });
 

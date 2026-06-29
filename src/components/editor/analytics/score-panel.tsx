@@ -30,12 +30,14 @@ type ScorePanelProps = {
   layout: Layout;
   liveScore: LiveScoreState;
   onHotspotSelect: (keyId: string) => void;
+  onOpenSubmit?: () => void;
 };
 
 export function ScorePanel({
   layout,
   liveScore,
   onHotspotSelect,
+  onOpenSubmit,
 }: ScorePanelProps) {
   const { result, ngramStats, isStale, error, presetId, setPresetId, scoreDelta, showScoreDelta } =
     liveScore;
@@ -161,6 +163,19 @@ export function ScorePanel({
             <BreakdownAccordion breakdown={result.breakdown} />
           </div>
         </>
+      ) : null}
+
+      {onOpenSubmit ? (
+        <div className="mt-4 border-t border-slate-800 pt-4">
+          <button
+            type="button"
+            onClick={onOpenSubmit}
+            disabled={!result || isStale}
+            className="w-full rounded-lg border border-sky-600/60 bg-sky-950/40 px-3 py-2.5 text-sm font-medium text-sky-100 enabled:hover:bg-sky-900/50 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ثبت در جدول امتیازات
+          </button>
+        </div>
       ) : null}
     </aside>
   );

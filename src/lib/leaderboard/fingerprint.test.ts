@@ -5,7 +5,12 @@ import { assignChar } from "@/lib/layout/operations";
 import { keyIdAt } from "@/lib/layout/test-utils";
 
 import { computeLayoutFingerprint } from "./fingerprint";
-import { computeRank, evaluateSubmitScore } from "./submit-rules";
+import {
+  computeRank,
+  evaluateSubmitEligibility,
+  evaluateSubmitScore,
+  MIN_LAYOUT_COMPLETENESS,
+} from "./submit-rules";
 
 describe("computeLayoutFingerprint", () => {
   it("is stable for the same layout", () => {
@@ -56,6 +61,33 @@ describe("evaluateSubmitScore", () => {
     expect(evaluateSubmitScore(850, 900)).toEqual({
       accepted: false,
       reason: "score_too_low",
+    });
+  });
+
+  it("rejects equal score as not better", () => {
+    expect(evaluateSubmitScore(900, 900)).toEqual({
+      accepted: false,
+      reason: "score_too_low",
+    });
+  });
+});
+
+describe("evaluateSubmitEligibility", () => {
+  it("rejects incomplete layouts before score check", () => {
+    expect(
+      evaluateSubmitEligibility(950, null, MIN_LAYOUT_COMPLETENESS - 1),
+    ).toEqual({
+      accepted: false,
+      reason: "incomplete_layout",
+    });
+  });
+
+  it("accepts complete first entry", () => {
+    expect(
+      evaluateSubmitEligibility(950, null, MIN_LAYOUT_COMPLETENESS),
+    ).toEqual({
+      accepted: true,
+      reason: "first_entry",
     });
   });
 });
