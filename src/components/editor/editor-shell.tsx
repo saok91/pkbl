@@ -149,7 +149,9 @@ export function EditorShell() {
     >
       <div className="min-h-dvh bg-gradient-to-b from-slate-900 to-slate-950 text-white">
         <header className="border-b border-slate-800 bg-slate-900/80 px-4 py-3">
-          <div className={`mx-auto flex ${EDITOR_MAX_WIDTH_CLASS} flex-col gap-3 sm:flex-row sm:items-center sm:justify-between`}>
+          <div
+            className={`mx-auto flex ${EDITOR_MAX_WIDTH_CLASS} flex-col gap-3 sm:flex-row sm:items-center sm:justify-between`}
+          >
             <div>
               <p className="text-xs tracking-widest text-slate-400 uppercase">
                 Persian Keyboard Layout Lab

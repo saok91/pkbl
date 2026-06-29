@@ -60,7 +60,9 @@ export function useLiveScore(layout: Layout): LiveScoreState {
           return;
         }
         const message =
-          cause instanceof Error ? cause.message : "خطای ناشناخته در بارگذاری corpus";
+          cause instanceof Error
+            ? cause.message
+            : "خطای ناشناخته در بارگذاری corpus";
         setError(message);
         setNgramStats(null);
       })
@@ -97,7 +99,9 @@ export function useLiveScore(layout: Layout): LiveScoreState {
       return new Set<string>();
     }
     return new Set(
-      result.hotspots.slice(0, HOTSPOT_RING_COUNT).map((hotspot) => hotspot.keyId),
+      result.hotspots
+        .slice(0, HOTSPOT_RING_COUNT)
+        .map((hotspot) => hotspot.keyId),
     );
   }, [result]);
 

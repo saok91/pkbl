@@ -135,7 +135,7 @@ export const Keycap = memo(function Keycap({
         {...draggable.listeners}
         {...draggable.attributes}
         className={`relative flex items-center justify-center rounded-md border text-sm transition-colors ${stateClassName}${
-          showHotspotRing ? " ring-2 ring-amber-400/70" : ""
+          showHotspotRing ? "ring-2 ring-amber-400/70" : ""
         } ${draggable.isDragging ? "pointer-events-none invisible" : ""}`}
         aria-label={
           isShiftLayerToggle

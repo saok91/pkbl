@@ -45,9 +45,7 @@ export function HotspotList({
   const hasMore = hotspots.length > PANEL_HOTSPOT_COUNT;
 
   if (hotspots.length === 0) {
-    return (
-      <p className="text-sm text-slate-500">نقطه پرهزینه‌ای یافت نشد.</p>
-    );
+    return <p className="text-sm text-slate-500">نقطه پرهزینه‌ای یافت نشد.</p>;
   }
 
   return (
@@ -68,7 +66,7 @@ export function HotspotList({
                   {getCharDisplayLabel(hotspot.char)}
                 </span>
                 <span className="mx-1.5 text-slate-600">·</span>
-                <span className="tabular-nums text-slate-400">
+                <span className="text-slate-400 tabular-nums">
                   {formatCost(hotspot.cost)}
                 </span>
               </span>

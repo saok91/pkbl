@@ -16,7 +16,10 @@ type FingerLoadBarsProps = {
 };
 
 export function FingerLoadBars({ fingerLoad }: FingerLoadBarsProps) {
-  const maxLoad = Math.max(...FINGER_ORDER.map((finger) => fingerLoad[finger]), 0.01);
+  const maxLoad = Math.max(
+    ...FINGER_ORDER.map((finger) => fingerLoad[finger]),
+    0.01,
+  );
 
   return (
     <div className="space-y-2">
@@ -28,7 +31,7 @@ export function FingerLoadBars({ fingerLoad }: FingerLoadBarsProps) {
           <div key={finger} className="space-y-1">
             <div className="flex items-baseline justify-between text-xs">
               <span className="text-slate-400">{FINGER_LABEL_FA[finger]}</span>
-              <span className="tabular-nums text-slate-300">
+              <span className="text-slate-300 tabular-nums">
                 {formatPercent(load * 100)}
               </span>
             </div>

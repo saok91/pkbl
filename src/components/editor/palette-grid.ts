@@ -101,7 +101,7 @@ export function computePaletteUnitSize(
 
   const scale = availableWidth / totalAtMax;
   let unitPx = Math.max(minUnitPx, Math.floor(maxUnitPx * scale));
-  let gapPx = Math.max(2, Math.round(baseGapPx * scale));
+  const gapPx = Math.max(2, Math.round(baseGapPx * scale));
 
   while (
     unitPx > minUnitPx &&

@@ -152,9 +152,8 @@ export function CharacterPalette({
   onCharClick,
 }: CharacterPaletteProps) {
   const sectionsRef = useRef<HTMLDivElement>(null);
-  const [layoutMetrics, setLayoutMetrics] = useState<PaletteLayoutMetrics | null>(
-    null,
-  );
+  const [layoutMetrics, setLayoutMetrics] =
+    useState<PaletteLayoutMetrics | null>(null);
 
   const assignedSets = useMemo(() => getAssignedCharSets(layout), [layout]);
 

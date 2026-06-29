@@ -31,7 +31,8 @@ describe("computePaletteUnitSize", () => {
   const columnCounts = [6, 2, 2, 1, 1, 2, 5];
 
   it("keeps keyboard key size when container is wide enough", () => {
-    const wide = computePaletteTotalWidth(columnCounts, KEY_UNIT_PX, 5, 12) + 10;
+    const wide =
+      computePaletteTotalWidth(columnCounts, KEY_UNIT_PX, 5, 12) + 10;
     const result = computePaletteUnitSize(columnCounts, wide);
     expect(result.unitPx).toBe(KEY_UNIT_PX);
   });
@@ -43,12 +44,7 @@ describe("computePaletteUnitSize", () => {
     });
     expect(result.unitPx).toBeLessThan(KEY_UNIT_PX);
     expect(
-      computePaletteTotalWidth(
-        columnCounts,
-        result.unitPx,
-        result.gapPx,
-        12,
-      ),
+      computePaletteTotalWidth(columnCounts, result.unitPx, result.gapPx, 12),
     ).toBeLessThanOrEqual(narrow);
   });
 });

@@ -4,10 +4,7 @@ import { getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
 import { computeScore } from "@/lib/scoring";
 import { buildGoldenNgramStats } from "@/lib/scoring/fixtures/golden";
 
-import {
-  deriveRankingHint,
-  hasUnassignedEditableChars,
-} from "./ranking-hints";
+import { deriveRankingHint, hasUnassignedEditableChars } from "./ranking-hints";
 
 describe("deriveRankingHint", () => {
   it("suggests assigning missing chars when layout is incomplete", () => {
@@ -33,9 +30,9 @@ describe("deriveRankingHint", () => {
       rowSwitching: 0,
     };
 
-    expect(deriveRankingHint({ layout, breakdown: balancedBreakdown })).toContain(
-      "متعادل",
-    );
+    expect(
+      deriveRankingHint({ layout, breakdown: balancedBreakdown }),
+    ).toContain("متعادل");
   });
 
   it("prioritizes missing-char hint over ergonomics hints", () => {

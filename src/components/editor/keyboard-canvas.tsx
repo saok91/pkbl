@@ -7,7 +7,11 @@ import type { Layer, Layout } from "@/lib/layout/types";
 import { KEYBOARD_PADDING_PX } from "./constants";
 import { getAlternateLabel, getKeyLabel } from "./editor-state";
 import { Keycap } from "./keycap";
-import { computeKeyboardDimensions, computeKeyRects, computeKeyboardScale } from "./keyboard-layout";
+import {
+  computeKeyboardDimensions,
+  computeKeyRects,
+  computeKeyboardScale,
+} from "./keyboard-layout";
 
 type KeyboardCanvasProps = {
   layout: Layout;
@@ -59,9 +63,7 @@ export function KeyboardCanvas({
         return;
       }
       const availableWidth = container.clientWidth - KEYBOARD_PADDING_PX * 2;
-      setScale(
-        computeKeyboardScale(availableWidth, dimensions.width),
-      );
+      setScale(computeKeyboardScale(availableWidth, dimensions.width));
     };
 
     updateScale();

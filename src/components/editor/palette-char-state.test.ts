@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { assignChar, getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
+import {
+  assignChar,
+  getBlankAnsiTemplate,
+  getDefaultTemplate,
+} from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
 
 import {

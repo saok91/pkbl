@@ -13,7 +13,10 @@ import { assignChar } from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
 import { clearArtifactCache } from "@/lib/corpus/fetch-artifact";
 import { ngramStatsToArtifact } from "@/lib/corpus/serialize";
-import { buildGoldenLayout, buildGoldenNgramStats } from "@/lib/scoring/fixtures/golden";
+import {
+  buildGoldenLayout,
+  buildGoldenNgramStats,
+} from "@/lib/scoring/fixtures/golden";
 
 import { useLiveScore } from "./use-live-score";
 
@@ -22,11 +25,7 @@ function mockFetchArtifact(presetId: CorpusPresetId = "wiki-fa") {
     ...buildGoldenNgramStats(),
     corpusId: presetId,
   };
-  const artifact = ngramStatsToArtifact(
-    stats,
-    "1",
-    "2026-06-28T00:00:00.000Z",
-  );
+  const artifact = ngramStatsToArtifact(stats, "1", "2026-06-28T00:00:00.000Z");
   vi.stubGlobal(
     "fetch",
     vi.fn().mockResolvedValue({

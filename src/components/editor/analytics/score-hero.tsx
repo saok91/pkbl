@@ -41,7 +41,7 @@ export function ScoreHero({
           onChange={(event) => {
             onPresetChange(event.target.value as CorpusPresetId);
           }}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+          className="w-full rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:outline-none"
         >
           {CLIENT_CORPUS_PRESETS.map((preset) => (
             <option key={preset.id} value={preset.id}>
@@ -65,7 +65,7 @@ export function ScoreHero({
       >
         <p className="text-xs text-slate-400">امتیاز کلی</p>
         <p
-          className="text-4xl font-bold tabular-nums text-white"
+          className="text-4xl font-bold text-white tabular-nums"
           aria-live="polite"
           aria-atomic="true"
         >
