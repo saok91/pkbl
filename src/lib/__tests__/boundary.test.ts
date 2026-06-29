@@ -59,6 +59,7 @@ describe("domain module registry", () => {
     expect(scoring.SCORING_MODULE).toBe("scoring");
     expect(scoring.computeScore).toBeTypeOf("function");
     expect(leaderboard.LEADERBOARD_MODULE).toBe("leaderboard");
+    expect(leaderboard.computeLayoutFingerprint).toBeTypeOf("function");
     expect(exportMod.EXPORT_MODULE).toBe("export");
   });
 });

@@ -139,6 +139,7 @@ export function EditorShell() {
 
   return (
     <DndContext
+      id="pkbl-editor-dnd"
       sensors={sensors}
       collisionDetection={editorCollisionDetection}
       measuring={measuring}

@@ -573,8 +573,12 @@ pkbl/
 
 | Procedure | نوع | ورودی | خروجی |
 |-----------|-----|-------|--------|
-| `score.evaluate` | query/mutation | `{ layout, corpusPresetId, customText? }` | `ScoreResult` |
-| `score.compare` | query | `{ layouts[], corpusPresetId }` | `ScoreResult[]` + ranking |
+| `score.evaluate` | mutation | `{ layout (wire), corpusPresetId, customText? }` | `ScoreResult` |
+| `score.compare` | mutation | `{ layouts[] (wire), corpusPresetId }` | `ScoreResult[]` + ranking |
+
+**Rate limit:** ۶۰ req/min/IP (per procedure path).
+
+**Layout wire input:** `layout` در ورودی‌های score/layout/leaderboard به‌صورت JSON-serializable (`keys[]`, `assignments[]`) validate می‌شود — نه Map خام.
 
 ### ۱۰.۲ `layout`
 
@@ -590,15 +594,23 @@ pkbl/
 | Procedure | نوع | ورودی | خروجی |
 |-----------|-----|-------|--------|
 | `corpus.listPresets` | query | — | `CorpusPreset[]` |
-| `corpus.analyzeCustom` | mutation | `{ text }` | `NgramStats` (cached) |
+| `corpus.analyzeCustom` | mutation | `{ text }` | `NgramArtifact` (LRU-cached server-side) |
+
+**Rate limit:** ۳۰ req/min/IP.
 
 ### ۱۰.۴ `leaderboard`
 
 | Procedure | نوع | ورودی | خروجی |
 |-----------|-----|-------|--------|
-| `leaderboard.list` | query | `{ corpusPresetId, limit, cursor }` | paginated ranks |
-| `leaderboard.submit` | mutation | `{ layout, corpusPresetId, alias? }` | `{ accepted, rank, reason }` |
+| `leaderboard.list` | query | `{ corpusPresetId, limit, cursor? }` | paginated ranks + `meta.total` |
+| `leaderboard.submit` | mutation | `{ layout (wire), corpusPresetId, alias? }` | `{ accepted, rank, reason }` |
 | `leaderboard.templates` | query | — | promoted templates |
+
+**Pagination:** `cursor` = offset صفحه به‌صورت string (مثلاً `"0"`, `"20"`). `rank` = offset + index + 1 (سراسری). `meta.cursor` = offset بعدی یا `null`.
+
+**Template slug:** `layout.templateId` در submit با slug `KeyboardTemplate` map می‌شود؛ legacy `persian-standard-60` → `template-60-ansi`.
+
+**Rate limit submit:** ۵ req/hour/IP.
 
 **Envelope پاسخ (consistent):**
 
@@ -607,7 +619,7 @@ type ApiResult<T> = {
   success: boolean
   data: T | null
   error: string | null
-  meta?: { total?: number; page?: number; limit?: number }
+  meta?: { total?: number; page?: number; limit?: number; cursor?: string | null }
 }
 ```
 
@@ -756,7 +768,7 @@ model PromotionRecord {
 |-------|--------|
 | **Performance** | n-gram precompute؛ debounce scoring؛ scorer بدون allocation اضافه در hot path |
 | **Reproducibility** | `scorerVersion` + `corpusPreset.version` + `normalizedVersion` در every snapshot |
-| **Security (v1)** | rate limit روی submit و custom corpus؛ max length برای paste |
+| **Security (v1)** | rate limit: submit ۵/h/IP، `corpus.analyzeCustom` ۳۰/min/IP، score ۶۰/min/IP؛ max length ۵۰KB برای paste |
 | **i18n** | UI فارسی-first؛ اعداد فارسی در نمایش |
 | **Accessibility** | keyboard navigation برای editor (هم‌راستا با موضوع محصول) |
 | **Deployment** | Vercel + managed Postgres (Neon/Supabase) یا Docker self-host |

@@ -9,6 +9,7 @@ describe("health router", () => {
   it("returns ok with echo payload", async () => {
     const caller = createHealthCaller({
       db: {} as never,
+      clientIp: "test-health",
       headers: new Headers(),
     });
 

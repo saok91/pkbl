@@ -31,6 +31,7 @@ import {
   computeSectionGridWidth,
   paletteCustomLabelFontSize,
 } from "./palette-grid";
+import { useClientMounted } from "./use-client-mounted";
 
 const PALETTE_SECTION_GAP_PX = 12;
 
@@ -82,6 +83,7 @@ function PaletteChar({
   isPending: boolean;
   onClick: () => void;
 }) {
+  const isClientMounted = useClientMounted();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: DRAG_ID.char(char),
     data: { type: "char", char },
@@ -94,8 +96,8 @@ function PaletteChar({
       unitPx={unitPx}
       buttonRef={setNodeRef}
       dragProps={{
-        ...listeners,
-        ...attributes,
+        ...(isClientMounted ? listeners : {}),
+        ...(isClientMounted ? attributes : {}),
         "aria-pressed": isPending,
       }}
       className={`${

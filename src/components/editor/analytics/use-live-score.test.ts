@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   CORPUS_PRESET_STORAGE_KEY,
+  DEFAULT_CORPUS_PRESET_ID,
   type CorpusPresetId,
 } from "@/lib/corpus/client-presets";
 import { assignChar } from "@/lib/layout";
@@ -44,6 +45,34 @@ describe("useLiveScore", () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+  });
+
+  it("uses default preset on first render even when localStorage differs", () => {
+    localStorage.setItem(CORPUS_PRESET_STORAGE_KEY, "varzesh3");
+    const layout = buildGoldenLayout();
+    let presetOnFirstRender: CorpusPresetId | undefined;
+
+    renderHook(() => {
+      const live = useLiveScore(layout);
+      if (presetOnFirstRender === undefined) {
+        presetOnFirstRender = live.presetId;
+      }
+      return live;
+    });
+
+    expect(presetOnFirstRender).toBe(DEFAULT_CORPUS_PRESET_ID);
+  });
+
+  it("hydrates preset from localStorage after mount", async () => {
+    localStorage.setItem(CORPUS_PRESET_STORAGE_KEY, "varzesh3");
+    mockFetchArtifact("varzesh3");
+
+    const layout = buildGoldenLayout();
+    const { result } = renderHook(() => useLiveScore(layout));
+
+    await waitFor(() => {
+      expect(result.current.presetId).toBe("varzesh3");
+    });
   });
 
   it("computes score after debounce when layout is ready", async () => {

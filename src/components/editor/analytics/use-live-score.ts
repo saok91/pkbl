@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
+  CLIENT_CORPUS_PRESETS,
+  DEFAULT_CORPUS_PRESET_ID,
   type CorpusPresetId,
   readStoredCorpusPresetId,
   writeStoredCorpusPresetId,
@@ -27,14 +29,21 @@ export type LiveScoreState = {
 };
 
 export function useLiveScore(layout: Layout): LiveScoreState {
-  const [presetId, setPresetIdState] = useState<CorpusPresetId>(
-    readStoredCorpusPresetId,
-  );
+  const [presetId, setPresetIdState] =
+    useState<CorpusPresetId>(DEFAULT_CORPUS_PRESET_ID);
   const [ngramStats, setNgramStats] = useState<NgramStats | null>(null);
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [isStale, setIsStale] = useState(true);
   const [isLoadingPreset, setIsLoadingPreset] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = readStoredCorpusPresetId();
+    if (stored !== DEFAULT_CORPUS_PRESET_ID) {
+      setPresetIdState(stored);
+      setIsStale(true);
+    }
+  }, []);
 
   const setPresetId = useCallback((nextPresetId: CorpusPresetId) => {
     setPresetIdState(nextPresetId);

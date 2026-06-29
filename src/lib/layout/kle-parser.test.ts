@@ -29,7 +29,7 @@ describe("parseLabelLayers", () => {
 describe("parseKle — 60% template", () => {
   it("parses Appendix A template without error", () => {
     const layout = getDefaultTemplate();
-    expect(layout.templateId).toBe(PERSIAN_STANDARD_60_ID);
+    expect(layout.templateId).toBe(TEMPLATE_60_ANSI_ID);
     expect(layout.keys.size).toBeGreaterThan(0);
   });
 
@@ -80,7 +80,7 @@ describe("serializeKle round-trip", () => {
   it("parse → serialize → parse is equivalent", () => {
     const original = getDefaultTemplate();
     const serialized = serializeKle(original);
-    const reparsed = parseKle(serialized, PERSIAN_STANDARD_60_ID);
+    const reparsed = parseKle(serialized, TEMPLATE_60_ANSI_ID);
     expect(layoutsEquivalent(original, reparsed)).toBe(true);
   });
 

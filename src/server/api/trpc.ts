@@ -10,6 +10,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { getClientIp, assertRateLimit } from "~/server/api/rate-limit";
 import { db } from "~/server/db";
 
 /**
@@ -27,6 +28,7 @@ import { db } from "~/server/db";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
+    clientIp: getClientIp(opts.headers),
     ...opts,
   };
 };
@@ -105,4 +107,41 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
+const createRateLimitMiddleware = (config: {
+  limit: number;
+  windowMs: number;
+  keyPrefix: string;
+}) =>
+  t.middleware(async ({ ctx, next, path }) => {
+    assertRateLimit(
+      `${config.keyPrefix}:${ctx.clientIp}:${path}`,
+      { limit: config.limit, windowMs: config.windowMs },
+    );
+    return next();
+  });
+
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+export const scoreProcedure = publicProcedure.use(
+  createRateLimitMiddleware({
+    keyPrefix: "score",
+    limit: 60,
+    windowMs: 60_000,
+  }),
+);
+
+export const corpusAnalyzeProcedure = publicProcedure.use(
+  createRateLimitMiddleware({
+    keyPrefix: "corpus-analyze",
+    limit: 30,
+    windowMs: 60_000,
+  }),
+);
+
+export const leaderboardSubmitProcedure = publicProcedure.use(
+  createRateLimitMiddleware({
+    keyPrefix: "leaderboard-submit",
+    limit: 5,
+    windowMs: 60 * 60_000,
+  }),
+);

@@ -1,6 +1,6 @@
 # وضعیت توسعه — PKBL
 
-> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۹ (E15 Score Comprehension UX — planned)  
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۹ (E12 API Layer — hardened)  
 > **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
 
 **راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
@@ -52,10 +52,10 @@
 | E6 | S2 | Breakdown panel | ✅ |
 | E6 | S3 | Hotspots visualization | ✅ |
 | E6 | S4 | Ranking hint (توضیح انسانی) | ✅ |
-| E12 | S1 | tRPC score router | ⬜ |
-| E12 | S2 | tRPC layout router | ⬜ |
-| E12 | S3 | tRPC corpus router | ⬜ |
-| E12 | S4 | tRPC leaderboard router | ⬜ |
+| E12 | S1 | tRPC score router | ✅ |
+| E12 | S2 | tRPC layout router | ✅ |
+| E12 | S3 | tRPC corpus router | ✅ |
+| E12 | S4 | tRPC leaderboard router | ✅ |
 
 ## فاز ۲ (refinement) — Score Comprehension
 
@@ -137,9 +137,9 @@
 | E9 | Compare Layouts | 0/2 ⏸ |
 | E10 | Leaderboard & Promotion | 0/5 |
 | E11 | Character Placement Suggestions | 0/2 ⏸ |
-| E12 | API Layer | 0/4 |
+| E12 | API Layer | 4/4 ✅ |
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
 | E15 | Score Comprehension UX | 0/7 |
 
-**MVP:** 31/32 استوری block
+**MVP:** 27/30 استوری block (باقی‌مانده: E8-S1، E10-S1، E10-S2)

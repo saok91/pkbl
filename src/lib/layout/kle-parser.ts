@@ -233,7 +233,7 @@ export function parseKle(
 }
 
 export function getDefaultTemplate(): Layout {
-  return parseKleJson(PERSIAN_STANDARD_60_KLE, PERSIAN_STANDARD_60_ID);
+  return parseKleJson(PERSIAN_STANDARD_60_KLE, TEMPLATE_60_ANSI_ID);
 }
 
 /** Blank 60% ANSI geometry with QWERTY labels — for tests and reset baseline. */

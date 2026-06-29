@@ -9,6 +9,7 @@ import { isShiftModifierKey } from "@/lib/layout";
 import { DRAG_ID, KEYBOARD_PADDING_PX } from "./constants";
 import { KeyCharPopover } from "./key-char-popover";
 import type { KeyRect } from "./keyboard-layout";
+import { useClientMounted } from "./use-client-mounted";
 
 function getKeyAriaLabel(
   modifierLabel: string | undefined,
@@ -51,6 +52,7 @@ export const Keycap = memo(function Keycap({
   onPopoverClose,
 }: KeycapProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const isClientMounted = useClientMounted();
   const { keyId, key, x, y, width, height } = rect;
   const isEditable = key.isEditable;
   const isShiftLayerToggle = isShiftModifierKey(key.modifierLabel);
@@ -132,8 +134,8 @@ export const Keycap = memo(function Keycap({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={isClickable ? onClick : undefined}
-        {...draggable.listeners}
-        {...draggable.attributes}
+        {...(isClientMounted ? draggable.listeners : {})}
+        {...(isClientMounted ? draggable.attributes : {})}
         className={`relative flex items-center justify-center rounded-md border text-sm transition-colors ${stateClassName}${
           showHotspotRing ? "ring-2 ring-amber-400/70" : ""
         } ${draggable.isDragging ? "pointer-events-none invisible" : ""}`}
