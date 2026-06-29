@@ -7,13 +7,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   CORPUS_PRESET_STORAGE_KEY,
-  DEFAULT_CORPUS_PRESET_ID,
   type CorpusPresetId,
 } from "@/lib/corpus/client-presets";
 import { assignChar, swapKeys } from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
 import { clearArtifactCache } from "@/lib/corpus/fetch-artifact";
 import { ngramStatsToArtifact } from "@/lib/corpus/serialize";
+import { createEditorDraft, EDITOR_DRAFT_STORAGE_KEY } from "@/lib/persistence";
 import {
   buildGoldenLayout,
   buildGoldenNgramStats,
@@ -47,7 +47,7 @@ describe("useLiveScore", () => {
     vi.unstubAllGlobals();
   });
 
-  it("uses default preset on first render even when localStorage differs", () => {
+  it("reads stored preset on first render from localStorage", () => {
     localStorage.setItem(CORPUS_PRESET_STORAGE_KEY, "varzesh3");
     const layout = buildGoldenLayout();
     let presetOnFirstRender: CorpusPresetId | undefined;
@@ -60,19 +60,19 @@ describe("useLiveScore", () => {
       return live;
     });
 
-    expect(presetOnFirstRender).toBe(DEFAULT_CORPUS_PRESET_ID);
+    expect(presetOnFirstRender).toBe("varzesh3");
   });
 
-  it("hydrates preset from localStorage after mount", async () => {
+  it("prefers draft corpus preset over standalone storage key", () => {
     localStorage.setItem(CORPUS_PRESET_STORAGE_KEY, "varzesh3");
-    mockFetchArtifact("varzesh3");
+    localStorage.setItem(
+      EDITOR_DRAFT_STORAGE_KEY,
+      JSON.stringify(createEditorDraft(buildGoldenLayout(), "wiki-fa")),
+    );
 
-    const layout = buildGoldenLayout();
-    const { result } = renderHook(() => useLiveScore(layout));
+    const { result } = renderHook(() => useLiveScore(buildGoldenLayout()));
 
-    await waitFor(() => {
-      expect(result.current.presetId).toBe("varzesh3");
-    });
+    expect(result.current.presetId).toBe("wiki-fa");
   });
 
   it("computes score after debounce when layout is ready", async () => {

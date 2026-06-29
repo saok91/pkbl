@@ -1,6 +1,6 @@
 # وضعیت توسعه — PKBL
 
-> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۱۰ (E15 complete — ۷/۷)  
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۱۰ (E8-S1 complete)  
 > **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
 
 **راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
@@ -76,7 +76,7 @@
 | E7 | S1 | UI paste corpus | ⏸ |
 | E7 | S2 | پردازش client-side n-gram (ماژول مشترک) | ⏸ |
 | E7 | S3 | اعتبارسنجی server در submit | ⏸ |
-| E8 | S1 | Auto-save draft | ⬜ |
+| E8 | S1 | Auto-save draft | ✅ |
 | E8 | S2 | مدیریت چند layout محلی | ⏸ |
 | E8 | S3 | Export/import KLE file | ⏸ |
 | E9 | S1 | Compare mode دو layout | ⏸ |
@@ -133,7 +133,7 @@
 | E5 | Editor UI | 6/6 ✅ |
 | E6 | Score Analytics Panel | 4/4 ✅ |
 | E7 | Custom Corpus | 0/3 ⏸ |
-| E8 | Local Persistence | 0/3 |
+| E8 | Local Persistence | 1/3 |
 | E9 | Compare Layouts | 0/2 ⏸ |
 | E10 | Leaderboard & Promotion | 0/5 |
 | E11 | Character Placement Suggestions | 0/2 ⏸ |
@@ -142,4 +142,4 @@
 | E14 | Polish & Launch | 0/6 ⏸ |
 | E15 | Score Comprehension UX | 7/7 ✅ |
 
-**MVP:** 27/30 استوری block (باقی‌مانده: E8-S1، E10-S1، E10-S2)
+**MVP:** 28/30 استوری block (باقی‌مانده: E10-S1، E10-S2)

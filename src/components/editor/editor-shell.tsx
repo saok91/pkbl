@@ -11,11 +11,13 @@ import { ScorePanel } from "./analytics/score-panel";
 import { useLiveScore } from "./analytics/use-live-score";
 import { CharacterPalette } from "./character-palette";
 import { EDITOR_MAX_WIDTH_CLASS } from "./constants";
+import { DraftSaveIndicator } from "./draft-save-indicator";
 import { editorCollisionDetection } from "./drag-utils";
 import { EditorToolbar } from "./editor-toolbar";
 import { KeyboardCanvas } from "./keyboard-canvas";
 import { LayerToggle } from "./layer-toggle";
 import { useEditorDnD } from "./use-editor-dnd";
+import { useDraftPersistence } from "./use-draft-persistence";
 import { useEditorShellState } from "./use-editor-shell-state";
 import { useEditorShortcuts } from "./use-editor-shortcuts";
 
@@ -43,6 +45,12 @@ export function EditorShell() {
   } = useEditorShellState();
 
   const liveScore = useLiveScore(layout);
+
+  const draftPersistence = useDraftPersistence(
+    layout,
+    liveScore.presetId,
+    liveScore.setPresetId,
+  );
 
   const {
     sensors,
@@ -162,11 +170,24 @@ export function EditorShell() {
                 {PERSIAN_STANDARD_60_NAME} · ISIRI 9147
               </p>
             </div>
-            <LayerToggle activeLayer={activeLayer} onChange={setLayer} />
+            <div className="flex flex-col items-start gap-1 sm:items-end">
+              <LayerToggle activeLayer={activeLayer} onChange={setLayer} />
+              <DraftSaveIndicator
+                isHydrated={draftPersistence.isHydrated}
+                isSaving={draftPersistence.isSaving}
+                lastSavedAt={draftPersistence.lastSavedAt}
+                saveError={draftPersistence.saveError}
+              />
+            </div>
           </div>
         </header>
 
         <main className={`mx-auto ${EDITOR_MAX_WIDTH_CLASS} px-4 py-3`}>
+          {!draftPersistence.isHydrated ? (
+            <p className="py-12 text-center text-sm text-slate-400">
+              در حال بارگذاری پیش‌نویس…
+            </p>
+          ) : (
           <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_280px]">
             <div className="order-2 min-w-0 lg:order-1">
               {lastError ? (
@@ -231,6 +252,7 @@ export function EditorShell() {
               />
             </div>
           </div>
+          )}
         </main>
       </div>
 

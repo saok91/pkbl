@@ -3,12 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
-  CLIENT_CORPUS_PRESETS,
   DEFAULT_CORPUS_PRESET_ID,
   type CorpusPresetId,
-  readStoredCorpusPresetId,
   writeStoredCorpusPresetId,
 } from "@/lib/corpus/client-presets";
+import { readEditorDraftCorpusPresetId } from "@/lib/persistence";
 import { fetchPresetNgramStats } from "@/lib/corpus/fetch-artifact";
 import type { NgramStats } from "@/lib/corpus/types";
 import type { Layout } from "@/lib/layout/types";
@@ -33,8 +32,11 @@ export type LiveScoreState = {
 };
 
 export function useLiveScore(layout: Layout): LiveScoreState {
-  const [presetId, setPresetIdState] =
-    useState<CorpusPresetId>(DEFAULT_CORPUS_PRESET_ID);
+  const [presetId, setPresetIdState] = useState<CorpusPresetId>(() =>
+    typeof window === "undefined"
+      ? DEFAULT_CORPUS_PRESET_ID
+      : readEditorDraftCorpusPresetId(),
+  );
   const [ngramStats, setNgramStats] = useState<NgramStats | null>(null);
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [isStale, setIsStale] = useState(true);
@@ -44,14 +46,6 @@ export function useLiveScore(layout: Layout): LiveScoreState {
   const [showScoreDelta, setShowScoreDelta] = useState(false);
   const previousTotalRef = useRef<number | null>(null);
   const hasStableScoreRef = useRef(false);
-
-  useEffect(() => {
-    const stored = readStoredCorpusPresetId();
-    if (stored !== DEFAULT_CORPUS_PRESET_ID) {
-      setPresetIdState(stored);
-      setIsStale(true);
-    }
-  }, []);
 
   const setPresetId = useCallback((nextPresetId: CorpusPresetId) => {
     setPresetIdState(nextPresetId);

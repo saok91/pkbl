@@ -518,9 +518,9 @@ flowchart LR
 **به‌عنوان** تایپ‌کننده، **می‌خواهم** layout من auto-save شود **تا** کارم گم نشود.
 
 **معیار پذیرش:**
-- [ ] localStorage/IndexedDB
-- [ ] save: layout state + corpus preset + timestamp
-- [ ] restore در load صفحه
+- [x] localStorage/IndexedDB
+- [x] save: layout state + corpus preset + timestamp
+- [x] restore در load صفحه
 
 ---
 

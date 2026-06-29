@@ -74,5 +74,24 @@ export type {
 
 export { LayoutError } from "./types";
 
+export {
+  layoutFromWire,
+  layoutToWire,
+} from "./wire";
+
+export type {
+  KeyGeometryWire,
+  KeySlotWire,
+  LayoutWire,
+  PhysicalKeyWire,
+} from "./wire";
+
+export {
+  editorDraftSchema,
+  layoutWireSchema,
+} from "./wire-schema";
+
+export type { EditorDraftParsed, LayoutWireParsed } from "./wire-schema";
+
 /** Domain module marker for boundary tests. */
 export const LAYOUT_MODULE = "layout" as const;
