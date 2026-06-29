@@ -5,6 +5,7 @@ import {
   resetKey,
   swapKeys,
 } from "@/lib/layout";
+import { toPersianDigits } from "@/lib/corpus/config";
 import type { Layer, Layout } from "@/lib/layout/types";
 import { LayoutError } from "@/lib/layout/types";
 
@@ -205,7 +206,7 @@ export function getKeyLabel(
   }
   const slot = layout.assignments.get(keyId);
   const char = layer === "base" ? slot?.base : slot?.shift;
-  return char ?? "";
+  return char ? toPersianDigits(char) : "";
 }
 
 export function getAlternateLabel(
@@ -217,5 +218,7 @@ export function getAlternateLabel(
   if (!slot) {
     return "";
   }
-  return layer === "base" ? slot.shift : slot.base;
+  return layer === "base"
+    ? toPersianDigits(slot.shift)
+    : toPersianDigits(slot.base);
 }

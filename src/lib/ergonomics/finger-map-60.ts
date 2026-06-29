@@ -9,9 +9,7 @@ const fingerMap60: FingerMap = Object.freeze(
 );
 
 /** All keyIds in the 60% ANSI finger map. */
-export const FINGER_MAP_60_KEY_IDS = Object.freeze(
-  Object.keys(fingerMap60),
-) as readonly string[];
+export const FINGER_MAP_60_KEY_IDS = Object.freeze(Object.keys(fingerMap60));
 
 /** Static finger/hand/row map for the default 60% ANSI template. */
 export function getFingerMap60(): FingerMap {

@@ -1,10 +1,6 @@
 import type { KeyGeometry, Layout, PhysicalKey } from "@/lib/layout/types";
 
-import {
-  KEY_GAP_PX,
-  KEY_UNIT_PX,
-  KEYBOARD_PADDING_PX,
-} from "./constants";
+import { KEY_GAP_PX, KEY_UNIT_PX, KEYBOARD_PADDING_PX } from "./constants";
 
 export type KeyRect = {
   keyId: string;
@@ -84,4 +80,16 @@ export function computeKeyboardDimensions(rects: KeyRect[]): {
     width: maxRight + KEYBOARD_PADDING_PX * 2,
     height: maxBottom + KEYBOARD_PADDING_PX * 2,
   };
+}
+
+/** Fit keyboard to container; scale down when needed, up to `maxScale` on wide viewports. */
+export function computeKeyboardScale(
+  availableWidth: number,
+  keyboardWidth: number,
+  maxScale = 1.35,
+): number {
+  if (keyboardWidth <= 0 || availableWidth <= 0) {
+    return 1;
+  }
+  return Math.min(maxScale, availableWidth / keyboardWidth);
 }

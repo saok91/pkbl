@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { assignChar, getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
+import {
+  assignChar,
+  getBlankAnsiTemplate,
+  getDefaultTemplate,
+} from "@/lib/layout";
 import { parseLabelLayers } from "@/lib/layout/kle-parser";
 import { findKeyIdByBaseChar, keyIdAt } from "@/lib/layout/test-utils";
 import { buildCharLookup, resolveChar } from "./char-lookup";
@@ -41,8 +45,7 @@ describe("buildCharLookup", () => {
         continue;
       }
       const slot =
-        both.assignments.get(keyId) ??
-        parseLabelLayers(key.defaultLabel);
+        both.assignments.get(keyId) ?? parseLabelLayers(key.defaultLabel);
       if (slot.base === "ا") {
         lastKeyId = keyId;
       }
@@ -63,5 +66,18 @@ describe("buildCharLookup", () => {
     for (const resolution of lookup.values()) {
       expect(layout.keys.get(resolution.keyId)?.isEditable).toBe(true);
     }
+  });
+
+  it("indexes Latin digit aliases for Persian layout assignments", () => {
+    const layout = getDefaultTemplate();
+    const lookup = buildCharLookup(layout);
+
+    const persianZero = resolveChar(lookup, "۰");
+    expect(persianZero).not.toBeNull();
+    expect(resolveChar(lookup, "0")).toEqual(persianZero);
+
+    const persianOne = resolveChar(lookup, "۱");
+    expect(persianOne).not.toBeNull();
+    expect(resolveChar(lookup, "1")).toEqual(persianOne);
   });
 });

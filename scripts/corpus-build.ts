@@ -6,7 +6,10 @@ import {
   DEFAULT_NORMALIZATION_CONFIG,
   NORMALIZATION_CONFIG_V1,
 } from "../src/lib/corpus/config";
-import { extractNgrams, mergeNgramStats } from "../src/lib/corpus/ngram-extract";
+import {
+  extractNgrams,
+  mergeNgramStats,
+} from "../src/lib/corpus/ngram-extract";
 import { ngramStatsToArtifact } from "../src/lib/corpus/serialize";
 
 const ROOT = process.cwd();

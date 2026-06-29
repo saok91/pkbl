@@ -57,7 +57,7 @@ describe("finger-map-60", () => {
     const map = getFingerMap60();
     expect(Object.isFrozen(map)).toBe(true);
     expect(() => {
-      (map as Record<string, unknown>)["R0C0"] = {};
+      (map as Record<string, unknown>).R0C0 = {};
     }).toThrow();
   });
 

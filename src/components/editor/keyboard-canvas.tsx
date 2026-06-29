@@ -7,10 +7,7 @@ import type { Layer, Layout } from "@/lib/layout/types";
 import { KEYBOARD_PADDING_PX } from "./constants";
 import { getAlternateLabel, getKeyLabel } from "./editor-state";
 import { Keycap } from "./keycap";
-import {
-  computeKeyboardDimensions,
-  computeKeyRects,
-} from "./keyboard-layout";
+import { computeKeyboardDimensions, computeKeyRects, computeKeyboardScale } from "./keyboard-layout";
 
 type KeyboardCanvasProps = {
   layout: Layout;
@@ -18,6 +15,7 @@ type KeyboardCanvasProps = {
   selectedKeyId: string | null;
   openPopoverKeyId: string | null;
   dropHighlightKeyId: string | null;
+  hotspotKeyIds?: ReadonlySet<string>;
   onKeyClick: (keyId: string) => void;
   onPopoverSelect: (keyId: string, char: string) => void;
   onPopoverClose: () => void;
@@ -29,6 +27,7 @@ export function KeyboardCanvas({
   selectedKeyId,
   openPopoverKeyId,
   dropHighlightKeyId,
+  hotspotKeyIds,
   onKeyClick,
   onPopoverSelect,
   onPopoverClose,
@@ -37,10 +36,7 @@ export function KeyboardCanvas({
   const [scale, setScale] = useState(1);
 
   const rects = useMemo(() => computeKeyRects(layout), [layout]);
-  const dimensions = useMemo(
-    () => computeKeyboardDimensions(rects),
-    [rects],
-  );
+  const dimensions = useMemo(() => computeKeyboardDimensions(rects), [rects]);
 
   const keyDisplayData = useMemo(
     () =>
@@ -59,13 +55,13 @@ export function KeyboardCanvas({
     }
 
     const updateScale = () => {
-      const availableWidth =
-        container.clientWidth - KEYBOARD_PADDING_PX * 2;
-      const nextScale = Math.min(
-        1.45,
-        Math.max(1, availableWidth / dimensions.width),
+      if (container.clientWidth <= 0) {
+        return;
+      }
+      const availableWidth = container.clientWidth - KEYBOARD_PADDING_PX * 2;
+      setScale(
+        computeKeyboardScale(availableWidth, dimensions.width),
       );
-      setScale(nextScale);
     };
 
     updateScale();
@@ -75,52 +71,52 @@ export function KeyboardCanvas({
     return () => observer.disconnect();
   }, [dimensions.width]);
 
+  const scaledWidth = dimensions.width * scale;
   const scaledHeight = dimensions.height * scale;
 
   return (
     <div
       ref={containerRef}
-      className="rounded-xl border border-slate-700 bg-slate-900/50 p-4"
+      className="rounded-xl border border-slate-700 bg-slate-900/50 p-3"
       dir="ltr"
     >
       <div
-        className="relative mx-auto overflow-visible"
-        style={{ width: "100%", height: scaledHeight }}
+        className="relative mx-auto"
+        style={{ width: scaledWidth, height: scaledHeight }}
       >
         <div
           role="img"
           aria-label="صفحه‌کلید ۶۰٪"
-          className="absolute top-0 left-1/2 origin-top"
+          className="absolute top-0 left-0 origin-top-left"
           style={{
             width: dimensions.width,
             height: dimensions.height,
-            transform: `translateX(-50%) scale(${scale})`,
+            transform: `scale(${scale})`,
           }}
         >
-          {keyDisplayData.map(
-            ({ rect, primaryLabel, alternateLabel }) => {
-              const isPopoverOpen = openPopoverKeyId === rect.keyId;
-              return (
-                <Keycap
-                  key={rect.keyId}
-                  rect={rect}
-                  primaryLabel={primaryLabel}
-                  alternateLabel={alternateLabel}
-                  activeLayer={activeLayer}
-                  isSelected={selectedKeyId === rect.keyId}
-                  isPopoverOpen={isPopoverOpen}
-                  isDropHighlight={dropHighlightKeyId === rect.keyId}
-                  onClick={() => onKeyClick(rect.keyId)}
-                  onPopoverSelect={
-                    isPopoverOpen
-                      ? (char) => onPopoverSelect(rect.keyId, char)
-                      : undefined
-                  }
-                  onPopoverClose={isPopoverOpen ? onPopoverClose : undefined}
-                />
-              );
-            },
-          )}
+          {keyDisplayData.map(({ rect, primaryLabel, alternateLabel }) => {
+            const isPopoverOpen = openPopoverKeyId === rect.keyId;
+            return (
+              <Keycap
+                key={rect.keyId}
+                rect={rect}
+                primaryLabel={primaryLabel}
+                alternateLabel={alternateLabel}
+                activeLayer={activeLayer}
+                isSelected={selectedKeyId === rect.keyId}
+                isPopoverOpen={isPopoverOpen}
+                isDropHighlight={dropHighlightKeyId === rect.keyId}
+                isHotspot={hotspotKeyIds?.has(rect.keyId) ?? false}
+                onClick={() => onKeyClick(rect.keyId)}
+                onPopoverSelect={
+                  isPopoverOpen
+                    ? (char) => onPopoverSelect(rect.keyId, char)
+                    : undefined
+                }
+                onPopoverClose={isPopoverOpen ? onPopoverClose : undefined}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

@@ -67,10 +67,7 @@ export function normalizePersianText(
     }
   }
 
-  const collapsed = chars
-    .join("")
-    .replace(SPACE_LIKE, " ")
-    .trim();
+  const collapsed = chars.join("").replace(SPACE_LIKE, " ").trim();
 
   return {
     text: normalizePunctuationSpacing(collapsed),

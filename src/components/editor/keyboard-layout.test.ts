@@ -4,6 +4,7 @@ import { getDefaultTemplate } from "@/lib/layout";
 
 import {
   computeKeyboardDimensions,
+  computeKeyboardScale,
   computeKeyRects,
   geometryToRect,
 } from "./keyboard-layout";
@@ -64,5 +65,14 @@ describe("keyboard-layout", () => {
 
     expect(dims.width).toBeGreaterThan(600);
     expect(dims.height).toBeGreaterThan(200);
+  });
+
+  it("scales down when container is narrower than keyboard", () => {
+    expect(computeKeyboardScale(800, 942)).toBeCloseTo(800 / 942, 4);
+    expect(computeKeyboardScale(800, 942)).toBeLessThan(1);
+  });
+
+  it("caps scale at maxScale on wide containers", () => {
+    expect(computeKeyboardScale(2000, 942, 1.25)).toBe(1.25);
   });
 });

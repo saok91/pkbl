@@ -154,7 +154,13 @@ function bigramTransitionCost(
   from: ResolvedKey,
   to: ResolvedKey,
   weights: ScoringWeights,
-): { cost: number; sameFinger: number; sameHand: number; alternation: number; rowSwitch: number } {
+): {
+  cost: number;
+  sameFinger: number;
+  sameHand: number;
+  alternation: number;
+  rowSwitch: number;
+} {
   const fromMetrics = from.metrics;
   const toMetrics = to.metrics;
 
@@ -164,7 +170,10 @@ function bigramTransitionCost(
   let alternation = 0;
   let rowSwitch = 0;
 
-  if (fromMetrics.finger === toMetrics.finger && fromMetrics.hand === toMetrics.hand) {
+  if (
+    fromMetrics.finger === toMetrics.finger &&
+    fromMetrics.hand === toMetrics.hand
+  ) {
     cost += weights.sameFingerBigram;
     sameFinger = 1;
   } else if (fromMetrics.hand === toMetrics.hand) {
@@ -251,7 +260,12 @@ function normalizeFingerLoad(
   ) as Record<Finger, number>;
 }
 
-function toScoreComponent(rawCost: number, weight: number, norm: number, costScale: number): number {
+function toScoreComponent(
+  rawCost: number,
+  weight: number,
+  norm: number,
+  costScale: number,
+): number {
   return -((rawCost * weight) / norm) * costScale;
 }
 
@@ -263,9 +277,24 @@ function buildBreakdown(
   const norm = Math.max(1, totalChars);
   const { weights, costScale } = config;
 
-  const unigramScore = toScoreComponent(acc.unigramCost, weights.unigram, norm, costScale);
-  const bigramScore = toScoreComponent(acc.bigramCost, weights.bigram, norm, costScale);
-  const trigramScore = toScoreComponent(acc.trigramCost, weights.trigram, norm, costScale);
+  const unigramScore = toScoreComponent(
+    acc.unigramCost,
+    weights.unigram,
+    norm,
+    costScale,
+  );
+  const bigramScore = toScoreComponent(
+    acc.bigramCost,
+    weights.bigram,
+    norm,
+    costScale,
+  );
+  const trigramScore = toScoreComponent(
+    acc.trigramCost,
+    weights.trigram,
+    norm,
+    costScale,
+  );
 
   const homeRowUsage =
     totalChars > 0 ? (acc.homeRowWeight / totalChars) * 100 : 0;

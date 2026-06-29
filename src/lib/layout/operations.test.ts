@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 
 import { EDITABLE_CHARSET } from "./editable-scope";
 import { getBlankAnsiTemplate, getDefaultTemplate } from "./kle-parser";
-import { assignChar, getAssignedCharsForLayer, resetAllEditable, resetKey, swapKeys } from "./operations";
+import {
+  assignChar,
+  getAssignedCharsForLayer,
+  resetAllEditable,
+  resetKey,
+  swapKeys,
+} from "./operations";
 import { keyIdAt } from "./test-utils";
 import { LayoutError } from "./types";
 

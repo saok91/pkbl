@@ -53,9 +53,9 @@ describe("parseNgramArtifact", () => {
   });
 
   it("throws on missing required fields", () => {
-    expect(() => parseNgramArtifact(JSON.stringify({ corpusId: "wiki-fa" }))).toThrow(
-      /Invalid n-gram artifact/,
-    );
+    expect(() =>
+      parseNgramArtifact(JSON.stringify({ corpusId: "wiki-fa" })),
+    ).toThrow(/Invalid n-gram artifact/);
   });
 });
 

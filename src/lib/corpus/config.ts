@@ -63,3 +63,10 @@ export const LATIN_TO_PERSIAN_DIGIT: Readonly<Record<string, string>> =
       PERSIAN_DIGITS[index] ?? digit,
     ]),
   );
+
+/** Convert Latin digits in display text to Persian (۰–۹). */
+export function toPersianDigits(text: string): string {
+  return [...text]
+    .map((char) => LATIN_TO_PERSIAN_DIGIT[char] ?? char)
+    .join("");
+}

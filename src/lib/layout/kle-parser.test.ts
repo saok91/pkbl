@@ -91,7 +91,10 @@ describe("serializeKle round-trip", () => {
   });
 
   it("round-trips Persian Standard template JSON structure", () => {
-    const layout = parseKleJson(PERSIAN_STANDARD_60_KLE, PERSIAN_STANDARD_60_ID);
+    const layout = parseKleJson(
+      PERSIAN_STANDARD_60_KLE,
+      PERSIAN_STANDARD_60_ID,
+    );
     const roundTrip = parseKle(serializeKle(layout), PERSIAN_STANDARD_60_ID);
     expect(layoutsEquivalent(layout, roundTrip)).toBe(true);
   });

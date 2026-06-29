@@ -15,12 +15,7 @@ export function buildGoldenLayout(): Layout {
   return assignChar(
     assignChar(
       assignChar(
-        assignChar(
-          assignChar(layout, fKey, "base", "ا"),
-          gKey,
-          "base",
-          "ن",
-        ),
+        assignChar(assignChar(layout, fKey, "base", "ا"), gKey, "base", "ن"),
         hKey,
         "base",
         "ت",

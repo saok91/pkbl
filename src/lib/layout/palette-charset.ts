@@ -12,14 +12,14 @@ const PALETTE_SECTION_DEFS: Omit<PaletteSection, "chars">[] = [
   { id: "shift-letters", label: "حروف شیفت" },
   { id: "digits", label: "اعداد" },
   { id: "punctuation", label: "نشانه‌گذاری" },
-  { id: "spacing", label: "فاصله و جداکننده" },
+  { id: "spacing", label: "فاصله" },
   { id: "diacritics", label: "اعراب" },
   { id: "symbols", label: "نمادها" },
 ];
 
 const SECTION_CHARS: Record<string, string> = {
   letters: "ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی",
-  "shift-letters": "آئؤءةيك",
+  "shift-letters": "آأإئؤءةيك",
   digits: "۰۱۲۳۴۵۶۷۸۹",
   punctuation: "«»؛؟،",
   spacing: "\u200c\u200d ",

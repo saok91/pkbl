@@ -72,7 +72,11 @@ describe("extractNgrams", () => {
     });
     expect(stats.totalChars).toBe(0);
 
-    const persian = extractNgrams("سلام", "custom", DEFAULT_NORMALIZATION_CONFIG);
+    const persian = extractNgrams(
+      "سلام",
+      "custom",
+      DEFAULT_NORMALIZATION_CONFIG,
+    );
     expect(persian.unigrams.get("س")).toBe(1);
     expect(persian.unigrams.get("ل")).toBe(1);
     expect(persian.bigrams.get("سل")).toBe(1);
@@ -100,8 +104,16 @@ describe("mergeNgramStats", () => {
   });
 
   it("sums frequencies and totalChars across parts", () => {
-    const partA = extractNgrams("سلام", "wiki-fa", DEFAULT_NORMALIZATION_CONFIG);
-    const partB = extractNgrams("سلام", "wiki-fa", DEFAULT_NORMALIZATION_CONFIG);
+    const partA = extractNgrams(
+      "سلام",
+      "wiki-fa",
+      DEFAULT_NORMALIZATION_CONFIG,
+    );
+    const partB = extractNgrams(
+      "سلام",
+      "wiki-fa",
+      DEFAULT_NORMALIZATION_CONFIG,
+    );
 
     const merged = mergeNgramStats(
       "wiki-fa",

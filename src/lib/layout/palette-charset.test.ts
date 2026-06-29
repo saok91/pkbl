@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { EDITABLE_CHARSET } from "./editable-scope";
-import { buildPaletteSections, flattenPaletteSections } from "./palette-charset";
+import {
+  buildPaletteSections,
+  flattenPaletteSections,
+} from "./palette-charset";
 
 describe("buildPaletteSections", () => {
   it("groups Persian letters alphabetically first", () => {

@@ -45,9 +45,7 @@ describe("editorReducer", () => {
     const layout = getDefaultTemplate();
     const keyQ = keyIdAt("Q");
     const keyW = keyIdAt("W");
-    let state = createInitialEditorState(
-      assignChar(layout, keyQ, "base", "ق"),
-    );
+    let state = createInitialEditorState(assignChar(layout, keyQ, "base", "ق"));
     state = editorReducer(state, {
       type: "ASSIGN_CHAR",
       keyId: keyW,

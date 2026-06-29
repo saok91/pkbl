@@ -31,8 +31,7 @@ const CORPUS_PRESET_DEFINITIONS: readonly Omit<CorpusPreset, "charCount">[] = [
   {
     id: "varzesh3",
     nameFa: "ورزش۳",
-    descriptionFa:
-      "کامنت‌های ورزش۳ — زبان محاوره‌ای و ورزشی برای تایپ روزمره.",
+    descriptionFa: "کامنت‌های ورزش۳ — زبان محاوره‌ای و ورزشی برای تایپ روزمره.",
     version: "1",
     artifactFileName: "varzesh3.ngrams.json",
   },
@@ -77,7 +76,9 @@ function parseManifestEntry(
   };
 }
 
-function readManifest(manifestPath: string = DEFAULT_MANIFEST_PATH): CorpusManifest {
+function readManifest(
+  manifestPath: string = DEFAULT_MANIFEST_PATH,
+): CorpusManifest {
   if (!existsSync(manifestPath)) {
     return {};
   }

@@ -9,7 +9,8 @@ function isFrequencyRecord(value: unknown): value is Record<string, number> {
     return false;
   }
   return Object.values(value).every(
-    (count) => typeof count === "number" && Number.isFinite(count) && count >= 0,
+    (count) =>
+      typeof count === "number" && Number.isFinite(count) && count >= 0,
   );
 }
 
@@ -23,7 +24,9 @@ function requireNonEmptyString(
 }
 
 /** Validate unknown JSON payload before converting to NgramStats. */
-export function assertNgramArtifact(value: unknown): asserts value is NgramArtifact {
+export function assertNgramArtifact(
+  value: unknown,
+): asserts value is NgramArtifact {
   if (!isRecord(value)) {
     throw new Error("Invalid n-gram artifact: expected object");
   }
@@ -33,20 +36,31 @@ export function assertNgramArtifact(value: unknown): asserts value is NgramArtif
   requireNonEmptyString(value.normalizedVersion, "normalizedVersion");
   requireNonEmptyString(value.builtAt, "builtAt");
 
-  if (typeof value.charCount !== "number" || !Number.isFinite(value.charCount)) {
-    throw new Error("Invalid n-gram artifact: charCount must be a finite number");
+  if (
+    typeof value.charCount !== "number" ||
+    !Number.isFinite(value.charCount)
+  ) {
+    throw new Error(
+      "Invalid n-gram artifact: charCount must be a finite number",
+    );
   }
   if (value.charCount < 0) {
     throw new Error("Invalid n-gram artifact: charCount must be >= 0");
   }
 
   if (!isFrequencyRecord(value.unigrams)) {
-    throw new Error("Invalid n-gram artifact: unigrams must be a frequency record");
+    throw new Error(
+      "Invalid n-gram artifact: unigrams must be a frequency record",
+    );
   }
   if (!isFrequencyRecord(value.bigrams)) {
-    throw new Error("Invalid n-gram artifact: bigrams must be a frequency record");
+    throw new Error(
+      "Invalid n-gram artifact: bigrams must be a frequency record",
+    );
   }
   if (!isFrequencyRecord(value.trigrams)) {
-    throw new Error("Invalid n-gram artifact: trigrams must be a frequency record");
+    throw new Error(
+      "Invalid n-gram artifact: trigrams must be a frequency record",
+    );
   }
 }

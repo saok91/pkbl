@@ -6,9 +6,8 @@ import {
   DEFAULT_MANIFEST_PATH,
   getPresetById,
 } from "./presets";
-import { artifactToNgramStats } from "./serialize";
+import { parseNgramArtifact } from "./parse-artifact";
 import type { NgramStats } from "./types";
-import { assertNgramArtifact } from "./validate-artifact";
 
 /** Resolve artifact file path for a preset id. */
 export function resolvePresetArtifactPath(
@@ -46,15 +45,4 @@ export function loadPresetNgramStats(
   return stats;
 }
 
-/** Parse artifact JSON without filesystem access (for tests). */
-export function parseNgramArtifact(json: string): NgramStats {
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(json);
-  } catch {
-    throw new Error("Invalid n-gram artifact JSON");
-  }
-
-  assertNgramArtifact(parsed);
-  return artifactToNgramStats(parsed);
-}
+export { parseNgramArtifact } from "./parse-artifact";

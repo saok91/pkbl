@@ -71,7 +71,7 @@ describe("drag-utils", () => {
       ]),
       droppableContainers: [],
       pointerCoordinates: { x: 10, y: 10 },
-    } as never);
+    });
 
     const ids = collisions.map((collision) => String(collision.id));
     expect(ids).not.toContain(DRAG_ID.dropKey("key-a"));

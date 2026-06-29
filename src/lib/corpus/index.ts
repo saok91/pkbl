@@ -6,12 +6,13 @@ export {
   NORMALIZATION_CONFIG_V1,
   PERSIAN_TO_LATIN_DIGIT,
   REMOVED_ZERO_WIDTH_CHARS,
+  toPersianDigits,
 } from "./config";
 export type { DigitPolicy, NormalizationConfig } from "./config";
 
+export { parseNgramArtifact } from "./parse-artifact";
 export {
   loadPresetNgramStats,
-  parseNgramArtifact,
   resolvePresetArtifactPath,
 } from "./load-artifact";
 
@@ -25,6 +26,15 @@ export {
   getPresetById,
   listPresets,
 } from "./presets";
+export {
+  CLIENT_CORPUS_PRESETS,
+  CORPUS_PRESET_STORAGE_KEY,
+  DEFAULT_CORPUS_PRESET_ID,
+  readStoredCorpusPresetId,
+  writeStoredCorpusPresetId,
+} from "./client-presets";
+export type { CorpusPresetId, ClientCorpusPreset } from "./client-presets";
+export { clearArtifactCache, fetchPresetNgramStats } from "./fetch-artifact";
 export { artifactToNgramStats, ngramStatsToArtifact } from "./serialize";
 
 export type {

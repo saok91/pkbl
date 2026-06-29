@@ -12,10 +12,7 @@ describe("listPresets", () => {
   it("returns wiki-fa and varzesh3 presets", () => {
     const presets = listPresets();
     expect(presets).toHaveLength(2);
-    expect(presets.map((preset) => preset.id)).toEqual([
-      "wiki-fa",
-      "varzesh3",
-    ]);
+    expect(presets.map((preset) => preset.id)).toEqual(["wiki-fa", "varzesh3"]);
   });
 
   it("includes Persian metadata", () => {
@@ -48,7 +45,9 @@ describe("listPresets", () => {
     const manifestPath = join(tempDir, "manifest.json");
     writeFileSync(manifestPath, "{broken");
 
-    expect(() => listPresets(manifestPath)).toThrow(/Invalid corpus manifest JSON/);
+    expect(() => listPresets(manifestPath)).toThrow(
+      /Invalid corpus manifest JSON/,
+    );
   });
 
   it("throws on invalid manifest entry", () => {

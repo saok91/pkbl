@@ -65,12 +65,5 @@ export function useEditorShortcuts({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [
-    canRedo,
-    canUndo,
-    onClosePopover,
-    onRedo,
-    onUndo,
-    openPopoverKeyId,
-  ]);
+  }, [canRedo, canUndo, onClosePopover, onRedo, onUndo, openPopoverKeyId]);
 }

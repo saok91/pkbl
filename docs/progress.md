@@ -1,6 +1,6 @@
 # وضعیت توسعه — PKBL
 
-> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۸ (E5 Editor UI)  
+> **آخرین به‌روزرسانی:** ۱۴۰۵/۰۴/۰۹ (E15 Score Comprehension UX — planned)  
 > **جزئیات:** [epics.md](./epics.md) · **معماری:** [architecture.md](./architecture.md)
 
 **راهنما:** `⬜` todo · `🔄` در حال انجام · `✅` انجام‌شده · `⏸` بعد از MVP
@@ -48,14 +48,26 @@
 | E5 | S4 | Drag-and-drop assign | ✅ |
 | E5 | S5 | Character palette | ✅ |
 | E5 | S6 | Reset و عملیات سریع | ✅ |
-| E6 | S1 | Live score با debounce | ⬜ |
-| E6 | S2 | Breakdown panel | ⬜ |
-| E6 | S3 | Hotspots visualization | ⬜ |
-| E6 | S4 | Ranking hint (توضیح انسانی) | ⬜ |
+| E6 | S1 | Live score با debounce | ✅ |
+| E6 | S2 | Breakdown panel | ✅ |
+| E6 | S3 | Hotspots visualization | ✅ |
+| E6 | S4 | Ranking hint (توضیح انسانی) | ✅ |
 | E12 | S1 | tRPC score router | ⬜ |
 | E12 | S2 | tRPC layout router | ⬜ |
 | E12 | S3 | tRPC corpus router | ⬜ |
 | E12 | S4 | tRPC leaderboard router | ⬜ |
+
+## فاز ۲ (refinement) — Score Comprehension
+
+| اپیک | استوری | عنوان | وضعیت |
+|------|--------|-------|-------|
+| E15 | S1 | قضاوت کلی با گیج کیفی (Verdict Gauge) | ⬜ |
+| E15 | S2 | کارت‌های قوت‌ها و ضعف‌ها | ⬜ |
+| E15 | S3 | واژه‌نامهٔ متریک‌ها: آیکن (i) + راهنما | ⬜ |
+| E15 | S4 | مقایسه با خط مبنا (چیدمان پیش‌فرض ۶۰٪) | ⏸ |
+| E15 | S5 | نمایش بصری بار انگشتان و تعادل دست‌ها | ⬜ |
+| E15 | S6 | Delta امتیاز پس از هر ویرایش | ⏸ |
+| E15 | S7 | تفکیک نمای ساده/متخصص + پنهان‌سازی debug | ⬜ |
 
 ## فاز ۳ — Workflow
 
@@ -119,7 +131,7 @@
 | E3 | Corpus Engine & Presets | 4/4 ✅ |
 | E4 | Scoring Engine | 6/6 ✅ |
 | E5 | Editor UI | 6/6 ✅ |
-| E6 | Score Analytics Panel | 0/4 |
+| E6 | Score Analytics Panel | 4/4 ✅ |
 | E7 | Custom Corpus | 0/3 ⏸ |
 | E8 | Local Persistence | 0/3 |
 | E9 | Compare Layouts | 0/2 ⏸ |
@@ -128,5 +140,6 @@
 | E12 | API Layer | 0/4 |
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
+| E15 | Score Comprehension UX | 0/7 |
 
-**MVP:** 27/28 استوری block
+**MVP:** 31/32 استوری block

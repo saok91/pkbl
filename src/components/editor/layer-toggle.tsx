@@ -28,8 +28,7 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
     if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
       event.preventDefault();
       const direction = event.key === "ArrowRight" ? 1 : -1;
-      const nextIndex =
-        (index + direction + LAYERS.length) % LAYERS.length;
+      const nextIndex = (index + direction + LAYERS.length) % LAYERS.length;
       const nextLayer = LAYERS[nextIndex];
       if (nextLayer) {
         onChange(nextLayer.id);

@@ -1,3 +1,6 @@
+/** Max content width for the editor shell (header + main). */
+export const EDITOR_MAX_WIDTH_CLASS = "max-w-7xl";
+
 /** Pixel width of one KLE unit (standard key width). */
 export const KEY_UNIT_PX = 56;
 

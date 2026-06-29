@@ -1,3 +1,5 @@
+import { toPersianDigits } from "@/lib/corpus/config";
+
 type CharLabel = {
   short: string;
   description: string;
@@ -20,7 +22,7 @@ const CHAR_LABELS: Record<string, CharLabel> = {
 };
 
 export function getCharDisplayLabel(char: string): string {
-  return CHAR_LABELS[char]?.short ?? char;
+  return toPersianDigits(CHAR_LABELS[char]?.short ?? char);
 }
 
 export function getCharDescription(char: string): string | undefined {

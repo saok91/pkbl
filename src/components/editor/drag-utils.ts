@@ -3,9 +3,7 @@ import { closestCenter, pointerWithin } from "@dnd-kit/core";
 
 import { parseDragId } from "./constants";
 
-type DragData =
-  | { type: "char"; char: string }
-  | { type: "key"; keyId: string };
+type DragData = { type: "char"; char: string } | { type: "key"; keyId: string };
 
 function keyIdFromDndId(id: string | number): string | null {
   const parsed = parseDragId(String(id));
@@ -40,7 +38,10 @@ export function resolveDropKeyId(over: Over): string | null {
   return keyIdFromDndId(over.id);
 }
 
-function isSelfKeyDrop(activeKeyId: string, collisionId: string | number): boolean {
+function isSelfKeyDrop(
+  activeKeyId: string,
+  collisionId: string | number,
+): boolean {
   const dropKeyId = keyIdFromDndId(collisionId);
   return dropKeyId === activeKeyId;
 }

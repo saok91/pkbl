@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { assignChar, getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout";
+import {
+  assignChar,
+  getBlankAnsiTemplate,
+  getDefaultTemplate,
+} from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
 import { SCORING_CONFIG_V1, SCORING_WEIGHTS_V1 } from "./config";
 import { computeScore } from "./compute-score";
@@ -105,7 +109,8 @@ describe("computeScore", () => {
     expect(result.breakdown.bigramRowSwitching).toBeGreaterThan(0);
     expect(result.breakdown.trigramRowSwitching).toBeGreaterThan(0);
     expect(result.breakdown.rowSwitching).toBe(
-      result.breakdown.bigramRowSwitching + result.breakdown.trigramRowSwitching,
+      result.breakdown.bigramRowSwitching +
+        result.breakdown.trigramRowSwitching,
     );
   });
 

@@ -84,10 +84,8 @@ describe("penalty ordering", () => {
   it("ranks pinky outer keys worse than index home keys", () => {
     const pinkyTop = getKeyMetrics("R1C1");
     const indexHome = getKeyMetrics("R2C4");
-    const totalPinky =
-      pinkyTop.reachPenalty + pinkyTop.weakKeyPenalty;
-    const totalIndex =
-      indexHome.reachPenalty + indexHome.weakKeyPenalty;
+    const totalPinky = pinkyTop.reachPenalty + pinkyTop.weakKeyPenalty;
+    const totalIndex = indexHome.reachPenalty + indexHome.weakKeyPenalty;
     expect(totalPinky).toBeGreaterThan(totalIndex);
   });
 });

@@ -5,7 +5,10 @@ export {
   isKeyEditable,
 } from "./editable-scope";
 
-export { buildPaletteSections, flattenPaletteSections } from "./palette-charset";
+export {
+  buildPaletteSections,
+  flattenPaletteSections,
+} from "./palette-charset";
 export type { PaletteSection } from "./palette-charset";
 
 export {
@@ -14,7 +17,12 @@ export {
   hasCustomCharLabel,
 } from "./charset-labels";
 
-export { MODIFIER_LABELS, isModifierLabel } from "./modifiers";
+export {
+  MODIFIER_LABELS,
+  SHIFT_MODIFIER_LABEL,
+  isModifierLabel,
+  isShiftModifierKey,
+} from "./modifiers";
 
 export {
   getBlankAnsiTemplate,

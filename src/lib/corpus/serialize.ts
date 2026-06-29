@@ -18,10 +18,9 @@ export function ngramStatsToArtifact(
   };
 }
 
-function recordToMap(record: Readonly<Record<string, number>>): ReadonlyMap<
-  string,
-  number
-> {
+function recordToMap(
+  record: Readonly<Record<string, number>>,
+): ReadonlyMap<string, number> {
   return new Map(Object.entries(record));
 }
 

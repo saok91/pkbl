@@ -32,7 +32,9 @@ describe("extractCharsetFromKle", () => {
   });
 
   it("matches EDITABLE_CHARSET export", () => {
-    expect(EDITABLE_CHARSET).toBe(extractCharsetFromKle(PERSIAN_STANDARD_60_KLE));
+    expect(EDITABLE_CHARSET).toBe(
+      extractCharsetFromKle(PERSIAN_STANDARD_60_KLE),
+    );
   });
 });
 
