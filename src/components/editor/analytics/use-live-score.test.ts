@@ -10,7 +10,7 @@ import {
   DEFAULT_CORPUS_PRESET_ID,
   type CorpusPresetId,
 } from "@/lib/corpus/client-presets";
-import { assignChar } from "@/lib/layout";
+import { assignChar, swapKeys } from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
 import { clearArtifactCache } from "@/lib/corpus/fetch-artifact";
 import { ngramStatsToArtifact } from "@/lib/corpus/serialize";
@@ -149,6 +149,33 @@ describe("useLiveScore", () => {
 
     expect(result.current.result).toBeNull();
     expect(result.current.isStale).toBe(true);
+  });
+
+  it("shows score delta after layout change settles", async () => {
+    const layout = buildGoldenLayout();
+    const { result, rerender } = renderHook(
+      ({ currentLayout }) => useLiveScore(currentLayout),
+      { initialProps: { currentLayout: layout } },
+    );
+
+    await waitFor(() => {
+      expect(result.current.result).not.toBeNull();
+      expect(result.current.isStale).toBe(false);
+    });
+
+    expect(result.current.showScoreDelta).toBe(false);
+    expect(result.current.scoreDelta).toBeNull();
+
+    const modified = swapKeys(layout, keyIdAt("F"), keyIdAt("J"), "base");
+    rerender({ currentLayout: modified });
+
+    await waitFor(
+      () => {
+        expect(result.current.isStale).toBe(false);
+        expect(result.current.scoreDelta).not.toBeNull();
+      },
+      { timeout: 1000 },
+    );
   });
 
   it("returns up to three hotspot key ids for keyboard rings", async () => {

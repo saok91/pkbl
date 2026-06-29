@@ -40,4 +40,6 @@ export const BREAKDOWN_FIELD_FA = {
   rowSwitching: "تعویض ردیف",
   weakKeyPenalty: "کلیدهای ضعیف",
   unigramCost: "هزینه خام یونی‌گرام",
+  bigramCost: "هزینه خام بی‌گرام",
+  trigramCost: "هزینه خام تری‌گرام",
 } as const;

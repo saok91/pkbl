@@ -51,4 +51,16 @@ export function formatCost(value: number): string {
   return formatNumber(faDecimal, value);
 }
 
+export function formatDeltaPercent(value: number): string {
+  const rounded = Math.round(value);
+  const formatted = formatNumber(faInteger, Math.abs(rounded));
+  if (rounded > 0) {
+    return `+${formatted}٪`;
+  }
+  if (rounded < 0) {
+    return `−${formatted}٪`;
+  }
+  return `${formatted}٪`;
+}
+
 export { toPersianDigits };

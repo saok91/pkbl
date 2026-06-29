@@ -32,6 +32,10 @@ export type ScoreBreakdown = {
   readonly fingerLoad: Readonly<Record<Finger, number>>;
   /** Hand balance 0–1 (1 = perfectly balanced). */
   readonly handBalance: number;
+  /** Share of typing load on the left hand (0–1). */
+  readonly leftHandShare: number;
+  /** Share of typing load on the right hand (0–1). */
+  readonly rightHandShare: number;
   /** Weighted count of same-finger bigram occurrences. */
   readonly sameFingerBigrams: number;
   /** Weighted count of same-hand bigram occurrences. */

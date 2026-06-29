@@ -1,7 +1,7 @@
 # Score Comprehension UX — spec طراحی (E15)
 
-> **نسخه:** 0.1  
-> **وضعیت:** پیشنهادی  
+> **نسخه:** 0.3  
+> **وضعیت:** ✅ complete — ۷/۷ استوری  
 > **مرجع:** [epics E15](./epics.md) · [editor-analytics-layout.md](./editor-analytics-layout.md) (E6) · [PRD](./prd.md) خط ۶۲/۱۴۴  
 > **اصل:** «از عدد به قضاوت، از قضاوت به اقدام» — برای کاربر بدون تخصص
 
@@ -243,8 +243,26 @@ src/components/editor/analytics/
 
 ---
 
+## ۱۷. وضعیت پیاده‌سازی (۱۴۰۵/۰۴/۱۰)
+
+| استوری | وضعیت | یادداشت |
+|--------|--------|---------|
+| S1 Verdict Gauge | ✅ | gauge + baseline delta در UI |
+| S2 Strengths/Weaknesses | ✅ | `deriveInsights(breakdown, baseline)` |
+| S3 واژه‌نامه (i) | ✅ | hover + click، glossary کامل، hotspots ساده |
+| S4 Baseline compare | ✅ | `baseline-compare.tsx` + wiring |
+| S5 Finger load + hand balance | ✅ | `leftHandShare`/`rightHandShare` در breakdown |
+| S6 Delta badge | ✅ | `score-delta-badge.tsx` + `useLiveScore` |
+| S7 Simple/Expert toggle | ✅ | `useSyncExternalStore` — بدون flash |
+
+**پوشش تست:** lib + component + integration — ۷۷+ تست pass.
+
+---
+
 ## Changelog
 
 | نسخه | تاریخ | تغییر |
 |------|-------|-------|
+| 0.3 | ۱۴۰۵/۰۴/۱۰ | تکمیل S4/S5/S6 + fixهای code review |
+| 0.2 | ۱۴۰۵/۰۴/۱۰ | وضعیت پیاده‌سازی + یافته‌های code review |
 | 0.1 | ۱۴۰۵/۰۴/۰۹ | پیش‌نویس اولیه E15 |

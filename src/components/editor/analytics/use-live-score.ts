@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   CLIENT_CORPUS_PRESETS,
@@ -17,14 +17,18 @@ import type { ScoreResult } from "@/lib/scoring/types";
 
 const SCORE_DEBOUNCE_MS = 120;
 const HOTSPOT_RING_COUNT = 3;
+const SCORE_DELTA_VISIBLE_MS = 2000;
 
 export type LiveScoreState = {
   readonly result: ScoreResult | null;
+  readonly ngramStats: NgramStats | null;
   readonly isStale: boolean;
   readonly isLoadingPreset: boolean;
   readonly error: string | null;
   readonly presetId: CorpusPresetId;
   readonly hotspotKeyIds: ReadonlySet<string>;
+  readonly scoreDelta: number | null;
+  readonly showScoreDelta: boolean;
   readonly setPresetId: (presetId: CorpusPresetId) => void;
 };
 
@@ -36,6 +40,10 @@ export function useLiveScore(layout: Layout): LiveScoreState {
   const [isStale, setIsStale] = useState(true);
   const [isLoadingPreset, setIsLoadingPreset] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [scoreDelta, setScoreDelta] = useState<number | null>(null);
+  const [showScoreDelta, setShowScoreDelta] = useState(false);
+  const previousTotalRef = useRef<number | null>(null);
+  const hasStableScoreRef = useRef(false);
 
   useEffect(() => {
     const stored = readStoredCorpusPresetId();
@@ -49,6 +57,10 @@ export function useLiveScore(layout: Layout): LiveScoreState {
     setPresetIdState(nextPresetId);
     writeStoredCorpusPresetId(nextPresetId);
     setIsStale(true);
+    previousTotalRef.current = null;
+    hasStableScoreRef.current = false;
+    setShowScoreDelta(false);
+    setScoreDelta(null);
   }, []);
 
   useEffect(() => {
@@ -94,6 +106,22 @@ export function useLiveScore(layout: Layout): LiveScoreState {
     setIsStale(true);
     const timer = window.setTimeout(() => {
       const nextResult = computeScore(layout, ngramStats);
+      const previousTotal = previousTotalRef.current;
+
+      if (
+        hasStableScoreRef.current &&
+        previousTotal !== null &&
+        previousTotal !== nextResult.total
+      ) {
+        setScoreDelta(nextResult.total - previousTotal);
+        setShowScoreDelta(true);
+      } else {
+        setShowScoreDelta(false);
+        setScoreDelta(null);
+      }
+
+      previousTotalRef.current = nextResult.total;
+      hasStableScoreRef.current = true;
       setResult(nextResult);
       setIsStale(false);
     }, SCORE_DEBOUNCE_MS);
@@ -102,6 +130,20 @@ export function useLiveScore(layout: Layout): LiveScoreState {
       window.clearTimeout(timer);
     };
   }, [layout, ngramStats]);
+
+  useEffect(() => {
+    if (!showScoreDelta) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShowScoreDelta(false);
+    }, SCORE_DELTA_VISIBLE_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [showScoreDelta, scoreDelta]);
 
   const hotspotKeyIds = useMemo(() => {
     if (!result) {
@@ -116,11 +158,14 @@ export function useLiveScore(layout: Layout): LiveScoreState {
 
   return {
     result,
+    ngramStats,
     isStale: isStale || isLoadingPreset,
     isLoadingPreset,
     error,
     presetId,
     hotspotKeyIds,
+    scoreDelta,
+    showScoreDelta,
     setPresetId,
   };
 }

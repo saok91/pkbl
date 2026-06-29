@@ -7,16 +7,21 @@ import type { Layout } from "@/lib/layout/types";
 import type { ScoreHotspot } from "@/lib/scoring/types";
 
 import { ANALYTICS_PANEL_SECTION_FA } from "./analytics-labels";
+import { findGlossaryEntry } from "./comprehension/metric-glossary";
+import { MetricInfo } from "./comprehension/metric-info";
 import { formatCost } from "./format-analytics";
 
 const HOTSPOT_LIST_ID = "hotspot-list-items";
 const PANEL_HOTSPOT_COUNT = 5;
 const FULL_HOTSPOT_COUNT = 10;
 
+const HOTSPOT_PRIORITY_FA = ["بسیار پرهزینه", "پرهزینه", "متوسط"] as const;
+
 type HotspotListProps = {
   hotspots: readonly ScoreHotspot[];
   layout: Layout;
   onHotspotSelect: (keyId: string) => void;
+  variant?: "simple" | "expert";
 };
 
 function getKeyName(layout: Layout, keyId: string): string {
@@ -34,15 +39,21 @@ function getKeyName(layout: Layout, keyId: string): string {
   return baseLabel ? getCharDisplayLabel(baseLabel) : keyId;
 }
 
+function simpleHotspotLabel(index: number): string {
+  return HOTSPOT_PRIORITY_FA[Math.min(index, HOTSPOT_PRIORITY_FA.length - 1)]!;
+}
+
 export function HotspotList({
   hotspots,
   layout,
   onHotspotSelect,
+  variant = "expert",
 }: HotspotListProps) {
   const [expanded, setExpanded] = useState(false);
   const visibleCount = expanded ? FULL_HOTSPOT_COUNT : PANEL_HOTSPOT_COUNT;
   const visibleHotspots = hotspots.slice(0, visibleCount);
   const hasMore = hotspots.length > PANEL_HOTSPOT_COUNT;
+  const glossaryEntry = findGlossaryEntry("نقطه پرهزینه");
 
   if (hotspots.length === 0) {
     return <p className="text-sm text-slate-500">نقطه پرهزینه‌ای یافت نشد.</p>;
@@ -50,11 +61,16 @@ export function HotspotList({
 
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-medium tracking-wide text-slate-400 uppercase">
-        {ANALYTICS_PANEL_SECTION_FA.hotspots}
-      </h3>
+      <div className="flex items-center gap-1.5">
+        <h3 className="text-xs font-medium tracking-wide text-slate-400 uppercase">
+          {ANALYTICS_PANEL_SECTION_FA.hotspots}
+        </h3>
+        {variant === "simple" && glossaryEntry ? (
+          <MetricInfo entry={glossaryEntry} />
+        ) : null}
+      </div>
       <ul id={HOTSPOT_LIST_ID} className="space-y-1">
-        {visibleHotspots.map((hotspot) => (
+        {visibleHotspots.map((hotspot, index) => (
           <li key={`${hotspot.char}-${hotspot.keyId}`}>
             <button
               type="button"
@@ -67,7 +83,9 @@ export function HotspotList({
                 </span>
                 <span className="mx-1.5 text-slate-600">·</span>
                 <span className="text-slate-400 tabular-nums">
-                  {formatCost(hotspot.cost)}
+                  {variant === "simple"
+                    ? simpleHotspotLabel(index)
+                    : formatCost(hotspot.cost)}
                 </span>
               </span>
               <span className="shrink-0 text-xs text-slate-500">

@@ -300,6 +300,11 @@ function buildBreakdown(
     totalChars > 0 ? (acc.homeRowWeight / totalChars) * 100 : 0;
 
   const unigramWeight = sumFingerLoad(acc.fingerLoad);
+  const handWeightTotal = acc.leftHandWeight + acc.rightHandWeight;
+  const leftHandShare =
+    handWeightTotal > 0 ? acc.leftHandWeight / handWeightTotal : 0.5;
+  const rightHandShare =
+    handWeightTotal > 0 ? acc.rightHandWeight / handWeightTotal : 0.5;
 
   return {
     unigramCost: acc.unigramCost,
@@ -311,6 +316,8 @@ function buildBreakdown(
     homeRowUsage,
     fingerLoad: normalizeFingerLoad(acc.fingerLoad, unigramWeight),
     handBalance: computeHandBalance(acc.leftHandWeight, acc.rightHandWeight),
+    leftHandShare,
+    rightHandShare,
     sameFingerBigrams: acc.sameFingerBigrams,
     sameHandBigrams: acc.sameHandBigrams,
     handAlternation: acc.handAlternation,

@@ -18,6 +18,7 @@ import {
   formatSignedScore,
 } from "./format-analytics";
 import { MetricRow } from "./metric-row";
+import { metricInfoForField } from "./metric-info-map";
 
 type BreakdownAccordionProps = {
   breakdown: ScoreBreakdown;
@@ -91,14 +92,17 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.unigramScore}
                       value={formatSignedScore(breakdown.unigramScore)}
+                      info={metricInfoForField("unigramScore")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.bigramScore}
                       value={formatSignedScore(breakdown.bigramScore)}
+                      info={metricInfoForField("bigramScore")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.trigramScore}
                       value={formatSignedScore(breakdown.trigramScore)}
+                      info={metricInfoForField("trigramScore")}
                     />
                   </>
                 ) : null}
@@ -107,10 +111,12 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.homeRowUsage}
                       value={formatPercent(breakdown.homeRowUsage)}
+                      info={metricInfoForField("homeRowUsage")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.handBalance}
                       value={formatRatio(breakdown.handBalance)}
+                      info={metricInfoForField("handBalance")}
                     />
                     <div className="py-2">
                       <p className="mb-2 text-xs text-slate-400">
@@ -121,18 +127,22 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.sameFingerBigrams}
                       value={formatCount(breakdown.sameFingerBigrams)}
+                      info={metricInfoForField("sameFingerBigrams")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.sameHandBigrams}
                       value={formatCount(breakdown.sameHandBigrams)}
+                      info={metricInfoForField("sameHandBigrams")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.handAlternation}
                       value={formatCount(breakdown.handAlternation)}
+                      info={metricInfoForField("handAlternation")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.rowSwitching}
                       value={formatCount(breakdown.rowSwitching)}
+                      info={metricInfoForField("rowSwitching")}
                     />
                   </>
                 ) : null}
@@ -141,10 +151,24 @@ export function BreakdownAccordion({ breakdown }: BreakdownAccordionProps) {
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.weakKeyPenalty}
                       value={formatCost(breakdown.weakKeyPenalty)}
+                      info={metricInfoForField("weakKeyPenalty")}
                     />
                     <MetricRow
                       label={BREAKDOWN_FIELD_FA.unigramCost}
                       value={formatCost(breakdown.unigramCost)}
+                      info={metricInfoForField("unigramCost")}
+                      muted
+                    />
+                    <MetricRow
+                      label={BREAKDOWN_FIELD_FA.bigramCost}
+                      value={formatCost(breakdown.bigramCost)}
+                      info={metricInfoForField("bigramCost")}
+                      muted
+                    />
+                    <MetricRow
+                      label={BREAKDOWN_FIELD_FA.trigramCost}
+                      value={formatCost(breakdown.trigramCost)}
+                      info={metricInfoForField("trigramCost")}
                       muted
                     />
                   </>

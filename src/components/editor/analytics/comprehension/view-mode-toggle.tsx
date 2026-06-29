@@ -1,0 +1,88 @@
+"use client";
+
+import { useCallback, useSyncExternalStore } from "react";
+
+import { VIEW_MODE_FA } from "./comprehension-labels";
+
+export type AnalyticsViewMode = "simple" | "expert";
+
+export const ANALYTICS_VIEW_MODE_KEY = "pkbl-analytics-view-mode";
+const VIEW_MODE_EVENT = "pkbl-analytics-view-mode-change";
+
+export function isAnalyticsViewMode(value: string): value is AnalyticsViewMode {
+  return value === "simple" || value === "expert";
+}
+
+export function readStoredViewMode(): AnalyticsViewMode {
+  if (typeof window === "undefined") {
+    return "simple";
+  }
+  const stored = localStorage.getItem(ANALYTICS_VIEW_MODE_KEY);
+  if (stored && isAnalyticsViewMode(stored)) {
+    return stored;
+  }
+  return "simple";
+}
+
+export function writeStoredViewMode(mode: AnalyticsViewMode): void {
+  localStorage.setItem(ANALYTICS_VIEW_MODE_KEY, mode);
+  window.dispatchEvent(new Event(VIEW_MODE_EVENT));
+}
+
+function subscribeViewMode(onStoreChange: () => void): () => void {
+  const handler = () => onStoreChange();
+  window.addEventListener(VIEW_MODE_EVENT, handler);
+  window.addEventListener("storage", handler);
+  return () => {
+    window.removeEventListener(VIEW_MODE_EVENT, handler);
+    window.removeEventListener("storage", handler);
+  };
+}
+
+type ViewModeToggleProps = {
+  mode: AnalyticsViewMode;
+  onChange: (mode: AnalyticsViewMode) => void;
+};
+
+export function ViewModeToggle({ mode, onChange }: ViewModeToggleProps) {
+  return (
+    <div
+      className="flex rounded-lg border border-slate-800 p-0.5"
+      role="group"
+      aria-label="حالت نمایش پنل امتیاز"
+    >
+      {(["simple", "expert"] as const).map((option) => (
+        <button
+          key={option}
+          type="button"
+          aria-pressed={mode === option}
+          onClick={() => onChange(option)}
+          className={`flex-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none ${
+            mode === option
+              ? "bg-sky-600/30 text-sky-200"
+              : "text-slate-400 hover:text-slate-200"
+          }`}
+        >
+          {VIEW_MODE_FA[option]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function useAnalyticsViewMode(): {
+  readonly mode: AnalyticsViewMode;
+  readonly setMode: (mode: AnalyticsViewMode) => void;
+} {
+  const mode = useSyncExternalStore(
+    subscribeViewMode,
+    () => readStoredViewMode(),
+    () => "simple" as AnalyticsViewMode,
+  );
+
+  const setMode = useCallback((nextMode: AnalyticsViewMode) => {
+    writeStoredViewMode(nextMode);
+  }, []);
+
+  return { mode, setMode };
+}

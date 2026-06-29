@@ -12,6 +12,7 @@ type ScoreHeroProps = {
   presetId: CorpusPresetId;
   isStale: boolean;
   onPresetChange: (presetId: CorpusPresetId) => void;
+  hideScore?: boolean;
 };
 
 export function ScoreHero({
@@ -19,6 +20,7 @@ export function ScoreHero({
   presetId,
   isStale,
   onPresetChange,
+  hideScore = false,
 }: ScoreHeroProps) {
   const activePreset = CLIENT_CORPUS_PRESETS.find(
     (preset) => preset.id === presetId,
@@ -56,23 +58,25 @@ export function ScoreHero({
         ) : null}
       </div>
 
-      <div
-        className={
-          isStale
-            ? "opacity-60 transition-opacity"
-            : "opacity-100 transition-opacity"
-        }
-      >
-        <p className="text-xs text-slate-400">امتیاز کلی</p>
-        <p
-          className="text-4xl font-bold text-white tabular-nums"
-          aria-live="polite"
-          aria-atomic="true"
+      {hideScore ? null : (
+        <div
+          className={
+            isStale
+              ? "opacity-60 transition-opacity"
+              : "opacity-100 transition-opacity"
+          }
         >
-          {total !== null ? formatScore(total) : "—"}
-        </p>
-        <p className="text-xs text-slate-500">بالاتر بهتر</p>
-      </div>
+          <p className="text-xs text-slate-400">امتیاز کلی</p>
+          <p
+            className="text-4xl font-bold text-white tabular-nums"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {total !== null ? formatScore(total) : "—"}
+          </p>
+          <p className="text-xs text-slate-500">بالاتر بهتر</p>
+        </div>
+      )}
     </div>
   );
 }
