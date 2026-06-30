@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { getBlankAnsiTemplate, getDefaultTemplate } from "@/lib/layout/kle-parser";
+import {
+  getBlankAnsiTemplate,
+  getDefaultTemplate,
+} from "@/lib/layout/kle-parser";
 import { PERSIAN_STANDARD_60_ID } from "@/lib/layout/persian-standard-60";
 
 import { layoutAsWireInput } from "~/server/api/test-utils/layout-wire";

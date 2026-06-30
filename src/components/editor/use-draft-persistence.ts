@@ -21,7 +21,8 @@ const DRAFT_SAVE_DEBOUNCE_MS = 400;
 
 const SAVE_ERROR_MESSAGES: Record<DraftWriteError, string> = {
   quota_exceeded: "فضای ذخیره‌سازی مرورگر پر است — پیش‌نویس ذخیره نشد.",
-  storage_unavailable: "ذخیرهٔ پیش‌نویس ممکن نیست — storage مرورگر در دسترس نیست.",
+  storage_unavailable:
+    "ذخیرهٔ پیش‌نویس ممکن نیست — storage مرورگر در دسترس نیست.",
 };
 
 export type DraftPersistenceState = {

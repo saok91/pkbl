@@ -16,7 +16,7 @@ export function StrengthsWeaknesses({
 }: StrengthsWeaknessesProps) {
   if (incomplete) {
     return (
-      <p className="text-[11px] text-text-dim">
+      <p className="text-text-dim text-[11px]">
         {COMPREHENSION_SECTION_FA.incompleteLayout}
       </p>
     );
@@ -32,7 +32,7 @@ export function StrengthsWeaknesses({
             ))}
           </ul>
         ) : (
-          <p className="text-[11px] text-text-faint">
+          <p className="text-text-faint text-[11px]">
             {COMPREHENSION_SECTION_FA.noStrengths}
           </p>
         )}
@@ -46,7 +46,7 @@ export function StrengthsWeaknesses({
             ))}
           </ul>
         ) : (
-          <p className="text-[11px] text-text-faint">
+          <p className="text-text-faint text-[11px]">
             {COMPREHENSION_SECTION_FA.noWeaknesses}
           </p>
         )}

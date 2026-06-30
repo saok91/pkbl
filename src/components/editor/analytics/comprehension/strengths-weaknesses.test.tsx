@@ -27,9 +27,7 @@ const weakness: Insight = {
 
 describe("StrengthsWeaknesses", () => {
   it("shows incomplete layout message", () => {
-    render(
-      <StrengthsWeaknesses strengths={[]} weaknesses={[]} incomplete />,
-    );
+    render(<StrengthsWeaknesses strengths={[]} weaknesses={[]} incomplete />);
 
     expect(screen.getByText("اول چیدمان را کامل کنید")).toBeInTheDocument();
   });

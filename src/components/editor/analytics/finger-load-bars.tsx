@@ -23,7 +23,7 @@ export function FingerLoadBars({ fingerLoad }: FingerLoadBarsProps) {
 
   return (
     <div className="space-y-2">
-      <p className="text-[11px] text-text-faint">{FINGER_LOAD_CAPTION_FA}</p>
+      <p className="text-text-faint text-[11px]">{FINGER_LOAD_CAPTION_FA}</p>
       {FINGER_ORDER.map((finger) => {
         const load = fingerLoad[finger];
         const widthPercent = Math.round((load / maxLoad) * 100);
@@ -40,7 +40,7 @@ export function FingerLoadBars({ fingerLoad }: FingerLoadBarsProps) {
               role="presentation"
             >
               <div
-                className="h-full rounded-full bg-primary/80 transition-all"
+                className="bg-primary/80 h-full rounded-full transition-all"
                 style={{ width: `${widthPercent}%` }}
               />
             </div>

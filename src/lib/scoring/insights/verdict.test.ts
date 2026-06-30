@@ -6,13 +6,9 @@ import { deriveVerdict, deriveVerdictBand } from "./verdict";
 describe("deriveVerdictBand", () => {
   it("maps ratio to band deterministically at boundaries", () => {
     expect(deriveVerdictBand(VERDICT_BANDS_V1.goodMinRatio)).toBe("good");
-    expect(deriveVerdictBand(VERDICT_BANDS_V1.goodMinRatio - 0.001)).toBe(
-      "ok",
-    );
+    expect(deriveVerdictBand(VERDICT_BANDS_V1.goodMinRatio - 0.001)).toBe("ok");
     expect(deriveVerdictBand(VERDICT_BANDS_V1.okMinRatio)).toBe("ok");
-    expect(deriveVerdictBand(VERDICT_BANDS_V1.okMinRatio - 0.001)).toBe(
-      "poor",
-    );
+    expect(deriveVerdictBand(VERDICT_BANDS_V1.okMinRatio - 0.001)).toBe("poor");
   });
 });
 

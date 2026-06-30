@@ -57,9 +57,9 @@ export function ViewModeToggle({ mode, onChange }: ViewModeToggleProps) {
           type="button"
           aria-pressed={mode === option}
           onClick={() => onChange(option)}
-          className={`flex-1 rounded py-1.5 text-[11px] transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
+          className={`focus-visible:ring-primary flex-1 rounded py-1.5 text-[11px] transition-all focus-visible:ring-2 focus-visible:outline-none ${
             mode === option
-              ? "bg-[#0C1E38] text-primary shadow-sm"
+              ? "text-primary bg-[#0C1E38] shadow-sm"
               : "text-text-faint hover:text-text-dim"
           }`}
         >

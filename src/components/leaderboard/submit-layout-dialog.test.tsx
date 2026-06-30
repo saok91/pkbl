@@ -69,8 +69,8 @@ function simulateSubmitSuccess(
   data: MutationOptions extends undefined
     ? never
     : NonNullable<MutationOptions["onSuccess"]> extends (
-        response: infer R,
-      ) => void
+          response: infer R,
+        ) => void
       ? R
       : never,
 ) {
@@ -149,9 +149,7 @@ describe("SubmitLayoutDialog", () => {
       />,
     );
 
-    expect(
-      screen.getByRole("button", { name: "ثبت چیدمان" }),
-    ).toBeDisabled();
+    expect(screen.getByRole("button", { name: "ثبت چیدمان" })).toBeDisabled();
   });
 
   it("disables submit for incomplete layout preview", () => {
@@ -167,9 +165,7 @@ describe("SubmitLayoutDialog", () => {
     );
 
     expect(screen.getByText("چیدمان ناقص")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "ثبت چیدمان" }),
-    ).toBeDisabled();
+    expect(screen.getByRole("button", { name: "ثبت چیدمان" })).toBeDisabled();
   });
 
   it("shows score too low rejection after submit", () => {

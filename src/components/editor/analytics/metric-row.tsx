@@ -7,7 +7,12 @@ type MetricRowProps = {
   info?: ReactNode;
 };
 
-export function MetricRow({ label, value, muted = false, info }: MetricRowProps) {
+export function MetricRow({
+  label,
+  value,
+  muted = false,
+  info,
+}: MetricRowProps) {
   return (
     <div className="flex items-baseline justify-between gap-3 py-1.5 text-sm">
       <span
@@ -17,7 +22,7 @@ export function MetricRow({ label, value, muted = false, info }: MetricRowProps)
         {info}
       </span>
       <span
-        className={`tabular-nums ${muted ? "text-text-faint" : "font-medium text-text-secondary"}`}
+        className={`tabular-nums ${muted ? "text-text-faint" : "text-text-secondary font-medium"}`}
       >
         {value}
       </span>

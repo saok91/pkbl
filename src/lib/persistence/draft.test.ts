@@ -43,7 +43,11 @@ describe("editor draft persistence", () => {
 
   it("round-trips layout and corpus preset through storage", () => {
     const layout = assignChar(getDefaultTemplate(), keyIdAt("Q"), "base", "ق");
-    const draft = createEditorDraft(layout, "varzesh3", "2026-06-30T12:00:00.000Z");
+    const draft = createEditorDraft(
+      layout,
+      "varzesh3",
+      "2026-06-30T12:00:00.000Z",
+    );
 
     const result = writeEditorDraft(draft, storage);
     expect(result).toEqual({ ok: true });
@@ -140,7 +144,10 @@ describe("editor draft persistence", () => {
 
   it("reads corpus preset from draft before standalone storage key", () => {
     storage.setItem(CORPUS_PRESET_STORAGE_KEY, "wiki-fa");
-    writeEditorDraft(createEditorDraft(getDefaultTemplate(), "varzesh3"), storage);
+    writeEditorDraft(
+      createEditorDraft(getDefaultTemplate(), "varzesh3"),
+      storage,
+    );
 
     expect(readEditorDraftCorpusPresetId(storage)).toBe("varzesh3");
   });
@@ -152,7 +159,10 @@ describe("editor draft persistence", () => {
   });
 
   it("clears stored draft", () => {
-    writeEditorDraft(createEditorDraft(getDefaultTemplate(), "wiki-fa"), storage);
+    writeEditorDraft(
+      createEditorDraft(getDefaultTemplate(), "wiki-fa"),
+      storage,
+    );
     clearEditorDraft(storage);
     expect(readEditorDraft(storage)).toBeNull();
   });

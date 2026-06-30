@@ -69,8 +69,10 @@ export function VerdictGauge({
 
   return (
     <div
-      className={`rounded-xl border border-border-strong bg-surface-panel p-4 ${
-        isStale ? "opacity-60 transition-opacity" : "opacity-100 transition-opacity"
+      className={`border-border-strong bg-surface-panel rounded-xl border p-4 ${
+        isStale
+          ? "opacity-60 transition-opacity"
+          : "opacity-100 transition-opacity"
       }`}
     >
       <div className="mb-3 flex items-start justify-between">
@@ -80,21 +82,22 @@ export function VerdictGauge({
           >
             {verdict.labelFa}
           </div>
-          <div
-            className="mt-0.5 font-mono text-3xl font-bold tracking-tight tabular-nums"
-          >
+          <div className="mt-0.5 font-mono text-3xl font-bold tracking-tight tabular-nums">
             {formatScore(verdict.total)}
             {isStale ? (
-              <span className="mr-2 text-[10px] font-normal text-text-faint">
+              <span className="text-text-faint mr-2 text-[10px] font-normal">
                 در حال به‌روزرسانی…
               </span>
             ) : null}
           </div>
-          <p className="mt-1 text-sm text-text-faint tabular-nums">
+          <p className="text-text-faint mt-1 text-sm tabular-nums">
             امتیاز: {formatScore(verdict.total)}
           </p>
         </div>
-        <ScoreDeltaBadge delta={scoreDelta} visible={showScoreDelta && !isStale} />
+        <ScoreDeltaBadge
+          delta={scoreDelta}
+          visible={showScoreDelta && !isStale}
+        />
       </div>
 
       <div
@@ -113,7 +116,7 @@ export function VerdictGauge({
         />
       </div>
 
-      <div className="mt-1 flex justify-between font-mono text-[9px] text-text-faint">
+      <div className="text-text-faint mt-1 flex justify-between font-mono text-[9px]">
         <span>{formatScore(scoreMin)}</span>
         <span className="text-text-dim">
           مبنا: {formatScore(verdict.baselineTotal)}

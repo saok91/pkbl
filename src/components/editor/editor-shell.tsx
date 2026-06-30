@@ -159,7 +159,7 @@ export function EditorShell() {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div className="min-h-dvh bg-background text-foreground">
+      <div className="bg-background text-foreground min-h-dvh">
         <AppHeader
           center={
             <DraftSaveIndicator
@@ -173,7 +173,7 @@ export function EditorShell() {
 
         <main className={`mx-auto ${EDITOR_MAX_WIDTH_CLASS} px-4 py-5`}>
           {!draftPersistence.isHydrated ? (
-            <p className="py-12 text-center text-sm text-text-dim">
+            <p className="text-text-dim py-12 text-center text-sm">
               در حال بارگذاری پیش‌نویس…
             </p>
           ) : (
@@ -190,14 +190,14 @@ export function EditorShell() {
               <div className="order-2 min-w-0 flex-1 space-y-3 lg:order-1">
                 {lastError ? (
                   <div
-                    className="flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent"
+                    className="border-accent/30 bg-accent/10 text-accent flex items-center justify-between rounded-lg border px-4 py-3 text-sm"
                     role="alert"
                   >
                     <span>{lastError}</span>
                     <button
                       type="button"
                       onClick={clearError}
-                      className="rounded px-2 py-1 text-xs hover:bg-accent/15"
+                      className="hover:bg-accent/15 rounded px-2 py-1 text-xs"
                     >
                       بستن
                     </button>
@@ -222,8 +222,8 @@ export function EditorShell() {
                 </div>
 
                 {pendingChar ? (
-                  <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-2 text-[11px] text-primary">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-md border border-primary/40 bg-primary/20 text-[15px]">
+                  <div className="border-primary/30 bg-primary/10 text-primary flex items-center gap-2 rounded-lg border px-4 py-2 text-[11px]">
+                    <span className="border-primary/40 bg-primary/20 flex h-7 w-7 items-center justify-center rounded-md border text-[15px]">
                       {pendingChar}
                     </span>
                     روی کلید مورد نظر کلیک کنید تا «{pendingChar}» تخصیص داده
@@ -231,7 +231,7 @@ export function EditorShell() {
                     <button
                       type="button"
                       onClick={() => setPendingChar(null)}
-                      className="mr-auto text-primary/60 transition-colors hover:text-primary"
+                      className="text-primary/60 hover:text-primary mr-auto transition-colors"
                       aria-label="لغو انتخاب کاراکتر"
                     >
                       ×
@@ -258,10 +258,10 @@ export function EditorShell() {
                   onCharClick={handleCharClick}
                 />
 
-                <div className="flex items-center gap-2 rounded-lg border border-border-subtle bg-surface-keyboard px-3 py-2 text-[10px] text-text-faint">
+                <div className="border-border-subtle bg-surface-keyboard text-text-faint flex items-center gap-2 rounded-lg border px-3 py-2 text-[10px]">
                   <span aria-hidden="true">ℹ</span>
-                  کلیک روی کلید = پنجره انتخاب · کلیک روی حرف در پالت + کلیک
-                  روی کلید = تخصیص سریع · کشیدن حرف یا کلید = جابجایی
+                  کلیک روی کلید = پنجره انتخاب · کلیک روی حرف در پالت + کلیک روی
+                  کلید = تخصیص سریع · کشیدن حرف یا کلید = جابجایی
                 </div>
               </div>
             </div>
@@ -271,13 +271,13 @@ export function EditorShell() {
 
       <DragOverlay dropAnimation={null}>
         {activeDrag?.kind === "char" ? (
-          <div className="flex h-14 w-14 cursor-grabbing items-center justify-center rounded-md border border-primary/50 bg-primary/20 text-sm text-primary shadow-xl">
+          <div className="border-primary/50 bg-primary/20 text-primary flex h-14 w-14 cursor-grabbing items-center justify-center rounded-md border text-sm shadow-xl">
             {activeDrag.char}
           </div>
         ) : null}
         {activeDrag?.kind === "key" ? (
           <div
-            className="flex cursor-grabbing items-center justify-center rounded-md border border-primary/50 bg-primary/20 text-sm text-primary shadow-xl"
+            className="border-primary/50 bg-primary/20 text-primary flex cursor-grabbing items-center justify-center rounded-md border text-sm shadow-xl"
             style={{ width: activeDrag.width, height: activeDrag.height }}
           >
             <span className="truncate px-1">{activeDrag.label}</span>

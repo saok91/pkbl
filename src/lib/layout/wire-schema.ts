@@ -33,9 +33,9 @@ export const keySlotWireSchema = z.object({
 
 export const layoutWireSchema = z.object({
   templateId: z.string().min(1).max(128),
-  keys: z.array(z.tuple([z.string().min(1).max(64), physicalKeyWireSchema])).max(
-    MAX_LAYOUT_KEYS,
-  ),
+  keys: z
+    .array(z.tuple([z.string().min(1).max(64), physicalKeyWireSchema]))
+    .max(MAX_LAYOUT_KEYS),
   assignments: z
     .array(z.tuple([z.string().min(1).max(64), keySlotWireSchema]))
     .max(MAX_LAYOUT_KEYS),

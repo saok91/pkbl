@@ -28,17 +28,17 @@ export function KeyCharPopover({
     <div
       ref={dialogRef}
       dir="rtl"
-      className={`z-30 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-border-strong bg-popover p-3 text-right shadow-2xl ${className}`}
+      className={`border-border-strong bg-popover z-30 w-[min(22rem,calc(100vw-2rem))] rounded-xl border p-3 text-right shadow-2xl ${className}`}
       role="dialog"
       aria-modal="true"
       aria-label="انتخاب کاراکتر"
     >
       <div className="mb-2 flex items-center justify-between gap-2">
-        <span className="text-[10px] text-text-dim">انتخاب کاراکتر</span>
+        <span className="text-text-dim text-[10px]">انتخاب کاراکتر</span>
         <button
           type="button"
           onClick={onClose}
-          className="text-text-faint transition-colors hover:text-text-secondary"
+          className="text-text-faint hover:text-text-secondary transition-colors"
           aria-label="بستن"
         >
           ×

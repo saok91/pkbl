@@ -40,13 +40,13 @@ export function HotspotList({
   const maxCost = hotspots[0]?.cost ?? 1;
 
   if (hotspots.length === 0) {
-    return <p className="text-sm text-text-dim">نقطه پرهزینه‌ای یافت نشد.</p>;
+    return <p className="text-text-dim text-sm">نقطه پرهزینه‌ای یافت نشد.</p>;
   }
 
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1.5">
-        <h3 className="text-[11px] text-text-dim">نقاط پرهزینه</h3>
+        <h3 className="text-text-dim text-[11px]">نقاط پرهزینه</h3>
         {variant === "simple" && glossaryEntry ? (
           <MetricInfo entry={glossaryEntry} />
         ) : null}
@@ -57,21 +57,21 @@ export function HotspotList({
             <button
               type="button"
               onClick={() => onHotspotSelect(hotspot.keyId)}
-              className="group flex w-full items-center gap-2 rounded px-2 py-1.5 transition-colors hover:bg-[#112040] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              className="group focus-visible:ring-primary flex w-full items-center gap-2 rounded px-2 py-1.5 transition-colors hover:bg-[#112040] focus-visible:ring-2 focus-visible:outline-none"
             >
-              <span className="w-3 shrink-0 font-mono text-[9px] text-text-faint">
+              <span className="text-text-faint w-3 shrink-0 font-mono text-[9px]">
                 {formatScore(index + 1)}
               </span>
-              <span className="w-5 text-center text-[15px] text-text-secondary">
+              <span className="text-text-secondary w-5 text-center text-[15px]">
                 {getCharDisplayLabel(hotspot.char)}
               </span>
-              <div className="h-1 flex-1 overflow-hidden rounded-full bg-surface-keyboard">
+              <div className="bg-surface-keyboard h-1 flex-1 overflow-hidden rounded-full">
                 <div
-                  className="h-full rounded-full bg-accent/60"
+                  className="bg-accent/60 h-full rounded-full"
                   style={{ width: `${(hotspot.cost / maxCost) * 100}%` }}
                 />
               </div>
-              <span className="shrink-0 font-mono text-[9px] text-text-faint group-hover:text-accent">
+              <span className="text-text-faint group-hover:text-accent shrink-0 font-mono text-[9px]">
                 {variant === "simple"
                   ? simpleHotspotLabel(index)
                   : formatCost(hotspot.cost)}
@@ -86,7 +86,7 @@ export function HotspotList({
           aria-expanded={expanded}
           aria-controls={HOTSPOT_LIST_ID}
           onClick={() => setExpanded((value) => !value)}
-          className="flex items-center gap-1 text-[11px] text-text-faint transition-colors hover:text-primary focus-visible:underline focus-visible:outline-none"
+          className="text-text-faint hover:text-primary flex items-center gap-1 text-[11px] transition-colors focus-visible:underline focus-visible:outline-none"
         >
           {expanded
             ? "کمتر"

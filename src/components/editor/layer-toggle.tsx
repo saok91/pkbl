@@ -59,7 +59,7 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
 
   return (
     <div
-      className="mr-auto flex gap-0.5 rounded-lg border border-border-strong bg-surface-panel p-1"
+      className="border-border-strong bg-surface-panel mr-auto flex gap-0.5 rounded-lg border p-1"
       role="tablist"
       aria-label="لایهٔ صفحه‌کلید"
     >
@@ -81,8 +81,8 @@ export function LayerToggle({ activeLayer, onChange }: LayerToggleProps) {
             className={`rounded px-3 py-1 text-[11px] font-medium transition-all ${
               isActive
                 ? layer.id === "base"
-                  ? "border border-primary/30 bg-primary/18 text-primary"
-                  : "border border-accent/30 bg-accent/18 text-accent"
+                  ? "border-primary/30 bg-primary/18 text-primary border"
+                  : "border-accent/30 bg-accent/18 text-accent border"
                 : "text-text-faint hover:text-text-dim"
             }`}
           >

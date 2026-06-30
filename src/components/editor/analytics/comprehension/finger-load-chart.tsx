@@ -1,8 +1,5 @@
 import type { Finger } from "@/lib/ergonomics/types";
-import {
-  classifyFingerLoad,
-  type MetricQuality,
-} from "@/lib/scoring/insights";
+import { classifyFingerLoad, type MetricQuality } from "@/lib/scoring/insights";
 
 import { FINGER_LABEL_FA } from "../analytics-labels";
 import { formatPercent } from "../format-analytics";
@@ -39,7 +36,7 @@ export function FingerLoadChart({ fingerLoad }: FingerLoadChartProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1.5">
-        <h3 className="text-[11px] text-text-dim">
+        <h3 className="text-text-dim text-[11px]">
           {COMPREHENSION_SECTION_FA.fingerLoad}
         </h3>
         {glossaryEntry ? <MetricInfo entry={glossaryEntry} /> : null}
@@ -63,7 +60,7 @@ export function FingerLoadChart({ fingerLoad }: FingerLoadChartProps) {
               <div className="flex items-baseline justify-between text-xs">
                 <span className="text-text-dim">
                   {FINGER_LABEL_FA[finger]}
-                  <span className="ms-1.5 text-text-faint">
+                  <span className="text-text-faint ms-1.5">
                     ({METRIC_QUALITY_LABEL_FA[quality]})
                   </span>
                 </span>

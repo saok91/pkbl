@@ -7,7 +7,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { assignChar, getDefaultTemplate } from "@/lib/layout";
 import { keyIdAt } from "@/lib/layout/test-utils";
-import { CORPUS_PRESET_STORAGE_KEY, type CorpusPresetId } from "@/lib/corpus/client-presets";
+import {
+  CORPUS_PRESET_STORAGE_KEY,
+  type CorpusPresetId,
+} from "@/lib/corpus/client-presets";
 import {
   createEditorDraft,
   EDITOR_DRAFT_STORAGE_KEY,
@@ -40,9 +43,9 @@ describe("useDraftPersistence", () => {
     );
 
     await waitFor(() => {
-      expect(useEditorStore.getState().layout.assignments.get(keyIdAt("Q"))?.base).toBe(
-        "ق",
-      );
+      expect(
+        useEditorStore.getState().layout.assignments.get(keyIdAt("Q"))?.base,
+      ).toBe("ق");
     });
   });
 
@@ -100,8 +103,9 @@ describe("useDraftPersistence", () => {
     await waitFor(
       () => {
         expect(
-          readEditorDraft()?.layout.assignments.find(([id]) => id === keyIdAt("W"))?.[1]
-            .base,
+          readEditorDraft()?.layout.assignments.find(
+            ([id]) => id === keyIdAt("W"),
+          )?.[1].base,
         ).toBe("و");
       },
       { timeout: 1000 },
@@ -133,7 +137,9 @@ describe("useDraftPersistence", () => {
 
     await waitFor(
       () => {
-        expect(localStorage.getItem(CORPUS_PRESET_STORAGE_KEY)).toBe("varzesh3");
+        expect(localStorage.getItem(CORPUS_PRESET_STORAGE_KEY)).toBe(
+          "varzesh3",
+        );
         expect(readEditorDraft()?.corpusPresetId).toBe("varzesh3");
       },
       { timeout: 1000 },
@@ -152,9 +158,7 @@ describe("useDraftPersistence", () => {
         originalSetItem.call(this, key, value);
       });
 
-    const { result } = renderHook(() =>
-      useDraftPersistence(layout, "wiki-fa"),
-    );
+    const { result } = renderHook(() => useDraftPersistence(layout, "wiki-fa"));
 
     await waitFor(
       () => {
@@ -187,13 +191,28 @@ describe("useDraftPersistence", () => {
       expect(readEditorDraft()).not.toBeNull();
 
       rerender({
-        currentLayout: assignChar(getDefaultTemplate(), keyIdAt("Q"), "base", "ق"),
+        currentLayout: assignChar(
+          getDefaultTemplate(),
+          keyIdAt("Q"),
+          "base",
+          "ق",
+        ),
       });
       rerender({
-        currentLayout: assignChar(getDefaultTemplate(), keyIdAt("W"), "base", "و"),
+        currentLayout: assignChar(
+          getDefaultTemplate(),
+          keyIdAt("W"),
+          "base",
+          "و",
+        ),
       });
       rerender({
-        currentLayout: assignChar(getDefaultTemplate(), keyIdAt("D"), "base", "د"),
+        currentLayout: assignChar(
+          getDefaultTemplate(),
+          keyIdAt("D"),
+          "base",
+          "د",
+        ),
       });
 
       await act(async () => {
@@ -201,8 +220,9 @@ describe("useDraftPersistence", () => {
       });
 
       expect(
-        readEditorDraft()?.layout.assignments.find(([id]) => id === keyIdAt("D"))?.[1]
-          .base,
+        readEditorDraft()?.layout.assignments.find(
+          ([id]) => id === keyIdAt("D"),
+        )?.[1].base,
       ).toBe("د");
     } finally {
       vi.useRealTimers();

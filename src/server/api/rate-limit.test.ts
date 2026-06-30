@@ -115,9 +115,9 @@ describe("DbRateLimiter", () => {
 describe("apiRateLimiter", () => {
   it("can be cleared for test isolation", () => {
     apiRateLimiter.clear();
-    expect(apiRateLimiter.consume("clear-test", { limit: 1, windowMs: 1000 })).toBe(
-      true,
-    );
+    expect(
+      apiRateLimiter.consume("clear-test", { limit: 1, windowMs: 1000 }),
+    ).toBe(true);
     apiRateLimiter.clear();
     expect(
       apiRateLimiter.consume("clear-test", { limit: 1, windowMs: 1000 }),

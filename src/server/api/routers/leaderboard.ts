@@ -17,10 +17,7 @@ import { DEFAULT_SCORING_CONFIG } from "@/lib/scoring";
 
 import { apiFail, apiOk } from "~/server/api/result";
 import { layoutInputSchema } from "~/server/api/schemas/layout";
-import {
-  aliasSchema,
-  corpusPresetIdSchema,
-} from "~/server/api/schemas/shared";
+import { aliasSchema, corpusPresetIdSchema } from "~/server/api/schemas/shared";
 import {
   evaluateLayoutScore,
   resolveNgramStats,

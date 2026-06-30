@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  getDefaultTemplate,
-  parseKle,
-  serializeKle,
-} from "@/lib/layout";
+import { getDefaultTemplate, parseKle, serializeKle } from "@/lib/layout";
 import { LayoutError } from "@/lib/layout/types";
 import type { PlacementSuggestion } from "@/lib/leaderboard/types";
 
@@ -35,32 +31,28 @@ export const layoutRouter = createTRPCRouter({
     return apiOk(getDefaultTemplate());
   }),
 
-  parseKle: publicProcedure
-    .input(parseKleInputSchema)
-    .mutation(({ input }) => {
-      try {
-        return apiOk(parseKle(input.raw));
-      } catch (cause) {
-        if (cause instanceof LayoutError) {
-          return apiFail(cause.message);
-        }
-        const message =
-          cause instanceof Error ? cause.message : "KLE parse failed";
-        return apiFail(message);
+  parseKle: publicProcedure.input(parseKleInputSchema).mutation(({ input }) => {
+    try {
+      return apiOk(parseKle(input.raw));
+    } catch (cause) {
+      if (cause instanceof LayoutError) {
+        return apiFail(cause.message);
       }
-    }),
+      const message =
+        cause instanceof Error ? cause.message : "KLE parse failed";
+      return apiFail(message);
+    }
+  }),
 
-  serialize: publicProcedure
-    .input(serializeInputSchema)
-    .query(({ input }) => {
-      try {
-        return apiOk({ kle: serializeKle(input.layout) });
-      } catch (cause) {
-        const message =
-          cause instanceof Error ? cause.message : "KLE serialize failed";
-        return apiFail(message);
-      }
-    }),
+  serialize: publicProcedure.input(serializeInputSchema).query(({ input }) => {
+    try {
+      return apiOk({ kle: serializeKle(input.layout) });
+    } catch (cause) {
+      const message =
+        cause instanceof Error ? cause.message : "KLE serialize failed";
+      return apiFail(message);
+    }
+  }),
 
   suggestPlacements: publicProcedure
     .input(suggestPlacementsInputSchema)

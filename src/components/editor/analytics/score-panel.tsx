@@ -41,15 +41,20 @@ export function ScorePanel({
   onHotspotSelect,
   onOpenSubmit,
 }: ScorePanelProps) {
-  const { result, ngramStats, isStale, error, presetId, setPresetId, scoreDelta, showScoreDelta } =
-    liveScore;
+  const {
+    result,
+    ngramStats,
+    isStale,
+    error,
+    presetId,
+    setPresetId,
+    scoreDelta,
+    showScoreDelta,
+  } = liveScore;
   const { mode, setMode } = useAnalyticsViewMode();
 
   const incomplete = hasUnassignedEditableChars(layout);
-  const completeness = useMemo(
-    () => getCompletenessScore(layout),
-    [layout],
-  );
+  const completeness = useMemo(() => getCompletenessScore(layout), [layout]);
 
   const hint =
     result !== null
@@ -79,7 +84,7 @@ export function ScorePanel({
     <aside className="space-y-3" aria-label="پنل امتیازدهی">
       <div className={panelCardClass}>
         <div className="mb-1.5 flex items-center justify-between">
-          <span className="text-[10px] tracking-wider text-text-faint uppercase">
+          <span className="text-text-faint text-[10px] tracking-wider uppercase">
             پوشش حروف
           </span>
           <span
@@ -116,12 +121,12 @@ export function ScorePanel({
         hideScore
       />
 
-      <div className="flex rounded-lg border border-border-strong bg-surface-panel p-1">
+      <div className="border-border-strong bg-surface-panel flex rounded-lg border p-1">
         <ViewModeToggle mode={mode} onChange={setMode} />
       </div>
 
       {error ? (
-        <p className="text-sm text-accent" role="alert">
+        <p className="text-accent text-sm" role="alert">
           {error}
         </p>
       ) : null}
@@ -136,8 +141,8 @@ export function ScorePanel({
       ) : null}
 
       {mode === "expert" && result ? (
-        <div className="rounded-xl border border-border-strong bg-surface-panel p-3">
-          <p className="text-[10px] text-text-dim">امتیاز کلی</p>
+        <div className="border-border-strong bg-surface-panel rounded-xl border p-3">
+          <p className="text-text-dim text-[10px]">امتیاز کلی</p>
           <p
             className={`font-mono text-3xl font-bold tracking-tight tabular-nums ${
               isStale ? "opacity-60" : ""
@@ -146,12 +151,12 @@ export function ScorePanel({
           >
             {formatScore(result.total)}
           </p>
-          <p className="text-[10px] text-text-faint">بالاتر بهتر</p>
+          <p className="text-text-faint text-[10px]">بالاتر بهتر</p>
         </div>
       ) : null}
 
       {hint ? (
-        <div className="flex items-start gap-2 rounded-lg border border-border-strong bg-[#070E1A] px-3 py-2 text-[11px] text-text-dim">
+        <div className="border-border-strong text-text-dim flex items-start gap-2 rounded-lg border bg-[#070E1A] px-3 py-2 text-[11px]">
           <span aria-hidden="true" className="text-accent">
             ⚡
           </span>
@@ -162,7 +167,7 @@ export function ScorePanel({
       {result && mode === "simple" ? (
         <>
           <div className={panelCardClass}>
-            <div className="mb-2 text-[10px] tracking-wider text-text-faint uppercase">
+            <div className="text-text-faint mb-2 text-[10px] tracking-wider uppercase">
               قوت‌ها و ضعف‌ها
             </div>
             <StrengthsWeaknesses
@@ -220,7 +225,7 @@ export function ScorePanel({
           type="button"
           onClick={onOpenSubmit}
           disabled={!result || isStale}
-          className="w-full rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground transition-colors enabled:hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="bg-primary text-primary-foreground enabled:hover:bg-primary/90 w-full rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
         >
           ثبت در جدول امتیازات
         </button>

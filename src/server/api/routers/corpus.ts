@@ -6,7 +6,11 @@ import { ngramStatsToArtifact } from "@/lib/corpus/serialize";
 
 import { apiFail, apiOk } from "~/server/api/result";
 import { customTextSchema } from "~/server/api/schemas/shared";
-import { createTRPCRouter, corpusAnalyzeProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  corpusAnalyzeProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 const analyzeCustomInputSchema = z.object({
   text: customTextSchema.min(1, "Text is required"),

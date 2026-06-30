@@ -74,10 +74,7 @@ export type {
 
 export { LayoutError } from "./types";
 
-export {
-  layoutFromWire,
-  layoutToWire,
-} from "./wire";
+export { layoutFromWire, layoutToWire } from "./wire";
 
 export type {
   KeyGeometryWire,
@@ -86,10 +83,7 @@ export type {
   PhysicalKeyWire,
 } from "./wire";
 
-export {
-  editorDraftSchema,
-  layoutWireSchema,
-} from "./wire-schema";
+export { editorDraftSchema, layoutWireSchema } from "./wire-schema";
 
 export type { EditorDraftParsed, LayoutWireParsed } from "./wire-schema";
 

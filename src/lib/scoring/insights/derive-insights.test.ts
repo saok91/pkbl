@@ -36,7 +36,9 @@ function buildBreakdown(
   };
 }
 
-function buildBaseline(overrides: Partial<{ baselineTotal: number; incomplete: boolean }> = {}) {
+function buildBaseline(
+  overrides: Partial<{ baselineTotal: number; incomplete: boolean }> = {},
+) {
   return {
     baselineTotal: 1000,
     ...overrides,
@@ -60,16 +62,18 @@ describe("deriveInsights", () => {
     );
     const { weaknesses } = partitionInsights(insights);
 
-    expect(
-      weaknesses.some((item) => item.metric === "weakKeyPenalty"),
-    ).toBe(true);
-    expect(
-      weaknesses.some((item) => item.metric === "homeRowUsage"),
-    ).toBe(true);
+    expect(weaknesses.some((item) => item.metric === "weakKeyPenalty")).toBe(
+      true,
+    );
+    expect(weaknesses.some((item) => item.metric === "homeRowUsage")).toBe(
+      true,
+    );
   });
 
   it("returns empty list when layout is incomplete", () => {
-    expect(deriveInsights(buildBreakdown(), buildBaseline({ incomplete: true }))).toEqual([]);
+    expect(
+      deriveInsights(buildBreakdown(), buildBaseline({ incomplete: true })),
+    ).toEqual([]);
   });
 
   it("limits to three strengths and three weaknesses", () => {

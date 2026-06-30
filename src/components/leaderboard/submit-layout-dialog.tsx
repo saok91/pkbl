@@ -71,8 +71,7 @@ export function SubmitLayoutDialog({
       if (data.accepted) {
         setResultView({
           kind: "accepted",
-          reason:
-            data.reason === "new_best" ? "new_best" : "first_entry",
+          reason: data.reason === "new_best" ? "new_best" : "first_entry",
           rank: data.rank,
           totalScore: data.totalScore,
         });
@@ -160,43 +159,43 @@ export function SubmitLayoutDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="submit-layout-title"
-        className="w-full max-w-lg rounded-2xl border border-border-strong bg-popover p-5 shadow-2xl"
+        className="border-border-strong bg-popover w-full max-w-lg rounded-2xl border p-5 shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <h2
           id="submit-layout-title"
-          className="text-base font-semibold text-text-secondary"
+          className="text-text-secondary text-base font-semibold"
         >
           ثبت در جدول امتیازات
         </h2>
-        <p className="mt-2 text-sm text-text-dim">
+        <p className="text-text-dim mt-2 text-sm">
           چیدمان فعلی بدون نیاز به ورود ثبت می‌شود. بالاتر = بهتر.
         </p>
 
-        <dl className="mt-4 grid grid-cols-2 gap-3 rounded-xl border border-border-strong bg-surface-panel p-3 text-sm">
+        <dl className="border-border-strong bg-surface-panel mt-4 grid grid-cols-2 gap-3 rounded-xl border p-3 text-sm">
           <div>
-            <dt className="text-xs text-text-faint">corpus</dt>
+            <dt className="text-text-faint text-xs">corpus</dt>
             <dd className="text-text-secondary">{presetLabel}</dd>
           </div>
           <div>
-            <dt className="text-xs text-text-faint">امتیاز</dt>
-            <dd className="font-semibold text-primary tabular-nums">
+            <dt className="text-text-faint text-xs">امتیاز</dt>
+            <dd className="text-primary font-semibold tabular-nums">
               {totalScore !== null ? formatScore(totalScore) : "—"}
               {isScoreStale ? (
-                <span className="mr-2 text-xs font-normal text-text-dim">
+                <span className="text-text-dim mr-2 text-xs font-normal">
                   (در حال محاسبه…)
                 </span>
               ) : null}
             </dd>
           </div>
           <div>
-            <dt className="text-xs text-text-faint">پوشش charset</dt>
+            <dt className="text-text-faint text-xs">پوشش charset</dt>
             <dd className="text-text-secondary tabular-nums">
               {formatScore(completenessScore)}٪
             </dd>
           </div>
           <div>
-            <dt className="text-xs text-text-faint">بهترین ثبت‌شده</dt>
+            <dt className="text-text-faint text-xs">بهترین ثبت‌شده</dt>
             <dd className="text-text-secondary tabular-nums">
               {statusQuery.isLoading
                 ? "…"
@@ -221,7 +220,7 @@ export function SubmitLayoutDialog({
           <div className="mt-4">
             <label
               htmlFor="submit-alias"
-              className="mb-1.5 block text-sm text-text-dim"
+              className="text-text-dim mb-1.5 block text-sm"
             >
               نام نمایشی (اختیاری)
             </label>
@@ -232,7 +231,7 @@ export function SubmitLayoutDialog({
               value={alias}
               onChange={(event) => setAlias(event.target.value)}
               placeholder="مثلاً چیدمان من"
-              className="w-full rounded-lg border border-border-strong bg-surface-panel px-3 py-2 text-sm text-text-secondary placeholder:text-text-faint focus:border-primary/50 focus:ring-1 focus:ring-primary focus:outline-none"
+              className="border-border-strong bg-surface-panel text-text-secondary placeholder:text-text-faint focus:border-primary/50 focus:ring-primary w-full rounded-lg border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
             />
           </div>
         ) : null}
@@ -258,7 +257,7 @@ export function SubmitLayoutDialog({
             type="button"
             onClick={handleClose}
             disabled={submitMutation.isPending}
-            className="rounded-lg border border-border-strong bg-surface-panel px-4 py-2 text-sm text-text-secondary enabled:hover:bg-[#0C1E38] disabled:cursor-not-allowed disabled:opacity-50"
+            className="border-border-strong bg-surface-panel text-text-secondary rounded-lg border px-4 py-2 text-sm enabled:hover:bg-[#0C1E38] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {resultView ? "بستن" : "انصراف"}
           </button>
@@ -267,7 +266,7 @@ export function SubmitLayoutDialog({
               type="button"
               onClick={handleSubmit}
               disabled={!canSubmit}
-              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground enabled:hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="bg-primary text-primary-foreground enabled:hover:bg-primary/90 rounded-lg px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitMutation.isPending ? "در حال ثبت…" : "ثبت چیدمان"}
             </button>

@@ -15,8 +15,9 @@ import { LeaderboardTable } from "./leaderboard-table";
 const PAGE_SIZE = 20;
 
 export function LeaderboardPageContent() {
-  const [presetId, setPresetId] =
-    useState<CorpusPresetId>(DEFAULT_CORPUS_PRESET_ID);
+  const [presetId, setPresetId] = useState<CorpusPresetId>(
+    DEFAULT_CORPUS_PRESET_ID,
+  );
 
   const query = api.leaderboard.list.useInfiniteQuery(
     { corpusPresetId: presetId, limit: PAGE_SIZE },
@@ -52,7 +53,7 @@ export function LeaderboardPageContent() {
       <LeaderboardPresetFilter value={presetId} onChange={setPresetId} />
 
       {total !== null ? (
-        <p className="text-sm text-text-dim">
+        <p className="text-text-dim text-sm">
           {total > 0
             ? `${total} چیدمان ثبت‌شده — مرتب‌سازی: امتیاز نزولی`
             : "هنوز چیدمانی برای این corpus ثبت نشده."}
@@ -71,7 +72,7 @@ export function LeaderboardPageContent() {
             type="button"
             onClick={() => void query.fetchNextPage()}
             disabled={query.isFetchingNextPage}
-            className="rounded-lg border border-border-strong bg-surface-panel px-4 py-2 text-sm text-text-secondary enabled:hover:bg-[#0C1E38] disabled:cursor-not-allowed disabled:opacity-50"
+            className="border-border-strong bg-surface-panel text-text-secondary rounded-lg border px-4 py-2 text-sm enabled:hover:bg-[#0C1E38] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {query.isFetchingNextPage ? "در حال بارگذاری…" : "صفحهٔ بعد"}
           </button>

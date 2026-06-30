@@ -12,9 +12,11 @@ export function deriveVerdictBand(ratioToBaseline: number): VerdictBand {
   return "poor";
 }
 
-export function deriveVerdict(total: number, baselineTotal: number): VerdictResult {
-  const ratioToBaseline =
-    baselineTotal > 0 ? total / baselineTotal : 1;
+export function deriveVerdict(
+  total: number,
+  baselineTotal: number,
+): VerdictResult {
+  const ratioToBaseline = baselineTotal > 0 ? total / baselineTotal : 1;
   const band = deriveVerdictBand(ratioToBaseline);
 
   return {

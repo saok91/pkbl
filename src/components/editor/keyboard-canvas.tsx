@@ -96,7 +96,7 @@ export function KeyboardCanvas({
     <div dir="ltr">
       <div
         ref={containerRef}
-        className="rounded-xl border border-border-subtle bg-surface-keyboard p-3 shadow-2xl"
+        className="border-border-subtle bg-surface-keyboard rounded-xl border p-3 shadow-2xl"
       >
         <div
           className="relative mx-auto"
@@ -142,19 +142,19 @@ export function KeyboardCanvas({
       </div>
 
       <div
-        className="mt-1.5 flex items-center gap-4 px-1 text-[10px] text-text-faint"
+        className="text-text-faint mt-1.5 flex items-center gap-4 px-1 text-[10px]"
         dir="rtl"
       >
         <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-2 rounded-full bg-accent" />
+          <span className="bg-accent inline-block h-2 w-2 rounded-full" />
           نقاط پرهزینه (top 3)
         </span>
         <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-2 rounded-sm border border-primary" />
+          <span className="border-primary inline-block h-2 w-2 rounded-sm border" />
           کلید انتخاب‌شده
         </span>
         <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-2 rounded-sm border border-primary bg-primary/20" />
+          <span className="border-primary bg-primary/20 inline-block h-2 w-2 rounded-sm border" />
           هدف drag
         </span>
       </div>

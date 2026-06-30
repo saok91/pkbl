@@ -34,7 +34,7 @@ export function BaselineCompare({
           : "mt-3 space-y-2 opacity-100 transition-opacity"
       }
     >
-      <div className="mb-2 flex items-center justify-between text-[11px] text-text-dim">
+      <div className="text-text-dim mb-2 flex items-center justify-between text-[11px]">
         <span>مقایسه با پیش‌فرض</span>
         <span
           className={`font-mono font-semibold tabular-nums ${
@@ -57,7 +57,7 @@ export function BaselineCompare({
           { label: "پیش‌فرض", val: baselineTotal, color: "bg-text-faint" },
         ].map((bar) => (
           <div key={bar.label} className="mb-1.5 flex items-center gap-2">
-            <span className="w-14 shrink-0 text-left text-[10px] text-text-faint">
+            <span className="text-text-faint w-14 shrink-0 text-left text-[10px]">
               {bar.label}
             </span>
             <div className="h-5 flex-1 overflow-hidden rounded bg-[#0A1525]">

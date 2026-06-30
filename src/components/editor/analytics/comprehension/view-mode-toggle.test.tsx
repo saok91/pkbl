@@ -2,10 +2,20 @@
  * @vitest-environment jsdom
  */
 
-import { fireEvent, render, screen, renderHook, act } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  renderHook,
+  act,
+} from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { ANALYTICS_VIEW_MODE_KEY, useAnalyticsViewMode, ViewModeToggle } from "./view-mode-toggle";
+import {
+  ANALYTICS_VIEW_MODE_KEY,
+  useAnalyticsViewMode,
+  ViewModeToggle,
+} from "./view-mode-toggle";
 
 describe("ViewModeToggle", () => {
   it("calls onChange with selected mode", () => {
@@ -19,12 +29,14 @@ describe("ViewModeToggle", () => {
   it("marks active mode with aria-pressed", () => {
     render(<ViewModeToggle mode="expert" onChange={vi.fn()} />);
 
-    expect(
-      screen.getByRole("button", { name: /نمای ساده/i }),
-    ).toHaveAttribute("aria-pressed", "false");
-    expect(
-      screen.getByRole("button", { name: /نمای متخصص/i }),
-    ).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: /نمای ساده/i })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+    expect(screen.getByRole("button", { name: /نمای متخصص/i })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 });
 

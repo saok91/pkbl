@@ -5,7 +5,11 @@ import {
   type CorpusPresetId,
 } from "@/lib/corpus/client-presets";
 import { editorDraftSchema } from "@/lib/layout/wire-schema";
-import { layoutFromWire, layoutToWire, type LayoutWire } from "@/lib/layout/wire";
+import {
+  layoutFromWire,
+  layoutToWire,
+  type LayoutWire,
+} from "@/lib/layout/wire";
 import type { Layout } from "@/lib/layout/types";
 
 /** E8-S1 uses localStorage only; IndexedDB deferred to a later story if quota becomes an issue. */
@@ -56,7 +60,9 @@ export function draftToLayout(draft: EditorDraft): Layout {
   return layoutFromWire(draft.layout);
 }
 
-export function readEditorDraft(storage: Storage = localStorage): EditorDraft | null {
+export function readEditorDraft(
+  storage: Storage = localStorage,
+): EditorDraft | null {
   const raw = storage.getItem(EDITOR_DRAFT_STORAGE_KEY);
   if (!raw) {
     return null;

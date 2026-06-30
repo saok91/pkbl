@@ -31,7 +31,7 @@ export function InsightCard({ insight }: InsightCardProps) {
         >
           {insight.titleFa}
         </p>
-        <p className="mt-0.5 text-[10px] leading-relaxed text-text-dim">
+        <p className="text-text-dim mt-0.5 text-[10px] leading-relaxed">
           {insight.adviceFa}
         </p>
       </div>

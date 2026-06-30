@@ -69,14 +69,22 @@ describe("extractNgrams", () => {
   });
 
   it("does not count Latin comma in v1 (outside charset)", () => {
-    const stats = extractNgrams("سلام, دنیا", "custom", DEFAULT_NORMALIZATION_CONFIG);
+    const stats = extractNgrams(
+      "سلام, دنیا",
+      "custom",
+      DEFAULT_NORMALIZATION_CONFIG,
+    );
     expect(stats.unigrams.has(",")).toBe(false);
     expect(stats.unigrams.get("،")).toBeUndefined();
     expect(stats.totalChars).toBe(9);
   });
 
   it("counts Persian comma after v2 punct normalization", () => {
-    const stats = extractNgrams("سلام, دنیا", "custom", NORMALIZATION_CONFIG_V2);
+    const stats = extractNgrams(
+      "سلام, دنیا",
+      "custom",
+      NORMALIZATION_CONFIG_V2,
+    );
     expect(stats.unigrams.get("،")).toBe(1);
     expect(stats.unigrams.has(",")).toBe(false);
     expect(stats.normalizedVersion).toBe("fa-normalize-v2");

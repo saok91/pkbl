@@ -24,8 +24,8 @@ export function ScoreHero({
 }: ScoreHeroProps) {
   return (
     <div className="space-y-3">
-      <div className="rounded-xl border border-border-strong bg-surface-panel p-3">
-        <div className="mb-2 text-[10px] tracking-wider text-text-faint uppercase">
+      <div className="border-border-strong bg-surface-panel rounded-xl border p-3">
+        <div className="text-text-faint mb-2 text-[10px] tracking-wider uppercase">
           پیکره متنی
         </div>
         <div className="flex gap-1.5">
@@ -44,7 +44,7 @@ export function ScoreHero({
                 }`}
               >
                 <div className="font-medium">{preset.nameFa}</div>
-                <div className="mt-0.5 text-[9px] text-text-faint">
+                <div className="text-text-faint mt-0.5 text-[9px]">
                   {preset.descriptionFa}
                 </div>
               </button>
@@ -61,15 +61,15 @@ export function ScoreHero({
               : "opacity-100 transition-opacity"
           }
         >
-          <p className="text-[10px] text-text-dim">امتیاز کلی</p>
+          <p className="text-text-dim text-[10px]">امتیاز کلی</p>
           <p
-            className="font-mono text-3xl font-bold tracking-tight text-foreground tabular-nums"
+            className="text-foreground font-mono text-3xl font-bold tracking-tight tabular-nums"
             aria-live="polite"
             aria-atomic="true"
           >
             {total !== null ? formatScore(total) : "—"}
           </p>
-          <p className="text-[10px] text-text-faint">بالاتر بهتر</p>
+          <p className="text-text-faint text-[10px]">بالاتر بهتر</p>
         </div>
       )}
     </div>

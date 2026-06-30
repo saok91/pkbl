@@ -43,18 +43,20 @@ export const scoreRouter = createTRPCRouter({
       }
     }),
 
-  compare: scoreProcedure.input(compareInputSchema).mutation(async ({ input }) => {
-    try {
-      const ngramStats = await resolveNgramStats(
-        input.corpusPresetId,
-        input.customText,
-      );
-      const comparison = compareLayoutScores(input.layouts, ngramStats);
-      return apiOk(comparison);
-    } catch (cause) {
-      const message =
-        cause instanceof Error ? cause.message : "Score comparison failed";
-      return apiFail(message);
-    }
-  }),
+  compare: scoreProcedure
+    .input(compareInputSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const ngramStats = await resolveNgramStats(
+          input.corpusPresetId,
+          input.customText,
+        );
+        const comparison = compareLayoutScores(input.layouts, ngramStats);
+        return apiOk(comparison);
+      } catch (cause) {
+        const message =
+          cause instanceof Error ? cause.message : "Score comparison failed";
+        return apiFail(message);
+      }
+    }),
 });

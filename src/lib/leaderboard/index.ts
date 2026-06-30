@@ -15,10 +15,7 @@ export type {
   SubmitDecisionReason,
   SubmitRejectReason,
 } from "./submit-rules";
-export {
-  describeSubmitPreview,
-  describeSubmitResult,
-} from "./submit-messages";
+export { describeSubmitPreview, describeSubmitResult } from "./submit-messages";
 export { resolveKeyboardTemplateSlug } from "./template-slug";
 export type {
   CommunityTemplate,

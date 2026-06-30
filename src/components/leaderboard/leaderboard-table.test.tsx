@@ -22,11 +22,11 @@ const sampleEntries: LeaderboardEntry[] = [
 
 describe("LeaderboardTable", () => {
   it("shows loading state when empty and loading", () => {
-    render(
-      <LeaderboardTable entries={[]} isLoading errorMessage={null} />,
-    );
+    render(<LeaderboardTable entries={[]} isLoading errorMessage={null} />);
 
-    expect(screen.getByText("در حال بارگذاری جدول امتیازات…")).toBeInTheDocument();
+    expect(
+      screen.getByText("در حال بارگذاری جدول امتیازات…"),
+    ).toBeInTheDocument();
   });
 
   it("shows empty state when no entries", () => {

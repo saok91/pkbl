@@ -10,9 +10,4 @@ export const customTextSchema = z
   .string()
   .max(MAX_CUSTOM_CORPUS_TEXT_CHARS, "Custom text exceeds 50KB limit");
 
-export const aliasSchema = z
-  .string()
-  .trim()
-  .min(1)
-  .max(64)
-  .optional();
+export const aliasSchema = z.string().trim().min(1).max(64).optional();

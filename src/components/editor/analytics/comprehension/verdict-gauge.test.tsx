@@ -14,7 +14,9 @@ describe("VerdictGauge", () => {
     const verdict = deriveVerdict(1050, 1000);
     render(<VerdictGauge verdict={verdict} isStale={false} />);
 
-    expect(screen.getByRole("img", { name: /وضعیت چیدمان: چیدمان خوب/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /وضعیت چیدمان: چیدمان خوب/ }),
+    ).toBeInTheDocument();
     expect(screen.getByText(/امتیاز:/)).toBeInTheDocument();
   });
 
@@ -24,16 +26,15 @@ describe("VerdictGauge", () => {
       <VerdictGauge verdict={verdict} isStale={false} />,
     );
 
-    expect(screen.getByRole("img", { name: /وضعیت چیدمان: نیازمند بهبود/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /وضعیت چیدمان: نیازمند بهبود/ }),
+    ).toBeInTheDocument();
     expect(document.querySelector("[aria-live='polite']")).toHaveTextContent(
       "نیازمند بهبود",
     );
 
     rerender(
-      <VerdictGauge
-        verdict={deriveVerdict(1050, 1000)}
-        isStale={false}
-      />,
+      <VerdictGauge verdict={deriveVerdict(1050, 1000)} isStale={false} />,
     );
 
     expect(document.querySelector("[aria-live='polite']")).toHaveTextContent(

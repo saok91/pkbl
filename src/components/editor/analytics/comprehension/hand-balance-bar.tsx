@@ -31,11 +31,11 @@ export function HandBalanceBar({
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1.5">
-        <h3 className="text-[11px] text-text-dim">
+        <h3 className="text-text-dim text-[11px]">
           {COMPREHENSION_SECTION_FA.handBalance}
         </h3>
         {glossaryEntry ? <MetricInfo entry={glossaryEntry} /> : null}
-        <span className="text-xs text-text-faint">
+        <span className="text-text-faint text-xs">
           ({METRIC_QUALITY_LABEL_FA[quality]})
         </span>
       </div>
@@ -47,18 +47,18 @@ export function HandBalanceBar({
       >
         <div className="relative h-3 overflow-hidden rounded-full bg-[#0A1525]">
           <div
-            className="absolute inset-y-0 rounded-full bg-primary/60 transition-all"
+            className="bg-primary/60 absolute inset-y-0 rounded-full transition-all"
             style={{
               insetInlineStart: `${50 - barWidth / 2}%`,
               width: `${barWidth}%`,
             }}
           />
           <div
-            className="absolute inset-y-0 w-px bg-border-strong"
+            className="bg-border-strong absolute inset-y-0 w-px"
             style={{ insetInlineStart: "50%" }}
           />
         </div>
-        <div className="flex justify-between text-[11px] text-text-faint">
+        <div className="text-text-faint flex justify-between text-[11px]">
           <span>
             {HAND_LABEL_FA.left} {formatPercent(leftPercent)}
           </span>

@@ -43,30 +43,30 @@ export function ConfirmDialog({
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-message"
-        className="w-full max-w-sm rounded-xl border border-border-strong bg-popover p-5 shadow-2xl"
+        className="border-border-strong bg-popover w-full max-w-sm rounded-xl border p-5 shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <h2
           id="confirm-dialog-title"
-          className="text-base font-semibold text-text-secondary"
+          className="text-text-secondary text-base font-semibold"
         >
           {title}
         </h2>
-        <p id="confirm-dialog-message" className="mt-2 text-sm text-text-dim">
+        <p id="confirm-dialog-message" className="text-text-dim mt-2 text-sm">
           {message}
         </p>
         <div className="mt-5 flex gap-2">
           <button
             type="button"
             onClick={onConfirm}
-            className="flex-1 rounded-lg border border-destructive/25 bg-destructive/15 py-2 text-sm text-destructive transition-colors hover:bg-destructive/25"
+            className="border-destructive/25 bg-destructive/15 text-destructive hover:bg-destructive/25 flex-1 rounded-lg border py-2 text-sm transition-colors"
           >
             {confirmLabel}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 rounded-lg border border-border-strong py-2 text-sm text-text-dim transition-colors hover:text-text-secondary"
+            className="border-border-strong text-text-dim hover:text-text-secondary flex-1 rounded-lg border py-2 text-sm transition-colors"
           >
             {cancelLabel}
           </button>

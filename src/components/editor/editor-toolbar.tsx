@@ -99,7 +99,7 @@ export function EditorToolbar({
         <button
           type="button"
           onClick={() => setIsResetAllOpen(true)}
-          className="rounded-lg border border-destructive/20 px-3 py-1.5 text-[11px] text-destructive/50 transition-all hover:border-destructive/35 hover:text-destructive"
+          className="border-destructive/20 text-destructive/50 hover:border-destructive/35 hover:text-destructive rounded-lg border px-3 py-1.5 text-[11px] transition-all"
         >
           بازنشانی همه
         </button>

@@ -74,10 +74,7 @@ export function classifyMetric(
   return "poor";
 }
 
-export function metricSeverity(
-  value: number,
-  band: MetricBandConfig,
-): number {
+export function metricSeverity(value: number, band: MetricBandConfig): number {
   if (band.direction === "higher") {
     if (value >= band.good) {
       return value - band.good;

@@ -1,7 +1,4 @@
-import type {
-  SubmitAcceptReason,
-  SubmitRejectReason,
-} from "./submit-rules";
+import type { SubmitAcceptReason, SubmitRejectReason } from "./submit-rules";
 
 export type SubmitDecision =
   | {

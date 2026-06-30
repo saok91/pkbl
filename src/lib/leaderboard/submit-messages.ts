@@ -38,7 +38,9 @@ function formatScore(value: number): string {
   );
 }
 
-export function describeSubmitPreview(preview: SubmitPreviewView): SubmitMessage {
+export function describeSubmitPreview(
+  preview: SubmitPreviewView,
+): SubmitMessage {
   if (preview.completenessScore < MIN_LAYOUT_COMPLETENESS) {
     return {
       tone: "error",

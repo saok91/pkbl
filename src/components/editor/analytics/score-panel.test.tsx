@@ -48,7 +48,11 @@ describe("ScorePanel integration", () => {
     );
 
     expect(screen.getByText(/چیدمان/)).toBeInTheDocument();
-    expect(screen.getByText(/بهتر از چیدمان پیش‌فرض|برابر با چیدمان پیش‌فرض|بدتر از چیدمان پیش‌فرض/)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /بهتر از چیدمان پیش‌فرض|برابر با چیدمان پیش‌فرض|بدتر از چیدمان پیش‌فرض/,
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText("بار انگشتان")).toBeInTheDocument();
   });
 });

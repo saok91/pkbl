@@ -149,17 +149,17 @@ export const Keycap = memo(function Keycap({
         aria-expanded={isPopoverOpen}
       >
         {hotspotRank !== undefined ? (
-          <span className="absolute top-0.5 right-0.5 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-accent text-[7px] leading-none font-bold text-black">
+          <span className="bg-accent absolute top-0.5 right-0.5 z-10 flex h-3 w-3 items-center justify-center rounded-full text-[7px] leading-none font-bold text-black">
             {hotspotRank + 1}
           </span>
         ) : null}
         <span
-          className={`truncate px-1 leading-none ${key.modifierLabel ? "text-[9px] font-mono" : "text-[15px]"}`}
+          className={`truncate px-1 leading-none ${key.modifierLabel ? "font-mono text-[9px]" : "text-[15px]"}`}
         >
           {displayLabel}
         </span>
         {showAlternate && alternateLabel && !key.modifierLabel ? (
-          <span className="absolute top-0.5 right-1 text-[10px] text-text-faint">
+          <span className="text-text-faint absolute top-0.5 right-1 text-[10px]">
             {alternateLabel}
           </span>
         ) : null}

@@ -136,7 +136,7 @@ function PaletteSectionColumn({
   return (
     <div className="flex shrink-0 flex-col gap-1">
       <h3
-        className="text-center font-medium text-text-dim"
+        className="text-text-dim text-center font-medium"
         style={{ fontSize: paletteCustomLabelFontSize(unitPx + 8) }}
       >
         {section.label}
@@ -235,14 +235,14 @@ export function CharacterPalette({
   return (
     <section
       dir="rtl"
-      className="rounded-xl border border-border-subtle bg-surface-keyboard p-3 text-right"
+      className="border-border-subtle bg-surface-keyboard rounded-xl border p-3 text-right"
       aria-label="پالت کاراکترها"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <h2 className="text-[10px] font-medium tracking-wider text-text-faint uppercase">
+        <h2 className="text-text-faint text-[10px] font-medium tracking-wider uppercase">
           پالت کاراکتر
         </h2>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-text-faint">
+        <div className="text-text-faint flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px]">
           <span className="flex items-center gap-1">
             <span
               className={`inline-block h-3.5 w-3.5 rounded-md shadow-sm ${PALETTE_LEGEND_SWATCHES.free}`}

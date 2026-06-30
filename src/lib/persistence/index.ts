@@ -10,11 +10,7 @@ export {
   writeEditorDraft,
 } from "./draft";
 
-export type {
-  DraftWriteError,
-  DraftWriteResult,
-  EditorDraft,
-} from "./draft";
+export type { DraftWriteError, DraftWriteResult, EditorDraft } from "./draft";
 
 /** Domain module marker for boundary tests. */
 export const PERSISTENCE_MODULE = "persistence" as const;

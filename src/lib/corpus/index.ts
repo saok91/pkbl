@@ -40,10 +40,7 @@ export {
   writeStoredCorpusPresetId,
 } from "./client-presets";
 export type { CorpusPresetId, ClientCorpusPreset } from "./client-presets";
-export {
-  analyzeCustomText,
-  clearCustomCorpusCache,
-} from "./analyze-custom";
+export { analyzeCustomText, clearCustomCorpusCache } from "./analyze-custom";
 export { clearArtifactCache, fetchPresetNgramStats } from "./fetch-artifact";
 export { artifactToNgramStats, ngramStatsToArtifact } from "./serialize";
 

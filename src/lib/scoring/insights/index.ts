@@ -3,10 +3,7 @@ export {
   computeBaselineDelta,
   getBaselineScore,
 } from "./baseline";
-export {
-  deriveInsights,
-  partitionInsights,
-} from "./derive-insights";
+export { deriveInsights, partitionInsights } from "./derive-insights";
 export {
   classifyFingerLoad,
   classifyMetric,

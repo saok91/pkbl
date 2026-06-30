@@ -4,9 +4,7 @@ export const MIN_LAYOUT_COMPLETENESS = 100;
 export type SubmitAcceptReason = "new_best" | "first_entry";
 
 export type SubmitRejectReason =
-  | "score_too_low"
-  | "incomplete_layout"
-  | "duplicate";
+  "score_too_low" | "incomplete_layout" | "duplicate";
 
 export type SubmitDecisionReason = SubmitAcceptReason | SubmitRejectReason;
 

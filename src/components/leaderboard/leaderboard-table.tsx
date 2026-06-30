@@ -25,7 +25,7 @@ export function LeaderboardTable({
 }: LeaderboardTableProps) {
   if (isLoading && entries.length === 0) {
     return (
-      <p className="py-12 text-center text-sm text-text-dim">
+      <p className="text-text-dim py-12 text-center text-sm">
         در حال بارگذاری جدول امتیازات…
       </p>
     );
@@ -34,7 +34,7 @@ export function LeaderboardTable({
   if (errorMessage) {
     return (
       <p
-        className="rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent"
+        className="border-accent/30 bg-accent/10 text-accent rounded-lg border px-4 py-3 text-sm"
         role="alert"
       >
         {errorMessage}
@@ -44,11 +44,11 @@ export function LeaderboardTable({
 
   if (entries.length === 0) {
     return (
-      <div className="rounded-xl border border-border-strong bg-surface-panel px-6 py-12 text-center">
-        <p className="text-base font-medium text-text-secondary">
+      <div className="border-border-strong bg-surface-panel rounded-xl border px-6 py-12 text-center">
+        <p className="text-text-secondary text-base font-medium">
           هنوز چیدمانی ثبت نشده
         </p>
-        <p className="mt-2 text-sm text-text-dim">
+        <p className="text-text-dim mt-2 text-sm">
           اولین نفر باشید — از ویرایشگر چیدمان خود را ثبت کنید.
         </p>
       </div>
@@ -56,10 +56,10 @@ export function LeaderboardTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border-strong bg-surface-panel">
+    <div className="border-border-strong bg-surface-panel overflow-hidden rounded-xl border">
       <table className="min-w-full text-sm">
         <thead>
-          <tr className="border-b border-border-strong text-[10px] tracking-wide text-text-faint uppercase">
+          <tr className="border-border-strong text-text-faint border-b text-[10px] tracking-wide uppercase">
             <th scope="col" className="w-10 px-4 py-3 text-right font-medium">
               رتبه
             </th>
@@ -69,7 +69,10 @@ export function LeaderboardTable({
             <th scope="col" className="px-4 py-3 text-left font-medium">
               امتیاز
             </th>
-            <th scope="col" className="hidden px-4 py-3 text-right font-medium sm:table-cell">
+            <th
+              scope="col"
+              className="hidden px-4 py-3 text-right font-medium sm:table-cell"
+            >
               تاریخ
             </th>
           </tr>
@@ -78,16 +81,16 @@ export function LeaderboardTable({
           {entries.map((entry) => (
             <tr
               key={entry.id}
-              className="border-b border-border-strong/40 transition-colors hover:bg-[#0C1E38]"
+              className="border-border-strong/40 border-b transition-colors hover:bg-[#0C1E38]"
             >
               <td className="px-4 py-3 text-sm">{rankDisplay(entry.rank)}</td>
-              <td className="px-4 py-3 text-text-secondary">
+              <td className="text-text-secondary px-4 py-3">
                 {entry.alias?.trim() ? entry.alias : "بدون نام"}
               </td>
-              <td className="px-4 py-3 text-left font-mono font-semibold text-primary tabular-nums">
+              <td className="text-primary px-4 py-3 text-left font-mono font-semibold tabular-nums">
                 {formatScore(entry.totalScore)}
               </td>
-              <td className="hidden px-4 py-3 text-[10px] text-text-faint sm:table-cell">
+              <td className="text-text-faint hidden px-4 py-3 text-[10px] sm:table-cell">
                 {formatLeaderboardDate(entry.submittedAt)}
               </td>
             </tr>
