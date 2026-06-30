@@ -14,28 +14,42 @@ import {
   writeEditorDraft,
 } from "@/lib/persistence";
 
+class MemoryStorage implements Storage {
+  readonly store = new Map<string, string>();
+
+  get length(): number {
+    return this.store.size;
+  }
+
+  clear(): void {
+    this.store.clear();
+  }
+
+  key(index: number): string | null {
+    return [...this.store.keys()][index] ?? null;
+  }
+
+  getItem(key: string): string | null {
+    return this.store.get(key) ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.store.set(key, value);
+  }
+
+  removeItem(key: string): void {
+    this.store.delete(key);
+  }
+}
+
+class QuotaExceededStorage extends MemoryStorage {
+  setItem(_key: string, _value: string): void {
+    throw new DOMException("Quota exceeded", "QuotaExceededError");
+  }
+}
+
 describe("editor draft persistence", () => {
-  const storage = {
-    store: new Map<string, string>(),
-    get length() {
-      return this.store.size;
-    },
-    clear() {
-      this.store.clear();
-    },
-    key(index: number) {
-      return [...this.store.keys()][index] ?? null;
-    },
-    getItem(key: string) {
-      return this.store.get(key) ?? null;
-    },
-    setItem(key: string, value: string) {
-      this.store.set(key, value);
-    },
-    removeItem(key: string) {
-      this.store.delete(key);
-    },
-  } satisfies Storage;
+  const storage = new MemoryStorage();
 
   beforeEach(() => {
     storage.store.clear();
@@ -127,12 +141,7 @@ describe("editor draft persistence", () => {
   });
 
   it("returns storage error when setItem throws", () => {
-    const failingStorage = {
-      ...storage,
-      setItem: () => {
-        throw new DOMException("Quota exceeded", "QuotaExceededError");
-      },
-    } satisfies Storage;
+    const failingStorage = new QuotaExceededStorage();
 
     const result = writeEditorDraft(
       createEditorDraft(getDefaultTemplate(), "wiki-fa"),

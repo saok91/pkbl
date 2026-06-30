@@ -77,7 +77,7 @@ export function useAnalyticsViewMode(): {
   const mode = useSyncExternalStore(
     subscribeViewMode,
     () => readStoredViewMode(),
-    () => "simple" as AnalyticsViewMode,
+    (): AnalyticsViewMode => "simple",
   );
 
   const setMode = useCallback((nextMode: AnalyticsViewMode) => {

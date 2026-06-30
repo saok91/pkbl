@@ -13,6 +13,15 @@ import { leaderboardRouter } from "~/server/api/routers/leaderboard";
 
 const createLeaderboardCaller = createCallerFactory(leaderboardRouter);
 
+type ScoreCountArgs = {
+  where?: { totalScore?: { gt?: number } };
+};
+
+type ScoreFindFirstArgs = {
+  where?: { layoutId?: string };
+  orderBy?: unknown;
+};
+
 function createMockDb(overrides: Partial<Record<string, unknown>> = {}) {
   const db = {
     layoutRecord: {
@@ -75,8 +84,8 @@ describe("leaderboard router", () => {
             },
           },
         ]),
-        count: vi.fn().mockImplementation((args) => {
-          if (args?.where?.totalScore?.gt !== undefined) {
+        count: vi.fn().mockImplementation((args: ScoreCountArgs) => {
+          if (args.where?.totalScore?.gt !== undefined) {
             return Promise.resolve(0);
           }
           return Promise.resolve(42);
@@ -113,7 +122,7 @@ describe("leaderboard router", () => {
             layout: { alias: "b", createdAt: new Date("2026-01-02") },
           },
         ]),
-        count: vi.fn().mockImplementation(({ where }) => {
+        count: vi.fn().mockImplementation(({ where }: ScoreCountArgs) => {
           if (where?.totalScore?.gt === 950) {
             return Promise.resolve(0);
           }
@@ -143,7 +152,7 @@ describe("leaderboard router", () => {
             },
           },
         ]),
-        count: vi.fn().mockImplementation(({ where }) => {
+        count: vi.fn().mockImplementation(({ where }: ScoreCountArgs) => {
           if (where?.totalScore?.gt === 900) {
             return Promise.resolve(1);
           }
@@ -213,11 +222,9 @@ describe("leaderboard router", () => {
     expect(result.data?.accepted).toBe(true);
     expect(result.data?.reason).toBe("first_entry");
     expect(db.layoutRecord.create).toHaveBeenCalledOnce();
-    expect(db.scoreSnapshot.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ corpusPresetVersion: 1 }),
-      }),
-    );
+    const createInput = vi.mocked(db.scoreSnapshot.create).mock
+      .calls[0]?.[0] as { data: { corpusPresetVersion: number } } | undefined;
+    expect(createInput?.data.corpusPresetVersion).toBe(1);
   });
 
   it("accepts existing layout on a new corpus preset without creating layout", async () => {
@@ -228,8 +235,8 @@ describe("leaderboard router", () => {
         create: vi.fn(),
       },
       scoreSnapshot: {
-        findFirst: vi.fn().mockImplementation((args) => {
-          if (args?.where?.layoutId) {
+        findFirst: vi.fn().mockImplementation((args: ScoreFindFirstArgs) => {
+          if (args.where?.layoutId) {
             return Promise.resolve(null);
           }
           return Promise.resolve(null);
@@ -294,8 +301,8 @@ describe("leaderboard router", () => {
     apiRateLimiter.clear();
     const db = createMockDb({
       scoreSnapshot: {
-        findFirst: vi.fn().mockImplementation((args) => {
-          if (args?.orderBy) {
+        findFirst: vi.fn().mockImplementation((args: ScoreFindFirstArgs) => {
+          if (args.orderBy) {
             return Promise.resolve({ totalScore: 9999 });
           }
           return Promise.resolve(null);
@@ -346,11 +353,11 @@ describe("leaderboard router", () => {
         create: vi.fn(),
       },
       scoreSnapshot: {
-        findFirst: vi.fn().mockImplementation((args) => {
-          if (args?.where?.layoutId) {
+        findFirst: vi.fn().mockImplementation((args: ScoreFindFirstArgs) => {
+          if (args.where?.layoutId) {
             return Promise.resolve({ id: "existing-snapshot" });
           }
-          if (args?.orderBy) {
+          if (args.orderBy) {
             return Promise.resolve({ totalScore: 900 });
           }
           return Promise.resolve(null);

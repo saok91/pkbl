@@ -11,6 +11,7 @@ import {
   CORPUS_PRESET_STORAGE_KEY,
   type CorpusPresetId,
 } from "@/lib/corpus/client-presets";
+import * as persistence from "@/lib/persistence";
 import {
   createEditorDraft,
   EDITOR_DRAFT_STORAGE_KEY,
@@ -148,15 +149,10 @@ describe("useDraftPersistence", () => {
 
   it("clears isSaving and surfaces error when write fails", async () => {
     const layout = getDefaultTemplate();
-    const originalSetItem = Storage.prototype.setItem;
-    const setItemSpy = vi
-      .spyOn(Storage.prototype, "setItem")
-      .mockImplementation(function (this: Storage, key: string, value: string) {
-        if (key === EDITOR_DRAFT_STORAGE_KEY) {
-          throw new DOMException("Quota exceeded", "QuotaExceededError");
-        }
-        originalSetItem.call(this, key, value);
-      });
+    const writeSpy = vi.spyOn(persistence, "writeEditorDraft").mockReturnValue({
+      ok: false,
+      error: "quota_exceeded",
+    });
 
     const { result } = renderHook(() => useDraftPersistence(layout, "wiki-fa"));
 
@@ -169,7 +165,7 @@ describe("useDraftPersistence", () => {
       { timeout: 1000 },
     );
 
-    setItemSpy.mockRestore();
+    writeSpy.mockRestore();
   });
 
   it("coalesces rapid edits into a single debounced write", async () => {

@@ -32,5 +32,5 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "generated", "_scaffold", "coverage"]
+  "exclude": ["node_modules", "generated", "_scaffold", "coverage", "figma"]
 }

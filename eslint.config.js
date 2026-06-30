@@ -14,6 +14,7 @@ export default tseslint.config(
       "_scaffold",
       "node_modules",
       "corpus",
+      "figma",
       ".cursor",
       "next-env.d.ts",
     ],

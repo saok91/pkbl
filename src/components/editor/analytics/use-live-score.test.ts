@@ -54,9 +54,7 @@ describe("useLiveScore", () => {
 
     renderHook(() => {
       const live = useLiveScore(layout);
-      if (presetOnFirstRender === undefined) {
-        presetOnFirstRender = live.presetId;
-      }
+      presetOnFirstRender ??= live.presetId;
       return live;
     });
 
