@@ -1,5 +1,4 @@
 import {
-  CHAR_VARIANT_MAP,
   DEFAULT_NORMALIZATION_CONFIG,
   LATIN_TO_PERSIAN_DIGIT,
   PERSIAN_TO_LATIN_DIGIT,
@@ -26,8 +25,18 @@ function normalizePunctuationSpacing(text: string): string {
     .replace(PUNCT_NO_SPACE_AFTER, "$1");
 }
 
-function unifyCharVariants(char: string): string {
-  return CHAR_VARIANT_MAP[char] ?? char;
+function unifyCharVariants(
+  char: string,
+  variantMap: NormalizationConfig["charVariantMap"],
+): string {
+  return variantMap[char] ?? char;
+}
+
+function unifyPunctVariants(
+  char: string,
+  punctMap: NormalizationConfig["punctVariantMap"],
+): string {
+  return punctMap[char] ?? char;
 }
 
 function normalizeDigit(
@@ -50,7 +59,9 @@ function normalizeChar(
   if (REMOVED_ZERO_WIDTH_CHARS.has(char)) {
     return null;
   }
-  return normalizeDigit(unifyCharVariants(char), config.digitPolicy);
+  const unified = unifyCharVariants(char, config.charVariantMap);
+  const punctuated = unifyPunctVariants(unified, config.punctVariantMap);
+  return normalizeDigit(punctuated, config.digitPolicy);
 }
 
 /** Normalize Persian corpus text before n-gram extraction (E3-S1). */

@@ -75,7 +75,7 @@
 
 | اپیک | استوری | عنوان | وضعیت |
 |------|--------|-------|-------|
-| E16 | S1 | تعریف `NORMALIZATION_CONFIG_V2` | ⬜ |
+| E16 | S1 | تعریف `NORMALIZATION_CONFIG_V2` | ✅ |
 | E16 | S2 | Rebuild artifactهای preset corpus | ⬜ |
 | E16 | S3 | ممیزی charset و علائم نگارشی | ⬜ |
 | E16 | S4 | سیاست leaderboard برای نسخه corpus | ⬜ |
@@ -162,10 +162,10 @@
 | E13 | Export Pipeline | 0/4 ⏸ |
 | E14 | Polish & Launch | 0/6 ⏸ |
 | E15 | Score Comprehension UX | 7/7 ✅ |
-| E16 | Normalization v2 & Corpus Rebuild | 0/4 ⬜ |
+| E16 | Normalization v2 & Corpus Rebuild | 1/4 |
 | E17 | Shift-Aware Scoring | 0/3 ⬜ |
 | E18 | Layout Radar Chart | 0/3 ⬜ |
 | E19 | Preset Layout Selector | 0/4 ⬜ |
 
 **MVP:** 30/30 استوری block ✅  
-**Layout Fidelity v2:** 0/14 استوری — [برنامه](./plans/layout-fidelity-v2.md)
+**Layout Fidelity v2:** 1/14 استوری — [برنامه](./plans/layout-fidelity-v2.md)
